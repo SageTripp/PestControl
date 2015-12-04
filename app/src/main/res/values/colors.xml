@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">@color/LIGHT_BLUE</color>
+    <color name="primary_dark">@color/BLUE</color>
+    <color name="primary_light">@color/CYAN</color>
+    <color name="accent">@color/GREEN</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="toolbar_text">#FFFFFF</color>
+    <color name="divider">#B6B6B6</color>
+
+    <color name="RED">#F44336</color>
+    <color name="PINK">#E91E63</color>
+    <color name="PURPLE">#9C27B0</color>
+    <color name="DEEP_PURPLE">#673AB7</color>
+    <color name="INDIGO">#3F51B5</color>
+    <color name="BLUE">#2196F3</color>
+    <color name="LIGHT_BLUE">#03A9F4</color>
+    <color name="CYAN">#00BCD4</color>
+    <color name="TEAL">#009688</color>
+    <color name="GREEN">#4CAF50</color>
+    <color name="LIGHT_GREEN">#8BC34A</color>
+    <color name="LIME">#CDDC39</color>
+    <color name="YELLOW">#FFEB3B</color>
+    <color name="AMBER">#FFC107</color>
+    <color name="ORANGE">#FF9800</color>
+    <color name="DEEP_ORANGE">#FF5722</color>
+    <color name="BROWN">#795548</color>
+    <color name="GREY">#9E9E9E</color>
+    <color name="BLUE_GREY">#607D8B</color>
+    <color name="primary_dark_material_light_1">#61b7df</color>
+</resources>
+

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">病害采集系统</string>
+    <string name="menu_home">首页</string>
+    <string name="menu_data">信息查询</string>
+    <string name="menu_device">设备管理</string>
+    <string name="menu_sort">排序</string>
+    <string name="menu_screening">筛选</string>
+</resources>
