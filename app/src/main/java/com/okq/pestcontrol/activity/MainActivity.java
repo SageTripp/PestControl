@@ -1,5 +1,6 @@
 package com.okq.pestcontrol.activity;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -8,11 +9,16 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.widget.PopupWindow;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.fragment.BaseFragment;
@@ -94,7 +100,31 @@ public class MainActivity extends BaseActivity {
                 screen.setOnScreeningFinishListener(new ScreeningPopupWindow.OnScreeningFinishListener() {
                     @Override
                     public void onFinished(Bundle data) {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("area")
+                                .append(data.getString("area"))
+                                .append(",")
+                                .append("pest")
+                                .append(data.getString("pest"))
+                                .append(",")
+                                .append("start")
+                                .append(data.getString("start"))
+                                .append(",")
+                                .append("end")
+                                .append(data.getString("end"))
+                                .append(",");
+                        Toast.makeText(MainActivity.this, sb.toString(), Toast.LENGTH_LONG).show();
                         screen.dismiss();
+                    }
+
+                    @Override
+                    public Bundle onOpen() {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("area", "区域");
+                        bundle.putString("pest", "害虫");
+                        bundle.putString("startTime", "开始时间");
+                        bundle.putString("endTime", "结束时间");
+                        return bundle;
                     }
                 });
 //                screen.showAtLocation(MainActivity.this.findViewById(R.id.frame_content), Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, mToolbar.getHeight());

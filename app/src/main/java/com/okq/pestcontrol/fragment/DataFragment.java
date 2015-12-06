@@ -36,11 +36,6 @@ public class DataFragment extends BaseFragment {
             test.setS3("s3--" + i);
             test.setS4("s4--" + i);
             test.setS5("s5--" + i);
-//            try {
-//                db.save(test);
-//            } catch (DbException e) {
-//                e.printStackTrace();
-//            }
         }
 
         try {
