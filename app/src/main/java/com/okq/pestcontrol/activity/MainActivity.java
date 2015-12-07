@@ -1,7 +1,5 @@
 package com.okq.pestcontrol.activity;
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -9,15 +7,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
-import android.widget.PopupWindow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.okq.pestcontrol.R;
@@ -43,6 +35,7 @@ public class MainActivity extends BaseActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private boolean isShow = true;
     private HashMap<Integer, BaseFragment> fragmentHashMap = new HashMap<>();
+    private int currentFragmentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,20 +52,7 @@ public class MainActivity extends BaseActivity {
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                BaseFragment fragment = new BaseFragment();
-                if (!fragmentHashMap.containsKey(item.getItemId())) {
-                    if (item.getItemId() == R.id.menu_data) {
-                        fragment = new DataFragment();//新建一个fragment
-                        isShow = true;//设置显示toolBar上的菜单
-                    } else if (item.getItemId() == R.id.menu_device) {
-                        fragment = new DeviceFragment();
-                        isShow = false;//设置不显示toolBar上的菜单
-                    }
-
-                }
-                //更新toolBar上的菜单
-                MainActivity.this.getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
-                invalidateOptionsMenu();
+                BaseFragment fragment = createFragment(item.getItemId());
                 //更换界面
                 setPage(fragment);
                 mToolbar.setSubtitle(item.getTitle());
@@ -83,70 +63,12 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.main_menu_sort://排序
-
-                break;
-            case R.id.main_menu_screening://筛选
-                final ScreeningPopupWindow screen = new ScreeningPopupWindow(this);
-                screen.setOnScreeningFinishListener(new ScreeningPopupWindow.OnScreeningFinishListener() {
-                    @Override
-                    public void onFinished(Bundle data) {
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("area")
-                                .append(data.getString("area"))
-                                .append(",")
-                                .append("pest")
-                                .append(data.getString("pest"))
-                                .append(",")
-                                .append("start")
-                                .append(data.getString("start"))
-                                .append(",")
-                                .append("end")
-                                .append(data.getString("end"))
-                                .append(",");
-                        Toast.makeText(MainActivity.this, sb.toString(), Toast.LENGTH_LONG).show();
-                        screen.dismiss();
-                    }
-
-                    @Override
-                    public Bundle onOpen() {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("area", "区域");
-                        bundle.putString("pest", "害虫");
-                        bundle.putString("startTime", "开始时间");
-                        bundle.putString("endTime", "结束时间");
-                        return bundle;
-                    }
-                });
-//                screen.showAtLocation(MainActivity.this.findViewById(R.id.frame_content), Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, mToolbar.getHeight());
-                screen.showAsDropDown(mToolbar);
-                break;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        //设置是否显示
-        menu.findItem(R.id.main_menu_screening).setVisible(isShow);
-        menu.findItem(R.id.main_menu_sort).setVisible(isShow);
-        return super.onPrepareOptionsMenu(menu);
-    }
-
     /**
      * 设置默认的界面
      */
     private void setDefaultPage() {
         mNavigationView.setCheckedItem(R.id.menu_data);
+        currentFragmentId = R.id.menu_data;
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (transaction.isEmpty()) {
             mToolbar.setSubtitle(R.string.menu_data);
@@ -159,7 +81,26 @@ public class MainActivity extends BaseActivity {
         if (fragmentHashMap.containsKey(id)) {
             return fragmentHashMap.get(id);
         } else {
-            return new BaseFragment();
+            BaseFragment fragment;
+            boolean isOther = false;
+            switch (id) {
+                case R.id.menu_data:
+                    isShow = true;//设置显示toolBar上的菜单
+                    fragment = new DataFragment();
+                    break;
+                case R.id.menu_device:
+                    isShow = false;//设置不显示toolBar上的菜单
+                    fragment = new DeviceFragment();
+                    break;
+                default:
+                    fragment = new BaseFragment();
+                    break;
+            }
+            if (!isOther) {
+                currentFragmentId = id;
+                fragmentHashMap.put(id, fragment);
+            }
+            return fragment;
         }
     }
 

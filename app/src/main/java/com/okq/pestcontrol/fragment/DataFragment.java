@@ -1,15 +1,24 @@
 package com.okq.pestcontrol.fragment;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.bean.Bean;
+import com.okq.pestcontrol.bean.PestInformation;
+import com.okq.pestcontrol.bean.PestKind;
+import com.okq.pestcontrol.widget.ScreeningPopupWindow;
 
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.List;
@@ -20,28 +29,63 @@ import java.util.List;
 @ContentView(value = R.layout.fragment_data)
 public class DataFragment extends BaseFragment {
 
+    @ViewInject(value = R.id.data_fra_menu_flag)
+    private View menuPopupLocFlag;
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        DbManager db = x.getDb(App.getDaoConfig());
-        for (int i = 0; i < 10; i++) {
-            Bean test = new Bean();
-            test.setI1(i * 10 + 1);
-            test.setI2(i * 10 + 2);
-            test.setI3(i * 10 + 3);
-            test.setI4(i * 10 + 4);
-            test.setI5(i * 10 + 5);
-            test.setS1("s1--" + i);
-            test.setS2("s2--" + i);
-            test.setS3("s3--" + i);
-            test.setS4("s4--" + i);
-            test.setS5("s5--" + i);
-        }
 
-        try {
-            List<Bean> beans = db.selector(Bean.class).where("i1", "in", new int[]{1, 3, 4}).findAll();
-        } catch (DbException e) {
-            e.printStackTrace();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        if (!menu.hasVisibleItems())
+            inflater.inflate(R.menu.data_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.data_menu_sort://排序
+
+                break;
+            case R.id.data_menu_screening://筛选
+                final ScreeningPopupWindow screen = new ScreeningPopupWindow(getContext(), getFragmentManager());
+                screen.setOnScreeningFinishListener(new ScreeningPopupWindow.OnScreeningFinishListener() {
+                    @Override
+                    public void onFinished(Bundle data) {
+                        PestInformation pi = (PestInformation) data.getSerializable("data");
+                        Toast.makeText(getContext(), pi.getArea(), Toast.LENGTH_LONG).show();
+                        screen.dismiss();
+//                        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+//                        lp.alpha = 1.0f;
+//                        getActivity().getWindow().setAttributes(lp);
+                    }
+
+                    @Override
+                    public Bundle onOpen() {
+                        Bundle bundle = new Bundle();
+
+                        PestInformation pi = new PestInformation();
+                        PestKind pk = new PestKind();
+                        pk.setKindFlag(1);
+                        pk.setKindName("种类1");
+                        pi.setArea("area");
+                        pi.setPestKind(pk);
+                        pi.setStartTime(System.currentTimeMillis());
+                        pi.setEndTime(System.currentTimeMillis());
+                        bundle.putSerializable("data", pi);
+                        return bundle;
+                    }
+                });
+                screen.showAsDropDown(menuPopupLocFlag);
+//                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+//                lp.alpha = 0.7f;
+//                getActivity().getWindow().setAttributes(lp);
+                break;
         }
+        return true;
     }
 }

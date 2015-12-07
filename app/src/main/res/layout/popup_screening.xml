@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <MultiAutoCompleteTextView
+        <EditText
             android:id="@+id/area_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <MultiAutoCompleteTextView
+        <com.okq.pestcontrol.widget.CloudEditText
             android:id="@+id/pest_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
