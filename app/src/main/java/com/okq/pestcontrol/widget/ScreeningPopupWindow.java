@@ -23,6 +23,7 @@ import com.okq.pestcontrol.bean.PestKind;
 import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -112,6 +113,16 @@ public class ScreeningPopupWindow extends PopupWindow implements View.OnClickLis
         endTimeTv.setOnClickListener(this);
         areaTv.setOnClickListener(this);
         pestTv.setOnClickListener(this);
+        ArrayList<String> items = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            items.add("hnjkszdhs" + i);
+            items.add("dfgdf" + i);
+            items.add("ioujhio" + i);
+            items.add("sjerjow" + i);
+            items.add(";pkop;ojkofsd" + i);
+            items.add("erws" + i);
+        }
+        pestTv.setItems(items);
     }
 
     /**

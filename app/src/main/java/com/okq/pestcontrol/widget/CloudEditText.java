@@ -23,8 +23,11 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
 import com.okq.pestcontrol.R;
@@ -45,18 +48,25 @@ public class CloudEditText extends EditText {
     private int drawablePadding;
     private int itemPadding;
 
+    private Context mContext;
+    private ArrayList<String> items;
+    private ArrayList<String> showItems;
+
     public CloudEditText(Context context) {
         super(context);
+        this.mContext = context;
         init();
     }
 
     public CloudEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.mContext = context;
         init();
     }
 
     public CloudEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        this.mContext = context;
         init();
     }
 
@@ -87,9 +97,29 @@ public class CloudEditText extends EditText {
     @Override
     protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
         super.onFocusChanged(focused, direction, previouslyFocusedRect);
-        if(focused){
-
+        if (focused) {
+            showItems = items;
+            List<String> allReturnStringList = getAllReturnStringList();
+            for (String span : allReturnStringList) {
+                if (items.contains(span))
+                    showItems.remove(span);
+            }
+            final ListPopupWindow listPopupWindow = new ListPopupWindow(mContext);
+            listPopupWindow.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, showItems));
+            listPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    addSpan(showItems.get(position), showItems.get(position));
+                    listPopupWindow.dismiss();
+                }
+            });
+            listPopupWindow.setAnchorView((View) getParent());
+            listPopupWindow.show();
         }
+    }
+
+    public void setItems(ArrayList<String> items) {
+        this.items = items;
     }
 
     @Override
@@ -293,7 +323,7 @@ public class CloudEditText extends EditText {
         view.setCompoundDrawablePadding(drawablePadding);
         view.setText(text);
         view.setSingleLine(true);
-        view.setTextSize(UIUtils.px2sp(getContext(), getTextSize()));
+        view.setTextSize(getTextSize());
         view.setBackgroundResource(R.drawable.cloud_edittext_common_mentions_background);
         view.setTextColor(getCurrentTextColor());
         FrameLayout frameLayout = new FrameLayout(context);
