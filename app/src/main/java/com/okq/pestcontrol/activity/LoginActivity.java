@@ -6,6 +6,7 @@ import android.os.PersistableBundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -29,6 +30,7 @@ import static com.okq.pestcontrol.util.Sharepreference.setParam;
 @ContentView(value = R.layout.activity_login)
 public class LoginActivity extends BaseActivity {
 
+    private static final String TAG = "LoginActivity";
     @ViewInject(value = R.id.login_password_til)
     private TextInputLayout passTil;
     @ViewInject(value = R.id.login_user_til)
@@ -47,14 +49,15 @@ public class LoginActivity extends BaseActivity {
     private Button loginBtn;
 
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+    public void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
-        super.onCreate(savedInstanceState, persistentState);
+        super.onCreate(savedInstanceState);
         mToolbar.setSubtitleTextColor(getResources().getColor(R.color.icons));
         mToolbar.setTitleTextColor(getResources().getColor(R.color.icons));
         mToolbar.setTitle(R.string.app_name);
         mToolbar.setSubtitle("登录");
         setSupportActionBar(mToolbar);
+        Log.d(TAG, "onCreate: " + isRemember());
         if (isRemember()) {
             userTv.setText((String) getParam(this, "userName", ""));
             passTv.setText((String) getParam(this, "passWord", ""));
