@@ -23,6 +23,7 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -49,24 +50,28 @@ public class CloudEditText extends EditText {
     private int itemPadding;
 
     private Context mContext;
+    private ListPopupWindow mPopup;
     private ArrayList<String> items;
     private ArrayList<String> showItems;
 
     public CloudEditText(Context context) {
         super(context);
         this.mContext = context;
+        mPopup = new ListPopupWindow(context);
         init();
     }
 
     public CloudEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.mContext = context;
+        mPopup = new ListPopupWindow(context, attrs);
         init();
     }
 
     public CloudEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.mContext = context;
+        mPopup = new ListPopupWindow(context, attrs, defStyle);
         init();
     }
 
@@ -76,6 +81,7 @@ public class CloudEditText extends EditText {
         drawablePadding = UIUtils.dip2px(getContext(), 5);
         itemPadding = UIUtils.dip2px(getContext(), 3);
         rightDrawableWidth = rightDrawable.getIntrinsicWidth() + 20 + drawablePadding;
+        initPopup();
         this.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -104,22 +110,39 @@ public class CloudEditText extends EditText {
                 if (items.contains(span))
                     showItems.remove(span);
             }
-            final ListPopupWindow listPopupWindow = new ListPopupWindow(mContext);
-            listPopupWindow.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, showItems));
-            listPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    addSpan(showItems.get(position), showItems.get(position));
-                    listPopupWindow.dismiss();
-                }
-            });
-            listPopupWindow.setAnchorView((View) getParent());
-            listPopupWindow.show();
+            mPopup.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, showItems));
+//            mPopup.show();
+//            mPopup.getListView().setOverScrollMode(View.OVER_SCROLL_ALWAYS);
         }
+    }
+
+    private void initPopup(){
+        mPopup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                addSpan(showItems.get(position), showItems.get(position));
+                mPopup.dismiss();
+            }
+        });
+        if (!isPopupShowing()) {
+            // Make sure the list does not obscure the IME when shown for the first time.
+            mPopup.setInputMethodMode(ListPopupWindow.INPUT_METHOD_NEEDED);
+        }
+        mPopup.setAnchorView(this);
+        mPopup.postShow();
     }
 
     public void setItems(ArrayList<String> items) {
         this.items = items;
+    }
+
+    /**
+     * <p>Indicates whether the popup menu is showing.</p>
+     *
+     * @return true if the popup menu is showing, false otherwise
+     */
+    public boolean isPopupShowing() {
+        return mPopup.isShowing();
     }
 
     @Override

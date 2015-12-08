@@ -1,27 +1,25 @@
 package com.okq.pestcontrol.fragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.okq.pestcontrol.adapter.DataAdapter;
 import com.okq.pestcontrol.R;
-import com.okq.pestcontrol.application.App;
-import com.okq.pestcontrol.bean.Bean;
 import com.okq.pestcontrol.bean.PestInformation;
 import com.okq.pestcontrol.bean.PestKind;
 import com.okq.pestcontrol.widget.ScreeningPopupWindow;
 
-import org.xutils.DbManager;
-import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
-import org.xutils.x;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2015/12/3.
@@ -31,10 +29,48 @@ public class DataFragment extends BaseFragment {
 
     @ViewInject(value = R.id.data_fra_menu_flag)
     private View menuPopupLocFlag;
+    @ViewInject(value = R.id.data_fra_data_recy)
+    private RecyclerView dataRecy;
+    private RecyclerView.LayoutManager mManager;
+
+    private ArrayList<PestInformation> pests;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        loadData();
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        dataRecy.setLayoutManager(mManager);
+        RecyclerView.Adapter adapter = new DataAdapter(getContext(),pests);
+        dataRecy.setAdapter(adapter);
+        dataRecy.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    /**
+     * 加载数据
+     */
+    private void loadData() {
+        pests = new ArrayList<>();
+        for (int i = 0; i < 15; i++) {
+            PestInformation pi = new PestInformation();
+            pi.setArea("区域" + (i + 1));
+            PestKind pk = new PestKind();
+            pk.setKindName("种类" + (i + 1));
+            pk.setKindFlag(i + 1);
+            pi.setPestKind(pk);
+            pi.setStartTime(System.currentTimeMillis() - 2 * 1000 * 60 * 60);
+            pi.setEndTime(System.currentTimeMillis());
+            pi.setSendTime(System.currentTimeMillis() - 1000 * 60 * 60);
+            pi.setDeviceNum(i + "");
+            pi.setTemperature(30 + i % 4);
+            pi.setHumidity(80 + 2 * i % 4);
+            pests.add(pi);
+        }
 
     }
 

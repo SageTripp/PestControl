@@ -70,7 +70,7 @@ public class ScreeningPopupWindow extends PopupWindow implements View.OnClickLis
         //设置PopupWindow弹出窗体的宽
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         //设置PopupWindow弹出窗体的高
-        this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
         //设置PopupWindow弹出窗体可点击
         this.setBackgroundDrawable(new ColorDrawable(0x00000000));
         this.setAnimationStyle(R.style.PopupWindowStyle);
