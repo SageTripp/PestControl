@@ -21,7 +21,7 @@ public class Sharepreference {
      * @param key     关键词
      * @param object  要保存的对象 (基本数据类型)
      */
-    public static void setParam(Context context, String key, Object object){
+    public static void setParam(Context context, String key, Object object) {
         String type = object.getClass().getSimpleName();
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
@@ -38,7 +38,7 @@ public class Sharepreference {
             editor.putLong(key, (Long) object);
         }
 
-        editor.commit();
+        editor.apply();
     }
 
 
@@ -54,18 +54,17 @@ public class Sharepreference {
         String type = defaultObject.getClass().getSimpleName();
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
 
-        if ("String".equals(type)) {
+        if ("String".equals(type))
             return sp.getString(key, (String) defaultObject);
-        } else if ("Integer".equals(type)) {
+        else if ("Integer".equals(type))
             return sp.getInt(key, (Integer) defaultObject);
-        } else if ("Boolean".equals(type)) {
+        else if ("Boolean".equals(type))
             return sp.getBoolean(key, (Boolean) defaultObject);
-        } else if ("Float".equals(type)) {
+        else if ("Float".equals(type))
             return sp.getFloat(key, (Float) defaultObject);
-        } else if ("Long".equals(type)) {
+        else if ("Long".equals(type))
             return sp.getLong(key, (Long) defaultObject);
-        }
-
-        return null;
+        else
+            return null;
     }
 }

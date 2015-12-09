@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.bean.PestInformation;
+import com.okq.pestcontrol.task.LoadTask;
+import com.okq.pestcontrol.task.TaskInfo;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -48,25 +50,39 @@ public class LoginActivity extends BaseActivity {
     @ViewInject(value = R.id.login_btn)
     private Button loginBtn;
 
+    private String savedUser = "";
+    private String savedPass = "";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         mToolbar.setSubtitleTextColor(getResources().getColor(R.color.icons));
         mToolbar.setTitleTextColor(getResources().getColor(R.color.icons));
-        mToolbar.setTitle(R.string.app_name);
+//        mToolbar.setTitle(R.string.app_name);
         mToolbar.setSubtitle("登录");
         setSupportActionBar(mToolbar);
-        Log.d(TAG, "onCreate: " + isRemember());
         if (isRemember()) {
-            userTv.setText((String) getParam(this, "userName", ""));
-            passTv.setText((String) getParam(this, "passWord", ""));
+            userTv.setText(savedUser);
+            passTv.setText(savedPass);
+            loginBtn.setFocusable(true);
+            loginBtn.setFocusableInTouchMode(true);
+            loginBtn.requestFocus();
+            loginBtn.requestFocusFromTouch();
+            Log.i(TAG, "onCreate: " + savedUser + ":" + savedPass);
         }
         rememberPassCb.setChecked((Boolean) getParam(this, "isRemember", false));
     }
 
+    /**
+     * 判断是否记住了密码
+     *
+     * @return 是否记住了密码
+     */
     private boolean isRemember() {
-        return "".equals(getParam(this, "userName", "")) && "".equals(getParam(this, "passWord", ""));
+        savedUser = (String) getParam(this, "userName", "");
+        savedPass = (String) getParam(this, "passWord", "");
+        return !"".equals(savedUser) && !"".equals(savedPass);
     }
 
     @Event(value = R.id.login_btn)
@@ -76,8 +92,20 @@ public class LoginActivity extends BaseActivity {
             if (rememberPassCb.isChecked()) {
                 setParam(this, "userName", userTv.getText().toString());
                 setParam(this, "passWord", passTv.getText().toString());
+            } else {
+                setParam(this, "userName", "");
+                setParam(this, "passWord", "");
             }
-            setParam(this, "test", new PestInformation());
+
+            LoadTask task = new LoadTask(this);
+            task.execute();
+            task.setTaskInfo(new TaskInfo() {
+                @Override
+                public void onTaskFinish(Object result) {
+
+                }
+            });
+
             startActivity(new Intent(this, MainActivity.class));
             this.finish();
         }

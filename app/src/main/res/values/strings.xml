@@ -9,4 +9,24 @@
     <string name="login_password">密码</string>
     <string name="forget_password"><u color="@color/BLUE">忘记密码?</u></string>
     <string name="remember_password">记住密码</string>
+    <string-array name="pest_kind">
+        <item>棉铃虫</item>
+        <item>介壳虫</item>
+        <item>蝗虫</item>
+        <item>小菜蛾</item>
+        <item>纹白蝶</item>
+        <item>松毛虫</item>
+        <item>蜗牛</item>
+        <item>马陆</item>
+    </string-array>
+    <string-array name="pest_area">
+        <item>区域wseq</item>
+        <item>区域gq</item>
+        <item>区域qssd</item>
+        <item>区域qfe</item>
+        <item>区域wsq</item>
+        <item>区域qew</item>
+        <item>区域qdf</item>
+        <item>区域qhg</item>
+    </string-array>
 </resources>

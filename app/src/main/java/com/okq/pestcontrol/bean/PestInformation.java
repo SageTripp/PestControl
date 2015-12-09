@@ -33,6 +33,11 @@ public class PestInformation implements Serializable {
     @Column(name = "pestKind")
     private PestKind pestKind;
     /**
+     * 关联的种类
+     */
+    @Column(name = "kindLink", property = "UNIQUE")
+    public long kindLink;
+    /**
      * 温度
      */
     @Column(name = "temperature")

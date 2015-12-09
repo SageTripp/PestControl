@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Table(name = "PestKind")
 public class PestKind implements Serializable {
     @Column(name = "id", isId = true, autoGen = true)
-    private long id;
+    public long id;
     /**
      * 害虫种类名称
      */
@@ -23,6 +23,11 @@ public class PestKind implements Serializable {
      */
     @Column(name = "kindFlag")
     private int kindFlag;
+    /**
+     * 关联的虫害信息
+     */
+    @Column(name = "pestLink")
+    public long pestLink;
 
     /**
      * 获取害虫种类名称

@@ -19,6 +19,7 @@ import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFra
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.bean.PestInformation;
 import com.okq.pestcontrol.bean.PestKind;
+import com.okq.pestcontrol.bean.param.PestScreeningParam;
 
 import org.joda.time.DateTime;
 
@@ -242,15 +243,15 @@ public class ScreeningPopupWindow extends PopupWindow implements View.OnClickLis
         Bundle returnData = new Bundle();
         if (!returnData.isEmpty())
             returnData.clear();
-        PestInformation pi = new PestInformation();
+        PestScreeningParam psp = new PestScreeningParam();
         PestKind pk = new PestKind();
         pk.setKindFlag(1);
         pk.setKindName("种类1");
-        pi.setArea("area");
-        pi.setPestKind(pk);
-        pi.setStartTime(System.currentTimeMillis());
-        pi.setEndTime(System.currentTimeMillis());
-        returnData.putSerializable("data", pi);
+        psp.setArea("area");
+        psp.setKind(pk);
+        psp.setStartTime(System.currentTimeMillis());
+        psp.setEndTime(System.currentTimeMillis());
+        returnData.putSerializable("param", psp);
         mListener.onFinished(returnData);
     }
 
