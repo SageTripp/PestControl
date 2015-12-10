@@ -3,7 +3,6 @@ package com.okq.pestcontrol.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -15,7 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.okq.pestcontrol.R;
-import com.okq.pestcontrol.bean.PestInformation;
 import com.okq.pestcontrol.task.LoadTask;
 import com.okq.pestcontrol.task.TaskInfo;
 
