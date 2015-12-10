@@ -30,7 +30,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.holder_data, parent,false));
+        return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.holder_data, parent, false));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         holder.setArea(pi.getArea());
         holder.setTemperature(pi.getTemperature());
         holder.setHumidity(pi.getHumidity());
-        holder.setPestKind(pi.getPestKind().getKindName());
+        holder.setPestKind(pi.getPestKind().getKindName() + "  " + position + "/" + getItemCount());
         holder.setSendTime(pi.getSendTime());
     }
 
@@ -48,6 +48,11 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         return pestList.size();
     }
 
+
+    public void refrashData(ArrayList<PestInformation> newList) {
+        this.pestList = newList == null ? new ArrayList<PestInformation>() : newList;
+        notifyDataSetChanged();
+    }
 
     class ViewHolder extends RecyclerView.ViewHolder {
 

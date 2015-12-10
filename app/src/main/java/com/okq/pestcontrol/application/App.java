@@ -30,7 +30,7 @@ public class App extends Application {
     private static DbManager.DaoConfig setDaoConfig() {
         daoConfig = new DbManager.DaoConfig()
                 .setDbName("test")
-                .setDbDir(new File("/sdcard/testDb"))
+//                .setDbDir(new File("/data/data/" + APP_PACKAGE + "/database"))  //可以自定义数据库位置
                 .setDbVersion(1)
                 .setDbUpgradeListener(new DbManager.DbUpgradeListener() {
                     @Override

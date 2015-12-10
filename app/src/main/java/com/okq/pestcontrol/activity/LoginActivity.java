@@ -1,5 +1,6 @@
 package com.okq.pestcontrol.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -97,17 +98,25 @@ public class LoginActivity extends BaseActivity {
                 setParam(this, "passWord", "");
             }
 
+            final ProgressDialog pd = new ProgressDialog(this);
+            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pd.setCancelable(false);
+            pd.setTitle("登录");
+            pd.setMessage("正在登录,请稍后...");
+            pd.show();
             LoadTask task = new LoadTask(this);
             task.execute();
             task.setTaskInfo(new TaskInfo() {
                 @Override
                 public void onTaskFinish(Object result) {
-
+                    if (null != pd && pd.isShowing()) {
+                        pd.dismiss();
+                    }
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
                 }
             });
 
-            startActivity(new Intent(this, MainActivity.class));
-            this.finish();
         }
     }
 

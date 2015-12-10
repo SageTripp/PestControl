@@ -26,7 +26,7 @@ public class PestKind implements Serializable {
     /**
      * 关联的虫害信息
      */
-    @Column(name = "pestLink")
+    @Column(name = "pestLink", property = "")
     public long pestLink;
 
     /**
