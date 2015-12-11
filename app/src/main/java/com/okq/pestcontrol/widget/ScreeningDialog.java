@@ -2,6 +2,7 @@ package com.okq.pestcontrol.widget;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentManager;
@@ -95,8 +96,15 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
         pest = null == psp.getKind() ? "" : psp.getKind().getKindName();
         startTimeDt = psp.getStartTime() == 0 ? DateTime.now() : new DateTime(psp.getStartTime());
         endTimeDt = psp.getEndTime() == 0 ? DateTime.now() : new DateTime(psp.getEndTime());
-        areaTv.addSpan(area, area);
-        pestTv.addSpan(pest, pest);
+        areaTv.measure(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        areaTv.addSpan(area);
+//        for (String a:area.split(",")) {
+////            areaTv.setText(a);
+//            areaTv.addSpan(a,a);
+//        }
+//        areaTv.addSpan(area, area);
+        pestTv.measure(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        pestTv.addSpan(pest);
         startTimeTv.setText(startTimeDt.toString(DATE_FORMAT));
         endTimeTv.setText(endTimeDt.toString(DATE_FORMAT));
     }
@@ -257,7 +265,13 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
         } catch (DbException e) {
             e.printStackTrace();
         }
-        psp.setArea(areaTv.getText().toString());
+        StringBuilder a = new StringBuilder();
+        for (String area : areaTv.getAllReturnStringList()) {
+            a.append(area);
+            a.append(",");
+        }
+        a.deleteCharAt(a.length() - 1);
+        psp.setArea(a.toString());
         psp.setKind(pk);
         psp.setStartTime(startTimeDt.getMillis());
         psp.setEndTime(endTimeDt.getMillis());

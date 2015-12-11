@@ -22,6 +22,7 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -150,8 +151,20 @@ public class CloudEditText extends EditText {
      * @return
      */
     public boolean checkInputSpan(String showText, String returnText) {
-
+        if (getAllReturnStringList().contains(showText))
+            return false;
         return true;
+    }
+
+    /**
+     * 添加一组span
+     *
+     * @param spans 以","隔开的一组span. 例:sdf,sdfsdf,trrer,bfdgd,
+     */
+    public void addSpan(String spans) {
+        for (String s : spans.split(",")) {
+            addSpan(s, s);
+        }
     }
 
     /**
@@ -221,6 +234,7 @@ public class CloudEditText extends EditText {
      * @param unSpanText
      */
     private void generateOneSpan(Spannable spannableString, UnSpanText unSpanText) {
+//        this.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         View spanView = getSpanView(getContext(), unSpanText.showText.toString(), getMeasuredWidth());
         BitmapDrawable bitmapDrawable = (BitmapDrawable) UIUtils.convertViewToDrawable(spanView);
         bitmapDrawable.setBounds(0, 0, bitmapDrawable.getIntrinsicWidth(), bitmapDrawable.getIntrinsicHeight());
