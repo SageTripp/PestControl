@@ -12,6 +12,8 @@ import java.io.File;
  */
 public class App extends Application {
     private static DbManager.DaoConfig daoConfig;
+    private static int mToolbarHeignt;
+
 
     @Override
     public void onCreate() {
@@ -42,5 +44,13 @@ public class App extends Application {
                     }
                 });
         return daoConfig;
+    }
+
+    public static void setToolbarHeignt(int toolbarHeignt) {
+        mToolbarHeignt = toolbarHeignt;
+    }
+
+    public static int getToolbarHeignt() {
+        return mToolbarHeignt;
     }
 }

@@ -16,8 +16,9 @@ import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.adapter.DataAdapter;
 import com.okq.pestcontrol.bean.PestInformation;
 import com.okq.pestcontrol.bean.PestKind;
+import com.okq.pestcontrol.bean.param.PestScreeningParam;
 import com.okq.pestcontrol.dbDao.PestInformationDao;
-import com.okq.pestcontrol.widget.ScreeningPopupWindow;
+import com.okq.pestcontrol.widget.ScreeningDialog;
 
 import org.xutils.common.util.LogUtil;
 import org.xutils.ex.DbException;
@@ -25,6 +26,7 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2015/12/3.
@@ -45,11 +47,16 @@ public class DataFragment extends BaseFragment {
     private int firstVisibleItemPosition;
     private DataAdapter adapter;
     private boolean isLoadingMore = false;
+    private ArrayList<PestInformation> informations;
+    private PestScreeningParam screeningParam;
+    private int page = 0;
+    private int count = 10;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        loadData();
+//        screeningParam = new PestScreeningParam();
+        loadAll();
     }
 
     @Override
@@ -104,38 +111,55 @@ public class DataFragment extends BaseFragment {
                 }
 
         );
+        loadData();
+    }
+
+    /**
+     * 加载所有数据
+     */
+    private void loadAll() {
+        try {
+            if (null == screeningParam)
+                informations = new ArrayList<>(PestInformationDao.findAll());
+            else
+                informations = new ArrayList<>(PestInformationDao.find(screeningParam));
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * 加载数据
      */
     private void loadData() {
-        try {
-            pests = new ArrayList<>(PestInformationDao.findAll());
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    int s = (int) (Math.random() * (pests.size() - 11));
-                    pests = new ArrayList<>(pests.subList(s, s + 10));
-                    dataFreshLayout.setRefreshing(false);
-                    adapter.refrashData(pests);
-                }
-            }, 1000 * 2);
-        } catch (DbException e) {
-            e.printStackTrace();
-        }
+        page = 0;
+        if (informations.size() > count)
+            pests = new ArrayList<>(informations.subList(0, count - 1));
+        else
+            pests = new ArrayList<>(informations.subList(0, informations.size()));
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+//                int s = (int) (Math.random() * (pests.size() - 11));
+//                pests = new ArrayList<>(pests.subList(s, s + 10));
+                dataFreshLayout.setRefreshing(false);
+                adapter.refrashData(pests);
+            }
+        }, 1000 * 2);
     }
 
     public void loadMore() {
+        page++;
         isLoadingMore = true;
         dataFreshLayout.setRefreshing(true);
 //            pests = new ArrayList<>(PestInformationDao.findAll());
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                int s = (int) (Math.random() * (pests.size() - 11));
-                if (pests.size() < 125)
-                    pests.addAll(pests.size(), pests.subList(s, s + 10));
+                if ((page + 1) * count <= informations.size())
+                    pests.addAll(pests.size(), informations.subList(page * count, (page + 1) * count - 1));
+                else
+                    pests.addAll(pests.size(), informations.subList(page * count, informations.size() - 1));
                 dataFreshLayout.setRefreshing(false);
                 final int firstVisibleItemPosition = ((LinearLayoutManager) mManager).findFirstVisibleItemPosition();
                 adapter.refrashData(pests);
@@ -159,35 +183,23 @@ public class DataFragment extends BaseFragment {
 
                 break;
             case R.id.data_menu_screening://筛选
-                final ScreeningPopupWindow screen = new ScreeningPopupWindow(getContext(), getFragmentManager());
-                screen.setOnScreeningFinishListener(new ScreeningPopupWindow.OnScreeningFinishListener() {
+                final ScreeningDialog screen = new ScreeningDialog(getContext(), getFragmentManager());
+                screen.setOnScreeningFinishListener(new ScreeningDialog.OnScreeningFinishListener() {
                     @Override
-                    public void onFinished(Bundle data) {
-                        PestInformation pi = (PestInformation) data.getSerializable("data");
-                        Toast.makeText(getContext(), pi.getArea(), Toast.LENGTH_LONG).show();
+                    public void onFinished(PestScreeningParam data) {
+                        screeningParam = data;
+                        loadAll();
+                        loadData();
                         screen.dismiss();
-//                        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//                        lp.alpha = 1.0f;
-//                        getActivity().getWindow().setAttributes(lp);
                     }
 
                     @Override
-                    public Bundle onOpen() {
-                        Bundle bundle = new Bundle();
-
-                        PestInformation pi = new PestInformation();
-                        PestKind pk = new PestKind();
-                        pk.setKindFlag(1);
-                        pk.setKindName("种类1");
-                        pi.setArea("area");
-                        pi.setPestKind(pk);
-                        pi.setStartTime(System.currentTimeMillis());
-                        pi.setEndTime(System.currentTimeMillis());
-                        bundle.putSerializable("data", pi);
-                        return bundle;
+                    public PestScreeningParam onOpen() {
+                        return screeningParam;
                     }
                 });
-                screen.showAsDropDown(menuPopupLocFlag);
+                screen.show();
+//                screen.showAsDropDown(menuPopupLocFlag);
 //                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 //                lp.alpha = 0.7f;
 //                getActivity().getWindow().setAttributes(lp);

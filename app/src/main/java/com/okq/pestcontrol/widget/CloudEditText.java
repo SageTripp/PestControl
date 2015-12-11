@@ -14,7 +14,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.CharacterStyle;
 import android.text.style.ImageSpan;
@@ -23,7 +22,6 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -49,29 +47,26 @@ public class CloudEditText extends EditText {
     private int drawablePadding;
     private int itemPadding;
 
-    private Context mContext;
     private ListPopupWindow mPopup;
     private ArrayList<String> items;
     private ArrayList<String> showItems;
+    private boolean touchable = true;
 
     public CloudEditText(Context context) {
         super(context);
-        this.mContext = context;
         mPopup = new ListPopupWindow(context);
         init();
     }
 
     public CloudEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.mContext = context;
-        mPopup = new ListPopupWindow(context, attrs);
+        mPopup = new ListPopupWindow(context);
         init();
     }
 
     public CloudEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        this.mContext = context;
-        mPopup = new ListPopupWindow(context, attrs, defStyle);
+        mPopup = new ListPopupWindow(context);
         init();
     }
 
@@ -82,52 +77,38 @@ public class CloudEditText extends EditText {
         itemPadding = UIUtils.dip2px(getContext(), 3);
         rightDrawableWidth = rightDrawable.getIntrinsicWidth() + 20 + drawablePadding;
         initPopup();
-        this.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     @Override
-    protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
-        super.onFocusChanged(focused, direction, previouslyFocusedRect);
-        if (focused) {
-            showItems = items;
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_UP && touchable && !isPopupShowing()) {
+            showItems = new ArrayList<>(items);
             List<String> allReturnStringList = getAllReturnStringList();
             for (String span : allReturnStringList) {
                 if (items.contains(span))
                     showItems.remove(span);
             }
-            mPopup.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, showItems));
-//            mPopup.show();
-//            mPopup.getListView().setOverScrollMode(View.OVER_SCROLL_ALWAYS);
+            mPopup.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, showItems));
+            mPopup.setAnchorView(this);
+            mPopup.show();
         }
+        return super.onTouchEvent(event);
     }
 
-    private void initPopup(){
+    private void initPopup() {
         mPopup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 addSpan(showItems.get(position), showItems.get(position));
                 mPopup.dismiss();
+//                clearFocus();
             }
         });
         if (!isPopupShowing()) {
             // Make sure the list does not obscure the IME when shown for the first time.
             mPopup.setInputMethodMode(ListPopupWindow.INPUT_METHOD_NEEDED);
         }
+        mPopup.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, showItems));
         mPopup.setAnchorView(this);
         mPopup.postShow();
     }
@@ -169,6 +150,7 @@ public class CloudEditText extends EditText {
      * @return
      */
     public boolean checkInputSpan(String showText, String returnText) {
+
         return true;
     }
 
@@ -436,6 +418,7 @@ public class CloudEditText extends EditText {
         @Override
         public boolean onTouchEvent(TextView widget, Spannable buffer,
                                     MotionEvent event) {
+            touchable = true;
             int action = event.getAction();
             if (action == MotionEvent.ACTION_UP ||
                     action == MotionEvent.ACTION_DOWN) {
@@ -452,14 +435,6 @@ public class CloudEditText extends EditText {
 //                System.out.println("offset:"+off);
                 if (link.length != 0) {
                     if (action == MotionEvent.ACTION_UP) {
-//                        System.out.println("getParagraphLeft:"+layout.get+";getParagraphRight:"+layout.getParagraphRight(line));
-                        if (layout.getLineWidth(line) > x && 0 < x) {
-                            LeftRight point = getLeftWidth(buffer, layout, line, link[0]);
-//                            System.out.println("point.right - x:"+(point.right - x)+";rightDrawableWidth = " + rightDrawableWidth);
-                            if (point.right - x > 0 && point.right - x < rightDrawableWidth) {
-                                link[0].onTouchDelete(widget, event, point.left, point.right); //////// CHANGED HERE
-                            }
-                        }
                     } else if (action == MotionEvent.ACTION_DOWN) {
                         Selection.setSelection(buffer,
                                 buffer.getSpanStart(link[0]),
@@ -470,8 +445,18 @@ public class CloudEditText extends EditText {
 //                                link[0].onTouchDelete(widget, event, point.left, point.right); //////// ADDED THIS
 //                            }
 //                        }
+
+//                        System.out.println("getParagraphLeft:"+layout.get+";getParagraphRight:"+layout.getParagraphRight(line));
+                        if (layout.getLineWidth(line) > x && 0 < x) {
+                            LeftRight point = getLeftWidth(buffer, layout, line, link[0]);
+//                            System.out.println("point.right - x:"+(point.right - x)+";rightDrawableWidth = " + rightDrawableWidth);
+                            if (point.right - x > 0 && point.right - x < rightDrawableWidth) {
+                                link[0].onTouchDelete(widget, event, point.left, point.right); //////// CHANGED HERE
+                                touchable = false;
+                            }
+                        }
                     }
-                    return true;
+//                    return false;
                 } else {
                     Selection.removeSelection(buffer);
                 }

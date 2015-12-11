@@ -61,17 +61,6 @@ public class LoadTask extends BaseTask {
                 pestInformation.setSendTime(send);
                 PestInformationDao.save(pestInformation);
             }
-            new Runnable() {
-
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(1000 * 50);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
         } catch (DbException e) {
             e.printStackTrace();
         }

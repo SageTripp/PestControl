@@ -7,16 +7,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-import android.widget.Toast;
 
 import com.okq.pestcontrol.R;
+import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.fragment.BaseFragment;
 import com.okq.pestcontrol.fragment.DataFragment;
 import com.okq.pestcontrol.fragment.DeviceFragment;
-import com.okq.pestcontrol.widget.ScreeningPopupWindow;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
@@ -44,6 +41,7 @@ public class MainActivity extends BaseActivity {
         mToolbar.setSubtitleTextColor(getResources().getColor(R.color.icons));
         mToolbar.setTitleTextColor(getResources().getColor(R.color.icons));
         setSupportActionBar(mToolbar);
+        App.setToolbarHeignt(mToolbar.getMinimumHeight());
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.app_name, R.string.app_name);
         mDrawerToggle.syncState();
         mDrawerLayout.setDrawerListener(mDrawerToggle);
