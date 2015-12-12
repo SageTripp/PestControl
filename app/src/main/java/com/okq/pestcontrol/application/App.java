@@ -37,7 +37,6 @@ public class App extends Application {
                 .setDbUpgradeListener(new DbManager.DbUpgradeListener() {
                     @Override
                     public void onUpgrade(DbManager db, int oldVersion, int newVersion) {
-                        // TODO: ...
                         // db.addColumn(...);
                         // db.dropTable(...);
                         // ...

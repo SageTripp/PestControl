@@ -3,6 +3,7 @@ package com.okq.pestcontrol.bean.param;
 import com.okq.pestcontrol.bean.PestKind;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 害虫筛选参数
@@ -16,7 +17,7 @@ public class PestScreeningParam implements Serializable {
     /**
      * 种类
      */
-    private PestKind kind;
+    private List<PestKind> kind;
     /**
      * 开始时间
      */
@@ -49,7 +50,7 @@ public class PestScreeningParam implements Serializable {
      *
      * @return 害虫种类
      */
-    public PestKind getKind() {
+    public List<PestKind> getKind() {
         return kind;
     }
 
@@ -58,7 +59,7 @@ public class PestScreeningParam implements Serializable {
      *
      * @param kind 害虫种类
      */
-    public void setKind(PestKind kind) {
+    public void setKind(List<PestKind> kind) {
         this.kind = kind;
     }
 

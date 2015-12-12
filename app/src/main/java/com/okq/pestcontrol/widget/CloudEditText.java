@@ -234,8 +234,8 @@ public class CloudEditText extends EditText {
      * @param unSpanText
      */
     private void generateOneSpan(Spannable spannableString, UnSpanText unSpanText) {
-//        this.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        View spanView = getSpanView(getContext(), unSpanText.showText.toString(), getMeasuredWidth());
+        // TODO: 2015/12/12 获取到编辑框的宽度来取代设置的3000;这表示span可以画的最大宽度
+        View spanView = getSpanView(getContext(), unSpanText.showText.toString(), 3000);
         BitmapDrawable bitmapDrawable = (BitmapDrawable) UIUtils.convertViewToDrawable(spanView);
         bitmapDrawable.setBounds(0, 0, bitmapDrawable.getIntrinsicWidth(), bitmapDrawable.getIntrinsicHeight());
 //        bitmapDrawable.setBounds(0, 0, bitmapDrawable.getIntrinsicWidth(), UIUtils.dip2px(getContext(), (int) getTextSize()));

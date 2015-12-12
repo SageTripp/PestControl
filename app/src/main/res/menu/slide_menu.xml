@@ -5,6 +5,9 @@
             android:id="@+id/menu_data"
             android:title="@string/menu_data" />
         <item
+            android:id="@+id/menu_chart"
+            android:title="@string/menu_chart" />
+        <item
             android:id="@+id/menu_device"
             android:title="@string/menu_device" />
     </group>

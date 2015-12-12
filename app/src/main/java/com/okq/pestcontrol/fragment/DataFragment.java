@@ -3,6 +3,7 @@ package com.okq.pestcontrol.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.okq.pestcontrol.R;
@@ -55,14 +58,12 @@ public class DataFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        screeningParam = new PestScreeningParam();
         loadAll();
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         //设置开始就进行加载(需要同时设置偏移和setRefreshing(true))
 //        dataFreshLayout.setProgressViewOffset(true, 0, 200);
         dataFreshLayout.setProgressViewEndTarget(true, 200);
@@ -133,8 +134,8 @@ public class DataFragment extends BaseFragment {
      */
     private void loadData() {
         page = 0;
-        if (informations.size() > count)
-            pests = new ArrayList<>(informations.subList(0, count - 1));
+        if (informations.size() >= count)
+            pests = new ArrayList<>(informations.subList(0, count));
         else
             pests = new ArrayList<>(informations.subList(0, informations.size()));
         new Handler().postDelayed(new Runnable() {
@@ -156,10 +157,10 @@ public class DataFragment extends BaseFragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if ((page + 1) * count <= informations.size())
-                    pests.addAll(pests.size(), informations.subList(page * count, (page + 1) * count - 1));
-                else
-                    pests.addAll(pests.size(), informations.subList(page * count, informations.size() - 1));
+                if ((page + 1) * count < informations.size())
+                    pests.addAll(pests.size(), informations.subList(page * count, (page + 1) * count));
+                else if (page * count < informations.size())
+                    pests.addAll(pests.size(), informations.subList(page * count, informations.size()));
                 dataFreshLayout.setRefreshing(false);
                 final int firstVisibleItemPosition = ((LinearLayoutManager) mManager).findFirstVisibleItemPosition();
                 adapter.refrashData(pests);
@@ -180,7 +181,6 @@ public class DataFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.data_menu_sort://排序
-
                 break;
             case R.id.data_menu_screening://筛选
                 final ScreeningDialog screen = new ScreeningDialog(getContext(), getFragmentManager());

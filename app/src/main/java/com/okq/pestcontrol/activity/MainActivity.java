@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.fragment.BaseFragment;
+import com.okq.pestcontrol.fragment.ChartFragment;
 import com.okq.pestcontrol.fragment.DataFragment;
 import com.okq.pestcontrol.fragment.DeviceFragment;
 
@@ -85,6 +86,10 @@ public class MainActivity extends BaseActivity {
                 case R.id.menu_data:
                     isShow = true;//设置显示toolBar上的菜单
                     fragment = new DataFragment();
+                    break;
+                case R.id.menu_chart:
+                    isShow = true;
+                    fragment = new ChartFragment();
                     break;
                 case R.id.menu_device:
                     isShow = false;//设置不显示toolBar上的菜单

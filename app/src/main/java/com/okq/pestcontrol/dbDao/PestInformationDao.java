@@ -59,16 +59,23 @@ public class PestInformationDao {
             Selector<PestInformation> selector = manager.selector(PestInformation.class);
             selector.where("sendTime", ">", 0);
             if (!TextUtils.isEmpty(param.getArea()))
-                selector.and("area", "=", param.getArea());
+                selector.and("area", "in", param.getArea().split(","));
+            if (null != param.getKind() && param.getKind().size() > 0) {
+                StringBuilder sb = new StringBuilder();
+                for (PestKind kind : param.getKind()) {
+                    sb.append(kind.id);
+                    sb.append(",");
+                }
+                sb.deleteCharAt(sb.length() - 1);
+                selector.and("kindLink", "in", sb.toString().split(","));
+            }
             if (param.getStartTime() > 0 && param.getEndTime() > 0)
                 selector.and("sendTime", "between", new long[]{param.getStartTime(), param.getEndTime()});
             List<PestInformation> all = selector.findAll();
             for (PestInformation information : all) {
                 PestKind kind = manager.findById(PestKind.class, information.kindLink);
-                if (kind.getKindName().equals(param.getKind().getKindName())) {
-                    information.setPestKind(kind);
-                    returnList.add(information);
-                }
+                information.setPestKind(kind);
+                returnList.add(information);
             }
         } catch (DbException e) {
             e.printStackTrace();

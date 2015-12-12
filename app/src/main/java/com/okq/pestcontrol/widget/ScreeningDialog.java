@@ -27,6 +27,7 @@ import org.xutils.ex.DbException;
 import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -92,18 +93,22 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
         PestScreeningParam psp = mListener.onOpen();
         if (null == psp)
             psp = new PestScreeningParam();
+        if (null != psp.getKind() && psp.getKind().size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            for (PestKind kind :
+                    psp.getKind()) {
+                sb.append(kind.getKindName());
+                sb.append(",");
+            }
+            sb.deleteCharAt(sb.length() - 1);
+            pest = sb.toString();
+        } else
+            pest = "";
         area = null == psp.getArea() ? "" : psp.getArea();
-        pest = null == psp.getKind() ? "" : psp.getKind().getKindName();
+//        pest = null == psp.getKind() ? "" : psp.getKind().getKindName();
         startTimeDt = psp.getStartTime() == 0 ? DateTime.now() : new DateTime(psp.getStartTime());
         endTimeDt = psp.getEndTime() == 0 ? DateTime.now() : new DateTime(psp.getEndTime());
-        areaTv.measure(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         areaTv.addSpan(area);
-//        for (String a:area.split(",")) {
-////            areaTv.setText(a);
-//            areaTv.addSpan(a,a);
-//        }
-//        areaTv.addSpan(area, area);
-        pestTv.measure(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         pestTv.addSpan(pest);
         startTimeTv.setText(startTimeDt.toString(DATE_FORMAT));
         endTimeTv.setText(endTimeDt.toString(DATE_FORMAT));
@@ -142,9 +147,7 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
         pestTv.setOnClickListener(this);
         ArrayList<String> areaItems = new ArrayList<>();
         String[] areaArray = getContext().getResources().getStringArray(R.array.pest_area);
-        for (String area : areaArray) {
-            areaItems.add(area);
-        }
+        Collections.addAll(areaItems, areaArray);
         ArrayList<String> pestItems = new ArrayList<>();
         DbManager db = x.getDb(App.getDaoConfig());
         try {
@@ -259,9 +262,9 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
      */
     private void onSureBtnClicked() {
         PestScreeningParam psp = new PestScreeningParam();
-        PestKind pk = new PestKind();
+        List<PestKind> pk = new ArrayList<>();
         try {
-            pk = x.getDb(App.getDaoConfig()).selector(PestKind.class).where("kindName", "=", pestTv.getText().toString()).findFirst();
+            pk = x.getDb(App.getDaoConfig()).selector(PestKind.class).where("kindName", "in", pestTv.getAllReturnStringList()).findAll();
         } catch (DbException e) {
             e.printStackTrace();
         }
