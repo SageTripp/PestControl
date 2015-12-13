@@ -31,7 +31,6 @@ public class MainActivity extends BaseActivity {
     @ViewInject(value = R.id.slide_menu)
     private NavigationView mNavigationView;
     private ActionBarDrawerToggle mDrawerToggle;
-    private boolean isShow = true;
     private HashMap<Integer, BaseFragment> fragmentHashMap = new HashMap<>();
     private int currentFragmentId;
 
@@ -84,15 +83,12 @@ public class MainActivity extends BaseActivity {
             boolean isOther = false;
             switch (id) {
                 case R.id.menu_data:
-                    isShow = true;//设置显示toolBar上的菜单
                     fragment = new DataFragment();
                     break;
                 case R.id.menu_chart:
-                    isShow = true;
                     fragment = new ChartFragment();
                     break;
                 case R.id.menu_device:
-                    isShow = false;//设置不显示toolBar上的菜单
                     fragment = new DeviceFragment();
                     break;
                 default:

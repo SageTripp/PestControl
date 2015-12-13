@@ -13,6 +13,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.XAxisValueFormatter;
+import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.renderer.YAxisRenderer;
@@ -61,11 +62,13 @@ public class ChartFragment extends BaseFragment implements OnChartValueSelectedL
         mChart.setDragEnabled(true);
         mChart.setScaleEnabled(true);
         // mChart.setScaleXEnabled(true);
-        // mChart.setScaleYEnabled(true);
+        mChart.setScaleYEnabled(false);
+        mChart.setVisibleXRangeMaximum(10);
+        mChart.setAutoScaleMinMaxEnabled(true);
 
         // if disabled, scaling ca
         // n be done on x- and y-axis separately
-        mChart.setPinchZoom(true);
+//        mChart.setPinchZoom(true);
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setEnabled(true);
@@ -79,6 +82,12 @@ public class ChartFragment extends BaseFragment implements OnChartValueSelectedL
         yAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         yAxis.setEnabled(true);
         yAxis.setStartAtZero(true);
+        yAxis.setValueFormatter(new YAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, YAxis yAxis) {
+                return (int) value + "";
+            }
+        });
 
         mChart.getAxisRight().setEnabled(false);
 
@@ -130,6 +139,7 @@ public class ChartFragment extends BaseFragment implements OnChartValueSelectedL
         set1.setFillAlpha(65);
         set1.setFillColor(Color.GREEN);
         set1.setDrawFilled(true);
+//        set1.setDrawCubic(true);
 
         LineData data = new LineData(xVals, set1);
         mChart.setData(data);
