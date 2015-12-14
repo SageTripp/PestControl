@@ -273,7 +273,8 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
             a.append(area);
             a.append(",");
         }
-        a.deleteCharAt(a.length() - 1);
+        if (a.length() > 0)
+            a.deleteCharAt(a.length() - 1);
         psp.setArea(a.toString());
         psp.setKind(pk);
         psp.setStartTime(startTimeDt.getMillis());

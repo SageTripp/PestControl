@@ -47,19 +47,20 @@ public class LoadTask extends BaseTask {
                 pestKind.setKindName(kind);
                 kindList.add(pestKind);
             }
-            for (int i = 0; i < 123; i++) {
+            for (int i = 0; i < 300; i++) {
                 PestInformation pestInformation = new PestInformation();
                 pestInformation.setArea(areas[((int) (Math.random() * areas.length))]);
                 pestInformation.setPestKind(kindList.get((int) (Math.random() * (kinds.length - 1))));
                 pestInformation.setTemperature((int) (30 + Math.random() * 9));
                 pestInformation.setHumidity((int) (80 + Math.random() * 9));
                 long start = new DateTime(2015, i % 12 + 1, i % 30 + 1, i % 24, i % 60).getMillis();
-                long end = new DateTime(2015, (i + 5) % 12 + 1, (i + 5) % 30 + 1, (i + 5) % 24, (i + 5) % 60).getMillis();
-                long send = new DateTime(2015, (i + 2) % 12 + 1, (i + 4) % 30 + 1, (i + 5) % 24, (i + 2) % 60).getMillis();
+//                long send = new DateTime(2015, (int) ((Math.random() * 3 + 10)), (int) (Math.random() * 30 + 1), (i + 5) % 24, (i + 5) % 60).getMillis();
+                long end = new DateTime(2015, (i + 2) % 12 + 1, (i + 4) % 30 + 1, (i + 5) % 24, (i + 2) % 60).getMillis();
+                long send = DateTime.now().plusDays((int) -(Math.random() * 90)).getMillis();
                 pestInformation.setStartTime(start);
                 pestInformation.setEndTime(end);
                 pestInformation.setSendTime(send);
-                pestInformation.setPestNum((int) (Math.random() * 12 + 3));
+                pestInformation.setPestNum((int) (Math.random() * 5 + 3));
                 PestInformationDao.save(pestInformation);
             }
         } catch (DbException e) {

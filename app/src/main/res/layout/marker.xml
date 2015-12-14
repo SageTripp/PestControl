@@ -2,16 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#a0000000"
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/marker_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="设备管理界面" />
+        android:textColor="@color/icons" />
 
-    <Button
-        android:id="@+id/test_http_btn"
+    <TextView
+        android:id="@+id/marker_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="测试" />
+        android:textColor="@color/icons" />
+
 </LinearLayout>

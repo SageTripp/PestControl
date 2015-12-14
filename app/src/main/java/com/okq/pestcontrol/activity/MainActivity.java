@@ -92,6 +92,7 @@ public class MainActivity extends BaseActivity {
                     fragment = new DeviceFragment();
                     break;
                 default:
+                    isOther = true;
                     fragment = new BaseFragment();
                     break;
             }
