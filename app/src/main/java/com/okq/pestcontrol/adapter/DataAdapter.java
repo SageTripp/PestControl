@@ -41,6 +41,9 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         holder.setHumidity(pi.getHumidity());
         holder.setPestKind(pi.getPestKind().getKindName() + "  " + position + "/" + getItemCount());
         holder.setSendTime(pi.getSendTime());
+        if (position == getItemCount() - 1) {
+            holder.divider.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -49,7 +52,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     }
 
 
-    public void refrashData(ArrayList<PestInformation> newList) {
+    public void refreshData(ArrayList<PestInformation> newList) {
         this.pestList = newList == null ? new ArrayList<PestInformation>() : newList;
         notifyDataSetChanged();
     }
@@ -61,6 +64,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         private TextView humidity;
         private TextView area;
         private TextView sendTime;
+        public View divider;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -69,6 +73,8 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
             humidity = (TextView) itemView.findViewById(R.id.holder_data_humidity);
             area = (TextView) itemView.findViewById(R.id.holder_data_area);
             sendTime = (TextView) itemView.findViewById(R.id.holder_data_send_time);
+            divider = itemView.findViewById(R.id.data_fra_item_divider);
+            divider.setVisibility(View.VISIBLE);
         }
 
         public void setArea(String area) {

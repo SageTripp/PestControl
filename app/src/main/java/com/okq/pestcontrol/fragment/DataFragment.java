@@ -3,7 +3,6 @@ package com.okq.pestcontrol.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,14 +10,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.adapter.DataAdapter;
 import com.okq.pestcontrol.bean.PestInformation;
-import com.okq.pestcontrol.bean.PestKind;
 import com.okq.pestcontrol.bean.param.PestScreeningParam;
 import com.okq.pestcontrol.dbDao.PestInformationDao;
 import com.okq.pestcontrol.widget.ScreeningDialog;
@@ -29,7 +24,6 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Administrator on 2015/12/3.
@@ -144,7 +138,7 @@ public class DataFragment extends BaseFragment {
 //                int s = (int) (Math.random() * (pests.size() - 11));
 //                pests = new ArrayList<>(pests.subList(s, s + 10));
                 dataFreshLayout.setRefreshing(false);
-                adapter.refrashData(pests);
+                adapter.refreshData(pests);
             }
         }, 1000 * 2);
     }
@@ -163,7 +157,7 @@ public class DataFragment extends BaseFragment {
                     pests.addAll(pests.size(), informations.subList(page * count, informations.size()));
                 dataFreshLayout.setRefreshing(false);
                 final int firstVisibleItemPosition = ((LinearLayoutManager) mManager).findFirstVisibleItemPosition();
-                adapter.refrashData(pests);
+                adapter.refreshData(pests);
                 isLoadingMore = false;
                 ((LinearLayoutManager) mManager).scrollToPositionWithOffset(firstVisibleItemPosition, 0);
             }

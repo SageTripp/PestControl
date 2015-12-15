@@ -10,6 +10,7 @@
     <string name="forget_password"><u color="@color/BLUE">忘记密码?</u></string>
     <string name="remember_password">记住密码</string>
     <string name="menu_chart">数据分析</string>
+    <string name="menu_setting">设置</string>
     <string-array name="pest_kind">
         <item>棉铃虫</item>
         <item>介壳虫</item>

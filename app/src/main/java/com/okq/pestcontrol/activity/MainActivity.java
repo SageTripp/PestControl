@@ -1,13 +1,20 @@
 package com.okq.pestcontrol.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.application.App;
@@ -15,8 +22,10 @@ import com.okq.pestcontrol.fragment.BaseFragment;
 import com.okq.pestcontrol.fragment.ChartFragment;
 import com.okq.pestcontrol.fragment.DataFragment;
 import com.okq.pestcontrol.fragment.DeviceFragment;
+import com.okq.pestcontrol.fragment.SettingFragment;
 
 import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
 import java.util.HashMap;
@@ -33,11 +42,14 @@ public class MainActivity extends BaseActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private HashMap<Integer, BaseFragment> fragmentHashMap = new HashMap<>();
     private int currentFragmentId;
+    private boolean isExit = false;
+    private Toast exitToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
+        exitToast = Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT);
         mToolbar.setSubtitleTextColor(getResources().getColor(R.color.icons));
         mToolbar.setTitleTextColor(getResources().getColor(R.color.icons));
         setSupportActionBar(mToolbar);
@@ -91,6 +103,9 @@ public class MainActivity extends BaseActivity {
                 case R.id.menu_device:
                     fragment = new DeviceFragment();
                     break;
+                case R.id.menu_setting:
+                    fragment = new SettingFragment();
+                    break;
                 default:
                     isOther = true;
                     fragment = new BaseFragment();
@@ -113,5 +128,33 @@ public class MainActivity extends BaseActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_content, fragment);
         transaction.commit();
+    }
+
+    @Event(value = R.id.slide_header_user)
+    private void changeUserEvent(View view){
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        else {
+            if (isExit) {
+                exitToast.cancel();
+                this.finish();
+                return;
+            } else {
+                exitToast.show();
+                isExit = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        isExit = false;
+                        exitToast.cancel();
+                    }
+                }, 1000);
+            }
+        }
     }
 }

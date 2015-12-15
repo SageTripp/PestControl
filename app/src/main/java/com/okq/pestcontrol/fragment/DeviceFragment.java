@@ -16,6 +16,7 @@ import org.xutils.x;
 import java.util.List;
 
 /**
+ * 设备页面
  * Created by Administrator on 2015/12/3.
  */
 @ContentView(value = R.layout.fragment_device)

@@ -3,12 +3,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/menu_data"
+            android:icon="@drawable/ic_slide_menu_data"
             android:title="@string/menu_data" />
         <item
             android:id="@+id/menu_chart"
+            android:icon="@drawable/ic_slide_menu_chart"
             android:title="@string/menu_chart" />
         <item
             android:id="@+id/menu_device"
+            android:icon="@drawable/ic_slide_menu_device"
             android:title="@string/menu_device" />
+        <item
+            android:id="@+id/menu_setting"
+            android:icon="@drawable/ic_slide_menu_setting"
+            android:title="@string/menu_setting" />
     </group>
 </menu>

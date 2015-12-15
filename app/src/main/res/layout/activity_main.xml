@@ -26,6 +26,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             app:elevation="3dp"
+            app:headerLayout="@layout/slide_header"
             app:menu="@menu/slide_menu" />
 
     </android.support.v4.widget.DrawerLayout>

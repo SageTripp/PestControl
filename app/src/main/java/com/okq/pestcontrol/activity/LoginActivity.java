@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.task.LoadTask;
 import com.okq.pestcontrol.task.TaskInfo;
+import com.okq.pestcontrol.util.Sharepreference;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -23,6 +24,7 @@ import org.xutils.view.annotation.ViewInject;
 
 import static com.okq.pestcontrol.util.Sharepreference.getParam;
 import static com.okq.pestcontrol.util.Sharepreference.setParam;
+import static com.okq.pestcontrol.util.Sharepreference.Key;
 
 /**
  * 登录界面
@@ -70,7 +72,7 @@ public class LoginActivity extends BaseActivity {
             loginBtn.requestFocusFromTouch();
             Log.i(TAG, "onCreate: " + savedUser + ":" + savedPass);
         }
-        rememberPassCb.setChecked((Boolean) getParam(this, "isRemember", false));
+        rememberPassCb.setChecked((Boolean) getParam(this, Key.REMEMBER_PASSWORD, false));
     }
 
     /**
@@ -79,21 +81,21 @@ public class LoginActivity extends BaseActivity {
      * @return 是否记住了密码
      */
     private boolean isRemember() {
-        savedUser = (String) getParam(this, "userName", "");
-        savedPass = (String) getParam(this, "passWord", "");
+        savedUser = (String) getParam(this, Key.USER_NAME, "");
+        savedPass = (String) getParam(this, Key.PASSWORD, "");
         return !"".equals(savedUser) && !"".equals(savedPass);
     }
 
     @Event(value = R.id.login_btn)
     private void login(View view) {
         if (checked()) {
-            setParam(this, "isRemember", rememberPassCb.isChecked());
+            setParam(this, Key.REMEMBER_PASSWORD, rememberPassCb.isChecked());
             if (rememberPassCb.isChecked()) {
-                setParam(this, "userName", userTv.getText().toString());
-                setParam(this, "passWord", passTv.getText().toString());
+                setParam(this, Key.USER_NAME, userTv.getText().toString());
+                setParam(this, Key.PASSWORD, passTv.getText().toString());
             } else {
-                setParam(this, "userName", "");
-                setParam(this, "passWord", "");
+                setParam(this, Key.USER_NAME, "");
+                setParam(this, Key.PASSWORD, "");
             }
 
             final ProgressDialog pd = new ProgressDialog(this);
