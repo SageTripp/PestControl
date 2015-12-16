@@ -17,7 +17,9 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/data_fra_data_recy"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:scrollbarStyle="outsideOverlay"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

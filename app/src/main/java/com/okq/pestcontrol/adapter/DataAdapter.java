@@ -35,6 +35,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.divider.setVisibility(View.VISIBLE);
         PestInformation pi = pestList.get(position);
         holder.setArea(pi.getArea());
         holder.setTemperature(pi.getTemperature());

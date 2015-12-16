@@ -5,15 +5,11 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.adapter.DataAdapter;
@@ -23,7 +19,6 @@ import com.okq.pestcontrol.dbDao.PestInformationDao;
 import com.okq.pestcontrol.util.SortUtil;
 import com.okq.pestcontrol.widget.ScreeningDialog;
 
-import org.xutils.common.KeyValue;
 import org.xutils.common.util.LogUtil;
 import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
@@ -31,9 +26,9 @@ import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
+ * 数据展示页面
  * Created by Administrator on 2015/12/3.
  */
 @ContentView(value = R.layout.fragment_data)
@@ -48,8 +43,6 @@ public class DataFragment extends BaseFragment {
     private RecyclerView.LayoutManager mManager;
 
     private ArrayList<PestInformation> pests;
-    private int lastVisibleItemPosition;
-    private int firstVisibleItemPosition;
     private DataAdapter adapter;
     private boolean isLoadingMore = false;
     private ArrayList<PestInformation> informations;
@@ -76,18 +69,17 @@ public class DataFragment extends BaseFragment {
             @Override
             public void onRefresh() {
                 dataFreshLayout.setEnabled(false);
-                LogUtil.v("开始加载数据");
                 loadData();
-                LogUtil.v("加载数据完成");
                 dataFreshLayout.setEnabled(true);
             }
         });
         dataFreshLayout.setColorSchemeColors(R.color.BLUE, R.color.GREEN, R.color.RED, R.color.YELLOW);
 //        dataFreshLayout.setRefreshing(true);
+        dataFreshLayout.setEnabled(false);
         dataRecy.scrollBy(0, 200);
         mManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         dataRecy.setLayoutManager(mManager);
-        adapter = new DataAdapter(getContext(), pests);
+        adapter = new DataAdapter(getContext(), informations);
         dataRecy.setAdapter(adapter);
         dataRecy.setItemAnimator(new DefaultItemAnimator());
         dataRecy.setOnScrollListener(
@@ -95,11 +87,6 @@ public class DataFragment extends BaseFragment {
                     @Override
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                         super.onScrolled(recyclerView, dx, dy);
-//                        lastVisibleItemPosition = ((LinearLayoutManager) mManager).findLastVisibleItemPosition();
-//                        firstVisibleItemPosition = ((LinearLayoutManager) mManager).findFirstVisibleItemPosition();
-//                        LogUtil.v("lastVisibleItemPosition" + lastVisibleItemPosition);
-//                        LogUtil.v("FirstVisibleItemPosition--->" + ((LinearLayoutManager) mManager).findFirstVisibleItemPosition());
-//                        LogUtil.v("FirstCompletelyVisibleItemPosition--->" + ((LinearLayoutManager) mManager).findFirstCompletelyVisibleItemPosition());
                         super.onScrolled(recyclerView, dx, dy);
                         int lastVisibleItem = ((LinearLayoutManager) mManager).findLastVisibleItemPosition();
                         int totalItemCount = mManager.getItemCount();
@@ -107,16 +94,15 @@ public class DataFragment extends BaseFragment {
                         // dy>0 表示向下滑动
                         if (lastVisibleItem >= totalItemCount - 2 && dy > 0) {
                             if (isLoadingMore) {
-                                LogUtil.v("正在加载更多");
                             } else {
-                                loadMore();//这里多线程也要手动控制isLoadingMore
+//                                loadMore();//这里多线程也要手动控制isLoadingMore
                             }
                         }
                     }
                 }
 
         );
-        loadData();
+//        loadData();
     }
 
     /**
@@ -156,8 +142,6 @@ public class DataFragment extends BaseFragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-//                int s = (int) (Math.random() * (pests.size() - 11));
-//                pests = new ArrayList<>(pests.subList(s, s + 10));
                 dataFreshLayout.setRefreshing(false);
                 adapter.refreshData(pests);
             }
@@ -168,7 +152,6 @@ public class DataFragment extends BaseFragment {
         page++;
         isLoadingMore = true;
         dataFreshLayout.setRefreshing(true);
-//            pests = new ArrayList<>(PestInformationDao.findAll());
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -221,7 +204,8 @@ public class DataFragment extends BaseFragment {
                     public void onFinished(PestScreeningParam data) {
                         screeningParam = data;
                         loadAll();
-                        loadData();
+//                        loadData();
+                        adapter.refreshData(informations);
                         screen.dismiss();
                     }
 
@@ -231,16 +215,13 @@ public class DataFragment extends BaseFragment {
                     }
                 });
                 screen.show();
-//                screen.showAsDropDown(menuPopupLocFlag);
-//                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//                lp.alpha = 0.7f;
-//                getActivity().getWindow().setAttributes(lp);
                 break;
         }
         //排序翻转
         if (isASC.containsKey(item.getItemId())) {
             isASC.put(item.getItemId(), !isASC.get(item.getItemId()));
-            loadData();
+//            loadData();
+            adapter.refreshData(informations);
         }
         return true;
     }
