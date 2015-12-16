@@ -2,16 +2,41 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:id="@+id/data_menu">
-        <item
-            android:id="@+id/data_menu_sort"
-            android:title="@string/menu_sort"
-            app:showAsAction="always" />
-        <item
-            android:id="@+id/data_menu_screening"
-            android:title="@string/menu_screening"
-            app:showAsAction="always" />
-    </group>
+
+    <item
+        android:id="@+id/data_menu_sort"
+        android:title="@string/menu_sort"
+        app:showAsAction="always">
+        <menu>
+            <group android:id="@+id/data_menu_sort_group">
+                <item
+                    android:id="@+id/data_menu_sort_time"
+                    android:title="按时间排序"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/data_menu_sort_pest_kind"
+                    android:title="按种类排序"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/data_menu_sort_area"
+                    android:title="按区域排序"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/data_menu_sort_temperature"
+                    android:title="按温度排序"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/data_menu_sort_humidity"
+                    android:title="按湿度排序"
+                    app:showAsAction="never" />
+
+            </group>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/data_menu_screening"
+        android:title="@string/menu_screening"
+        app:showAsAction="always" />
 
 
 </menu>

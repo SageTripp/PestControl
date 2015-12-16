@@ -64,4 +64,6 @@ public class PestKind implements Serializable {
     public void setKindFlag(int kindFlag) {
         this.kindFlag = kindFlag;
     }
+
+
 }

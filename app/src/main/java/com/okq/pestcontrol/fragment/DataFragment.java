@@ -5,25 +5,33 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.adapter.DataAdapter;
 import com.okq.pestcontrol.bean.PestInformation;
 import com.okq.pestcontrol.bean.param.PestScreeningParam;
 import com.okq.pestcontrol.dbDao.PestInformationDao;
+import com.okq.pestcontrol.util.SortUtil;
 import com.okq.pestcontrol.widget.ScreeningDialog;
 
+import org.xutils.common.KeyValue;
 import org.xutils.common.util.LogUtil;
 import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2015/12/3.
@@ -48,6 +56,7 @@ public class DataFragment extends BaseFragment {
     private PestScreeningParam screeningParam;
     private int page = 0;
     private int count = 10;
+    private HashMap<Integer, Boolean> isASC = new HashMap<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +69,7 @@ public class DataFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         //设置开始就进行加载(需要同时设置偏移和setRefreshing(true))
 //        dataFreshLayout.setProgressViewOffset(true, 0, 200);
+        initSort();
         dataFreshLayout.setProgressViewEndTarget(true, 200);
         dataFreshLayout.setSize(SwipeRefreshLayout.LARGE);
         dataFreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -107,6 +117,17 @@ public class DataFragment extends BaseFragment {
 
         );
         loadData();
+    }
+
+    /**
+     * 初始化排序
+     */
+    private void initSort() {
+        isASC.put(R.id.data_menu_sort_area, false);
+        isASC.put(R.id.data_menu_sort_pest_kind, false);
+        isASC.put(R.id.data_menu_sort_temperature, false);
+        isASC.put(R.id.data_menu_sort_humidity, false);
+        isASC.put(R.id.data_menu_sort_time, false);
     }
 
     /**
@@ -176,6 +197,23 @@ public class DataFragment extends BaseFragment {
         switch (item.getItemId()) {
             case R.id.data_menu_sort://排序
                 break;
+
+            case R.id.data_menu_sort_area:
+                SortUtil.sortList(informations, "area", isASC.get(item.getItemId()));
+                break;
+            case R.id.data_menu_sort_pest_kind:
+                SortUtil.sortList(informations, "pestKind.kindName", isASC.get(item.getItemId()));
+                break;
+            case R.id.data_menu_sort_temperature:
+                SortUtil.sortList(informations, "temperature", isASC.get(item.getItemId()));
+                break;
+            case R.id.data_menu_sort_humidity:
+                SortUtil.sortList(informations, "humidity", isASC.get(item.getItemId()));
+                break;
+            case R.id.data_menu_sort_time:
+                SortUtil.sortList(informations, "sendTime", isASC.get(item.getItemId()));
+                break;
+
             case R.id.data_menu_screening://筛选
                 final ScreeningDialog screen = new ScreeningDialog(getContext(), getFragmentManager());
                 screen.setOnScreeningFinishListener(new ScreeningDialog.OnScreeningFinishListener() {
@@ -198,6 +236,11 @@ public class DataFragment extends BaseFragment {
 //                lp.alpha = 0.7f;
 //                getActivity().getWindow().setAttributes(lp);
                 break;
+        }
+        //排序翻转
+        if (isASC.containsKey(item.getItemId())) {
+            isASC.put(item.getItemId(), !isASC.get(item.getItemId()));
+            loadData();
         }
         return true;
     }

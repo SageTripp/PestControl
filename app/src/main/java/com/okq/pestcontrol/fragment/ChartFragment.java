@@ -29,6 +29,7 @@ import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.bean.PestInformation;
 import com.okq.pestcontrol.bean.param.PestScreeningParam;
 import com.okq.pestcontrol.dbDao.PestInformationDao;
+import com.okq.pestcontrol.util.SortUtil;
 import com.okq.pestcontrol.widget.ScreeningDialog;
 
 import org.joda.time.DateTime;
@@ -181,12 +182,7 @@ public class ChartFragment extends BaseFragment implements OnChartValueSelectedL
             e.printStackTrace();
         }
         //按照发送时间对数据进行排序
-        Collections.sort(informations, new Comparator<PestInformation>() {
-            @Override
-            public int compare(PestInformation lhs, PestInformation rhs) {
-                return (int) (lhs.getSendTime() - rhs.getSendTime());
-            }
-        });
+        SortUtil.sortList(informations,"sendTime",false);
     }
 
     @Override

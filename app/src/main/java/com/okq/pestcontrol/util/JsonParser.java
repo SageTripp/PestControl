@@ -1,4 +1,4 @@
-package com.okq.pestcontrol.bean;
+package com.okq.pestcontrol.util;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

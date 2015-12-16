@@ -1,5 +1,6 @@
 package com.okq.pestcontrol.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -10,10 +11,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuPopupHelper;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.okq.pestcontrol.R;
@@ -27,6 +31,7 @@ import com.okq.pestcontrol.fragment.SettingFragment;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.HashMap;
 
@@ -39,7 +44,6 @@ public class MainActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
     @ViewInject(value = R.id.slide_menu)
     private NavigationView mNavigationView;
-    private ActionBarDrawerToggle mDrawerToggle;
     private HashMap<Integer, BaseFragment> fragmentHashMap = new HashMap<>();
     private int currentFragmentId;
     private boolean isExit = false;
@@ -49,12 +53,12 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        exitToast = Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT);
+        exitToast = Toast.makeText(this, R.string.Exit_App, Toast.LENGTH_SHORT);
         mToolbar.setSubtitleTextColor(getResources().getColor(R.color.icons));
         mToolbar.setTitleTextColor(getResources().getColor(R.color.icons));
         setSupportActionBar(mToolbar);
         App.setToolbarHeignt(mToolbar.getMinimumHeight());
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.app_name, R.string.app_name);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.app_name, R.string.app_name);
         mDrawerToggle.syncState();
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         //设置默认Fragment
@@ -69,6 +73,49 @@ public class MainActivity extends BaseActivity {
                 item.setChecked(true);
                 mDrawerLayout.closeDrawers();
                 return true;
+            }
+        });
+        final TextView userHeader = (TextView) mNavigationView.getHeaderView(0).findViewById(R.id.slide_header_user);
+        userHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu menu = new PopupMenu(MainActivity.this, userHeader, Gravity.NO_GRAVITY, R.attr.popupMenuStyle, R.style.menuPopup);
+                menu.inflate(R.menu.user);
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.menu_user_contact:
+                                Toast.makeText(MainActivity.this, "我的账户信息", Toast.LENGTH_SHORT).show();
+                                //TODO 显示我的账户详情
+                                break;
+                            case R.id.menu_user_logout:
+                                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                                finish();
+                                break;
+                        }
+                        return true;
+                    }
+                });
+                menu.show();
+
+//                MenuBuilder builder = new MenuBuilder(MainActivity.this);
+//                builder.add("我的账户").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem item) {
+//
+//                        return true;
+//                    }
+//                });
+//                builder.add("注销").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem item) {
+//
+//                        return true;
+//                    }
+//                });
+//                MenuPopupHelper helper = new MenuPopupHelper(MainActivity.this, builder, userHeader,false,R.style.menuPopup,R.style.menuPopup);
+//                helper.show();
             }
         });
     }
@@ -128,10 +175,6 @@ public class MainActivity extends BaseActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_content, fragment);
         transaction.commit();
-    }
-
-    @Event(value = R.id.slide_header_user)
-    private void changeUserEvent(View view){
     }
 
     @Override

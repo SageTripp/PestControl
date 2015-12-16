@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="144dp"
-    android:background="@color/accent">
+    android:background="@color/accent"
+    tools:context=".activity.MainActivity">
 
     <ImageView
         android:id="@+id/slide_header_icon"

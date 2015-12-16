@@ -1,5 +1,7 @@
 package com.okq.pestcontrol.bean;
 
+import com.okq.pestcontrol.util.JsonParser;
+
 import org.xutils.http.annotation.HttpResponse;
 
 /**

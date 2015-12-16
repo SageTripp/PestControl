@@ -222,6 +222,7 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
         dialog = CalendarDatePickerDialogFragment
                 .newInstance(this, now.getYear(), now.getMonthOfYear() - 1,
                         now.getDayOfMonth());
+        dialog.setCancelable(false);
         dialog.show(mManager, tag);
     }
 
@@ -235,6 +236,7 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
         RadialTimePickerDialogFragment time = RadialTimePickerDialogFragment
                 .newInstance(this, now.getHourOfDay(),
                         now.getMinuteOfHour(), true);
+        time.setCancelable(false);
         time.show(mManager, tag);
     }
 

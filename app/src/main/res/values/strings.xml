@@ -11,6 +11,7 @@
     <string name="remember_password">记住密码</string>
     <string name="menu_chart">数据分析</string>
     <string name="menu_setting">设置</string>
+    <string name="Exit_App">再按一次退出</string>
     <string-array name="pest_kind">
         <item>棉铃虫</item>
         <item>介壳虫</item>
