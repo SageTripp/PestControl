@@ -1,12 +1,13 @@
 package com.okq.pestcontrol.task;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.application.App;
+import com.okq.pestcontrol.bean.Device;
 import com.okq.pestcontrol.bean.PestInformation;
 import com.okq.pestcontrol.bean.PestKind;
+import com.okq.pestcontrol.dbDao.DeviceDao;
 import com.okq.pestcontrol.dbDao.PestInformationDao;
 
 import org.joda.time.DateTime;
@@ -15,7 +16,6 @@ import org.xutils.ex.DbException;
 import org.xutils.x;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Administrator on 2015/12/9.
@@ -39,6 +39,7 @@ public class LoadTask extends BaseTask {
         try {
             dbManager.dropTable(PestKind.class);
             dbManager.dropTable(PestInformation.class);
+            dbManager.dropTable(Device.class);
             ArrayList<PestKind> kindList = new ArrayList<>();
             for (int i = 0; i < kinds.length; i++) {
                 String kind = kinds[i];
@@ -63,6 +64,23 @@ public class LoadTask extends BaseTask {
                 pestInformation.setPestNum((int) (Math.random() * 5 + 3));
                 PestInformationDao.save(pestInformation);
             }
+
+            String[] places = new String[]{"地点a", "地点se", "地点we", "地点lks"};
+            double[] lons = new double[]{113.601556, 113.584308, 113.478524, 113.70619};
+            double[] lats = new double[]{34.918237, 34.826311, 34.682055, 34.833897};
+
+            for (int i = 0; i < 4; i++) {
+                Device device = new Device();
+                device.setStatus("在用");
+                device.setDeviceNum("0000000" + i);
+                device.setDeviceModel("Q" + i);
+                device.setArea(areas[i]);
+                device.setPlace(places[i]);
+                device.setLat(lats[i]);
+                device.setLon(lons[i]);
+                DeviceDao.save(device);
+            }
+
         } catch (DbException e) {
             e.printStackTrace();
         }

@@ -6,6 +6,7 @@ import org.xutils.db.annotation.Table;
 import java.io.Serializable;
 
 /**
+ * 虫害信息
  * Created by Administrator on 2015/12/7.
  */
 @Table(name = "PestInformation")

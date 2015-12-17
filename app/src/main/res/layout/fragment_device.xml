@@ -2,16 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/icons"
     android:orientation="vertical">
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/device_device_recy"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="设备管理界面" />
-
-    <Button
-        android:id="@+id/test_http_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="测试" />
+        android:layout_height="match_parent" />
 </LinearLayout>

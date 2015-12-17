@@ -1,16 +1,23 @@
 package com.okq.pestcontrol.fragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 import com.okq.pestcontrol.R;
+import com.okq.pestcontrol.adapter.DeviceAdapter;
+import com.okq.pestcontrol.bean.Device;
 import com.okq.pestcontrol.bean.Test;
 import com.okq.pestcontrol.bean.param.TestParam;
+import com.okq.pestcontrol.dbDao.DeviceDao;
 
 import org.xutils.common.Callback;
 import org.xutils.common.util.LogUtil;
+import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.List;
@@ -22,39 +29,22 @@ import java.util.List;
 @ContentView(value = R.layout.fragment_device)
 public class DeviceFragment extends BaseFragment {
 
+    @ViewInject(value = R.id.device_device_recy)
+    private RecyclerView deviceRecy;
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-    }
-
-    @Event(value = R.id.test_http_btn)
-    private void testHttpEvent(View v) {
-        TestParam param = new TestParam();
-//        param.addBodyParameter("op", "getWeather");
-        param.addBodyParameter("theCityCode", "郑州");
-        param.addBodyParameter("theUserId", "");
-        x.http().post(param, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                LogUtil.v(result.toString());
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                LogUtil.e(ex.toString());
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-                LogUtil.e(cex.toString());
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-        });
+        List<Device> devices = null;
+        try {
+            devices = DeviceDao.findAll();
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+        DeviceAdapter adapter = new DeviceAdapter(getContext(), devices);
+        RecyclerView.LayoutManager manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        deviceRecy.setAdapter(adapter);
+        deviceRecy.setLayoutManager(manager);
     }
 
 }

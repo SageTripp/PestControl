@@ -27,6 +27,7 @@ import com.okq.pestcontrol.fragment.ChartFragment;
 import com.okq.pestcontrol.fragment.DataFragment;
 import com.okq.pestcontrol.fragment.DeviceFragment;
 import com.okq.pestcontrol.fragment.SettingFragment;
+import com.okq.pestcontrol.service.TestSocketService;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;

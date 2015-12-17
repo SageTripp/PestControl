@@ -2,6 +2,9 @@ package com.okq.pestcontrol.application;
 
 import android.app.Application;
 
+import com.baidu.mapapi.BMapManager;
+import com.baidu.mapapi.SDKInitializer;
+
 import org.xutils.DbManager;
 import org.xutils.x;
 
@@ -20,6 +23,7 @@ public class App extends Application {
         super.onCreate();
         x.Ext.init(this);
         x.Ext.setDebug(true);
+        SDKInitializer.initialize(getApplicationContext());
     }
 
     public static DbManager.DaoConfig getDaoConfig() {

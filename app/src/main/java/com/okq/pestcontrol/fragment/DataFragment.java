@@ -18,6 +18,7 @@ import com.okq.pestcontrol.bean.param.PestScreeningParam;
 import com.okq.pestcontrol.dbDao.PestInformationDao;
 import com.okq.pestcontrol.util.SortUtil;
 import com.okq.pestcontrol.widget.ScreeningDialog;
+import com.tt.whorlviewlibrary.WhorlView;
 
 import org.xutils.common.util.LogUtil;
 import org.xutils.ex.DbException;
@@ -40,6 +41,8 @@ public class DataFragment extends BaseFragment {
     private RecyclerView dataRecy;
     @ViewInject(value = R.id.data_fra_data_fresh)
     private SwipeRefreshLayout dataFreshLayout;
+    @ViewInject(value = R.id.whorl)
+    private WhorlView whorl;
     private RecyclerView.LayoutManager mManager;
 
     private ArrayList<PestInformation> pests;
@@ -52,16 +55,11 @@ public class DataFragment extends BaseFragment {
     private HashMap<Integer, Boolean> isASC = new HashMap<>();
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        loadAll();
-    }
-
-    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //设置开始就进行加载(需要同时设置偏移和setRefreshing(true))
 //        dataFreshLayout.setProgressViewOffset(true, 0, 200);
+        loadAll();
         initSort();
         dataFreshLayout.setProgressViewEndTarget(true, 200);
         dataFreshLayout.setSize(SwipeRefreshLayout.LARGE);
@@ -120,6 +118,7 @@ public class DataFragment extends BaseFragment {
      * 加载所有数据
      */
     private void loadAll() {
+        whorl.start();
         try {
             if (null == screeningParam)
                 informations = new ArrayList<>(PestInformationDao.findAll());
@@ -128,6 +127,7 @@ public class DataFragment extends BaseFragment {
         } catch (DbException e) {
             e.printStackTrace();
         }
+        whorl.stop();
     }
 
     /**

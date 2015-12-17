@@ -44,6 +44,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
+ * 图表页面
  * Created by Administrator on 2015/12/12.
  */
 @ContentView(value = R.layout.fragment_chart)
@@ -166,7 +167,7 @@ public class ChartFragment extends BaseFragment implements OnChartValueSelectedL
 
         LineData data = new LineData(xVals, set1);
         mChart.setData(data);
-        mChart.setVisibleXRange(3, xVals.size());//页面内最少显示3个数据,最多展示所有数据
+        mChart.setVisibleXRange(4, xVals.size());//页面内最少显示3个数据,最多展示所有数据
     }
 
     /**
@@ -182,7 +183,7 @@ public class ChartFragment extends BaseFragment implements OnChartValueSelectedL
             e.printStackTrace();
         }
         //按照发送时间对数据进行排序
-        SortUtil.sortList(informations,"sendTime",false);
+        SortUtil.sortList(informations, "sendTime", false);
     }
 
     @Override
