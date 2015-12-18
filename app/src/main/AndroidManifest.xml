@@ -38,6 +38,13 @@
         <activity android:name=".activity.LoginActivity">
 
         </activity>
+        <activity
+            android:name=".activity.PestInfoDetailsActivity"
+            android:parentActivityName=".activity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
+        </activity>
 
         <service
             android:name=".service.TestSocketService"

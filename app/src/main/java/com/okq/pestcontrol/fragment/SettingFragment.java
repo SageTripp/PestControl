@@ -1,5 +1,6 @@
 package com.okq.pestcontrol.fragment;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -37,6 +38,7 @@ public class SettingFragment extends BaseFragment {
     @ViewInject(value = R.id.test)
     private EditText test;
     ServiceConnection conn;
+    private TestSocketService testService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,8 +46,18 @@ public class SettingFragment extends BaseFragment {
         conn = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                String message = ((TestSocketService.SimpleBinder) service).message;
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                testService = ((TestSocketService.SimpleBinder) service).getTestService();
+                testService.setOnMsgBackListener(new TestSocketService.OnMsgBackListener() {
+                    @Override
+                    public void onMsgBack(final String msg) {
+                        ((Activity) getContext()).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
             }
 
             @Override
@@ -71,22 +83,9 @@ public class SettingFragment extends BaseFragment {
     @Event(value = R.id.setting_check_update)
     private void checkUpdateEvent(View view) {
         //TODO 检查更新网络请求代码
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Socket socket = new Socket("172.20.95.1", 5970);
-                    String message = test.getText().toString();
-                    PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
-                    writer.print(message);
-                    writer.flush();
-//                    socket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        if (null != testService) {
+            testService.senMsg(test.getText().toString());
+        }
     }
 
     /**

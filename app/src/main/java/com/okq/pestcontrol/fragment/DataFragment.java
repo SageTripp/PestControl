@@ -1,5 +1,6 @@
 package com.okq.pestcontrol.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,9 +11,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.okq.pestcontrol.R;
+import com.okq.pestcontrol.activity.PestInfoDetailsActivity;
 import com.okq.pestcontrol.adapter.DataAdapter;
+import com.okq.pestcontrol.adapter.listener.OnItemClickListener;
 import com.okq.pestcontrol.bean.PestInformation;
 import com.okq.pestcontrol.bean.param.PestScreeningParam;
 import com.okq.pestcontrol.dbDao.PestInformationDao;
@@ -78,6 +82,15 @@ public class DataFragment extends BaseFragment {
         mManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         dataRecy.setLayoutManager(mManager);
         adapter = new DataAdapter(getContext(), informations);
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+//                Toast.makeText(getContext(), "" + position, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), PestInfoDetailsActivity.class);
+                intent.putExtra("pestInfo", informations.get(position));
+                startActivity(intent);
+            }
+        });
         dataRecy.setAdapter(adapter);
         dataRecy.setItemAnimator(new DefaultItemAnimator());
         dataRecy.setOnScrollListener(

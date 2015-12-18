@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.okq.pestcontrol.R;
+import com.okq.pestcontrol.adapter.listener.OnItemClickListener;
 import com.okq.pestcontrol.bean.PestInformation;
 
 import org.joda.time.DateTime;
@@ -22,6 +23,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
     private Context mContext;
     private ArrayList<PestInformation> pestList;
+    private OnItemClickListener itemClickListener;
 
     public DataAdapter(Context context, ArrayList<PestInformation> pestList) {
         this.mContext = context;
@@ -58,7 +60,11 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.itemClickListener = listener;
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView pestKind;
         private TextView temperature;
@@ -76,6 +82,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
             sendTime = (TextView) itemView.findViewById(R.id.holder_data_send_time);
             divider = itemView.findViewById(R.id.data_fra_item_divider);
             divider.setVisibility(View.VISIBLE);
+            itemView.setOnClickListener(this);
         }
 
         public void setArea(String area) {
@@ -87,15 +94,22 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         }
 
         public void setTemperature(int temperature) {
-            this.temperature.setText(temperature + "℃");
+            this.temperature.setText(String.format("%d℃", temperature));
         }
 
         public void setHumidity(int humidity) {
-            this.humidity.setText(humidity + "%");
+            this.humidity.setText(String.format("%d%%", humidity));
         }
 
         public void setSendTime(long sendTime) {
             this.sendTime.setText(new DateTime(sendTime).toString("yyyy/MM/dd HH:mm"));
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (null != itemClickListener) {
+                itemClickListener.onItemClick(getAdapterPosition());
+            }
         }
     }
 }
