@@ -18,6 +18,7 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
 import com.okq.pestcontrol.R;
+import com.okq.pestcontrol.adapter.listener.OnItemClickListener;
 import com.okq.pestcontrol.bean.Device;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
 
     private Context context;
     private ArrayList<Device> deviceList;
+    private OnItemClickListener itemClickListener;
 
     public DeviceAdapter(Context context, List<Device> devices) {
         this.context = context;
@@ -56,7 +58,16 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
         return deviceList.size();
     }
 
-    public class DeviceHolder extends RecyclerView.ViewHolder {
+    /**
+     * 设置项目点击事件监听器
+     *
+     * @param listener 项目点击事件监听器
+     */
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.itemClickListener = listener;
+    }
+
+    public class DeviceHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private MapView map;
         private TextView deviceNum;
@@ -77,6 +88,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
             baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
             UiSettings uiSettings = baiduMap.getUiSettings();
             uiSettings.setAllGesturesEnabled(false);
+            itemView.setOnClickListener(this);
         }
 
         public void setMap(double lat, double lon) {
@@ -110,6 +122,13 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
 
         public void setLocation(String loc) {
             location.setText(loc);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (null != itemClickListener) {
+                itemClickListener.onItemClick(getAdapterPosition());
+            }
         }
     }
 }

@@ -46,6 +46,8 @@
                 android:value=".activity.MainActivity" />
         </activity>
 
+        <activity android:name=".activity.DeviceDetailsActivity" />
+
         <service
             android:name=".service.TestSocketService"
             android:label="测试网络" />

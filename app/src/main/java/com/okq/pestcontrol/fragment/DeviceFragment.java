@@ -1,12 +1,15 @@
 package com.okq.pestcontrol.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 import com.okq.pestcontrol.R;
+import com.okq.pestcontrol.activity.DeviceDetailsActivity;
 import com.okq.pestcontrol.adapter.DeviceAdapter;
+import com.okq.pestcontrol.adapter.listener.OnItemClickListener;
 import com.okq.pestcontrol.bean.Device;
 import com.okq.pestcontrol.bean.Test;
 import com.okq.pestcontrol.bean.param.TestParam;
@@ -42,6 +45,12 @@ public class DeviceFragment extends BaseFragment {
             e.printStackTrace();
         }
         DeviceAdapter adapter = new DeviceAdapter(getContext(), devices);
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                startActivity(new Intent(getContext(), DeviceDetailsActivity.class));
+            }
+        });
         RecyclerView.LayoutManager manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         deviceRecy.setAdapter(adapter);
         deviceRecy.setLayoutManager(manager);
