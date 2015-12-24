@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.TextView;
 
 import com.okq.pestcontrol.R;
@@ -45,6 +46,12 @@ public class PestInfoDetailsActivity extends BaseActivity {
         mToolbar.setSubtitleTextColor(getResources().getColor(R.color.icons));
         mToolbar.setTitleTextColor(getResources().getColor(R.color.icons));
         mToolbar.setSubtitle("虫害信息");
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         setSupportActionBar(mToolbar);
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {

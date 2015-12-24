@@ -98,7 +98,6 @@ public class DataFragment extends BaseFragment {
                     @Override
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                         super.onScrolled(recyclerView, dx, dy);
-                        super.onScrolled(recyclerView, dx, dy);
                         int lastVisibleItem = ((LinearLayoutManager) mManager).findLastVisibleItemPosition();
                         int totalItemCount = mManager.getItemCount();
                         //lastVisibleItem >= totalItemCount - 4 表示剩下4个item自动加载，各位自由选择
