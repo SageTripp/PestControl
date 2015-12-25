@@ -45,10 +45,13 @@ public class DeviceFragment extends BaseFragment {
             e.printStackTrace();
         }
         DeviceAdapter adapter = new DeviceAdapter(getContext(), devices);
+        final List<Device> finalDevices = devices;
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                startActivity(new Intent(getContext(), DeviceDetailsActivity.class));
+                Intent intent = new Intent(getContext(), DeviceDetailsActivity.class);
+                intent.putExtra("device", finalDevices != null ? finalDevices.get(position) : null);
+                startActivity(intent);
             }
         });
         RecyclerView.LayoutManager manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);

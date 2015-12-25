@@ -16,10 +16,22 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.baidu.mapapi.map.MapView
-            android:id="@+id/holder_device_map"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="144dp" />
+            android:layout_height="144dp">
+
+            <com.baidu.mapapi.map.TextureMapView
+                android:id="@+id/holder_device_map"
+                android:layout_width="match_parent"
+                android:layout_height="144dp" />
+
+            <ImageView
+                android:id="@+id/holder_device_map_image"
+                android:layout_width="match_parent"
+                android:layout_height="144dp"
+                android:contentDescription="正在加载..."
+                android:visibility="invisible" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

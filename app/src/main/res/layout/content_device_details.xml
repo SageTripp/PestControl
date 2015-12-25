@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:showIn="@layout/activity_device_details">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="@color/icons"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/device_details_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="区域:高新区"
+                android:textColor="@color/primary_text"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/device_details_address"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:text="具体地点:水电费水电费"
+                android:textColor="@color/secondary_text"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/device_details_position"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:text="坐标:29.047453N119.276586E"
+                android:textColor="@color/secondary_text"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardBackgroundColor="@color/icons"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/device_details_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="设备状态:在用"
+                android:textColor="@color/primary_text"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/device_details_buy_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:text="购买时间:2015/05/08"
+                android:textColor="@color/secondary_text"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/device_details_install_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:text="安装时间:2015/05/08"
+                android:textColor="@color/secondary_text"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/device_details_remove_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:text="拆除时间:2015/05/08"
+                android:textColor="@color/secondary_text"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

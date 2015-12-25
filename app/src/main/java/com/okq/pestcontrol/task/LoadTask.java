@@ -69,15 +69,22 @@ public class LoadTask extends BaseTask {
             double[] lons = new double[]{113.601556, 113.584308, 113.478524, 113.70619};
             double[] lats = new double[]{34.918237, 34.826311, 34.682055, 34.833897};
 
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 5; i++) {
                 Device device = new Device();
                 device.setStatus("在用");
                 device.setDeviceNum("0000000" + i);
                 device.setDeviceModel("Q" + i);
-                device.setArea(areas[i]);
-                device.setPlace(places[i]);
-                device.setLat(lats[i]);
-                device.setLon(lons[i]);
+                device.setArea(areas[i%4]);
+                device.setPlace(places[i%4]);
+                device.setLat(lats[i%4]);
+                device.setLon(lons[i%4]);
+                long buy = new DateTime(2015, i % 12 + 1, i % 30 + 1, i % 24, i % 60).getMillis();
+//                long send = new DateTime(2015, (int) ((Math.random() * 3 + 10)), (int) (Math.random() * 30 + 1), (i + 5) % 24, (i + 5) % 60).getMillis();
+                long install = new DateTime(2015, (i + 2) % 12 + 1, (i + 4) % 30 + 1, (i + 5) % 24, (i + 2) % 60).getMillis();
+                long remove = DateTime.now().plusDays((int) -(Math.random() * 90)).getMillis();
+                device.setBuyTime(buy);
+                device.setInstallTime(install);
+                device.setRemoveTime(remove);
                 DeviceDao.save(device);
             }
 

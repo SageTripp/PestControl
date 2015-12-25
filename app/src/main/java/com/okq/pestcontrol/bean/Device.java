@@ -3,12 +3,14 @@ package com.okq.pestcontrol.bean;
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
+import java.io.Serializable;
+
 /**
  * 设备信息
  * Created by Administrator on 2015/12/17.
  */
 @Table(name = "Device")
-public class Device {
+public class Device implements Serializable {
     @Column(name = "id", isId = true, autoGen = true)
     public long id;
     /**
