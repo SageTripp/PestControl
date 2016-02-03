@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
@@ -21,11 +22,6 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.Socket;
-
 /**
  * 设置页面
  * Created by Administrator on 2015/12/15.
@@ -35,6 +31,8 @@ public class SettingFragment extends BaseFragment {
 
     @ViewInject(value = R.id.setting_current_version)
     private TextView currentVersion;
+    @ViewInject(value = R.id.setting_about_us)
+    private TextView aboutUs;
     @ViewInject(value = R.id.test)
     private EditText test;
     ServiceConnection conn;
@@ -83,9 +81,14 @@ public class SettingFragment extends BaseFragment {
     @Event(value = R.id.setting_check_update)
     private void checkUpdateEvent(View view) {
         //TODO 检查更新网络请求代码
-        if (null != testService) {
-            testService.senMsg(test.getText().toString());
-        }
+    }
+
+    @Event(value = R.id.setting_about_us)
+    private void aboutUs(View view){
+        Intent view1 = new Intent();
+        view1.setAction(Intent.ACTION_VIEW);
+        view1.setData(Uri.parse("http://www.zzokq.cn/news/web/shtml/T-159.htm"));
+        startActivity(view1);
     }
 
     /**

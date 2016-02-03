@@ -2,24 +2,22 @@ package com.okq.pestcontrol.widget;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
-import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
+import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.application.App;
-import com.okq.pestcontrol.bean.PestInformation;
 import com.okq.pestcontrol.bean.PestKind;
 import com.okq.pestcontrol.bean.param.PestScreeningParam;
+import com.sleepbot.datetimepicker.time.RadialPickerLayout;
+import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
 import org.joda.time.DateTime;
 import org.xutils.DbManager;
@@ -33,7 +31,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2015/12/11.
  */
-public class ScreeningDialog extends AlertDialog implements View.OnClickListener, CalendarDatePickerDialogFragment.OnDateSetListener, RadialTimePickerDialogFragment.OnTimeSetListener {
+public class ScreeningDialog extends AlertDialog implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private static final String DATE_PICKER_START_TIME = "startTime";
     private static final String DATE_PICKER_END_TIME = "endTime";
@@ -56,7 +54,14 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
     private String pest;
     private String startTime;
     private String endTime;
-    private CalendarDatePickerDialogFragment dialog;
+//    private CalendarDatePickerDialogFragment dialog;
+
+    public static final String DATEPICKER_TAG = "datepicker";
+    public static final String TIMEPICKER_TAG = "timepicker";
+
+    private final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this, DateTime.now().getYear(), DateTime.now().getMonthOfYear() - 1, DateTime.now().getDayOfMonth(), false);
+    private final TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, DateTime.now().getHourOfDay(), DateTime.now().getMinuteOfHour(), true, false);
+    private String dateFlag = "";
 
     protected ScreeningDialog(Context context) {
         this(context, R.style.dialog);
@@ -85,6 +90,17 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
         getWindow().setWindowAnimations(R.style.DialogStyle);
         setCanceledOnTouchOutside(false);
         findView();
+        if (savedInstanceState != null) {
+            DatePickerDialog dpd = (DatePickerDialog) mManager.findFragmentByTag(DATEPICKER_TAG);
+            if (dpd != null) {
+                dpd.setOnDateSetListener(this);
+            }
+
+            TimePickerDialog tpd = (TimePickerDialog) mManager.findFragmentByTag(TIMEPICKER_TAG);
+            if (tpd != null) {
+                tpd.setOnTimeSetListener(this);
+            }
+        }
     }
 
     @Override
@@ -184,23 +200,52 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
         mListener = listener;
     }
 
+//    @Override
+//    public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
+//        switch (dialog.getTag()) {
+//            case DATE_PICKER_START_TIME:
+//                startTimeDt = new DateTime(year, monthOfYear + 1, dayOfMonth, 0, 0, 0);
+//                createTimePicker(DATE_PICKER_START_TIME);
+//                break;
+//            case DATE_PICKER_END_TIME:
+//                endTimeDt = new DateTime(year, monthOfYear + 1, dayOfMonth, 0, 0, 0);
+//                createTimePicker(DATE_PICKER_END_TIME);
+//                break;
+//        }
+//    }
+//
+//    @Override
+//    public void onTimeSet(RadialTimePickerDialogFragment dialog, int hourOfDay, int minute) {
+//        switch (dialog.getTag()) {
+//            case DATE_PICKER_START_TIME:
+//                startTimeDt = startTimeDt.plusHours(hourOfDay).plusMinutes(minute);
+//                startTimeTv.setText(startTimeDt.toString(DATE_FORMAT));
+//                break;
+//            case DATE_PICKER_END_TIME:
+//                endTimeDt = endTimeDt.plusHours(hourOfDay).plusMinutes(minute);
+//                endTimeTv.setText(endTimeDt.toString(DATE_FORMAT));
+//                break;
+//        }
+//    }
+
     @Override
-    public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-        switch (dialog.getTag()) {
+    public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
+        switch (datePickerDialog.getTag()) {
             case DATE_PICKER_START_TIME:
-                startTimeDt = new DateTime(year, monthOfYear + 1, dayOfMonth, 0, 0, 0);
-                createTimePicker(DATE_PICKER_START_TIME);
+                startTimeDt = new DateTime(year, month + 1, day, 0, 0, 0);
                 break;
             case DATE_PICKER_END_TIME:
-                endTimeDt = new DateTime(year, monthOfYear + 1, dayOfMonth, 0, 0, 0);
-                createTimePicker(DATE_PICKER_END_TIME);
+                endTimeDt = new DateTime(year, month + 1, day, 0, 0, 0);
                 break;
         }
+        dateFlag = datePickerDialog.getTag();
+        timePickerDialog.setStartTime(DateTime.now().getHourOfDay(), DateTime.now().getMinuteOfHour());
+        timePickerDialog.show(mManager, datePickerDialog.getTag());
     }
 
     @Override
-    public void onTimeSet(RadialTimePickerDialogFragment dialog, int hourOfDay, int minute) {
-        switch (dialog.getTag()) {
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+        switch (dateFlag) {
             case DATE_PICKER_START_TIME:
                 startTimeDt = startTimeDt.plusHours(hourOfDay).plusMinutes(minute);
                 startTimeTv.setText(startTimeDt.toString(DATE_FORMAT));
@@ -219,26 +264,30 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
      */
     private void createDatePicker(String tag) {
         DateTime now = DateTime.now();
-        dialog = CalendarDatePickerDialogFragment
-                .newInstance(this, now.getYear(), now.getMonthOfYear() - 1,
-                        now.getDayOfMonth());
-        dialog.setCancelable(false);
-        dialog.show(mManager, tag);
+//        dialog = CalendarDatePickerDialogFragment
+//                .newInstance(this, now.getYear(), now.getMonthOfYear() - 1,
+//                        now.getDayOfMonth());
+//        dialog.setCancelable(false);
+//        dialog.show(mManager, tag);
+        datePickerDialog.setYearRange(now.getYear() - 10, now.getYear());
+        datePickerDialog.setCloseOnSingleTapDay(true);
+        datePickerDialog.setCancelable(false);
+        datePickerDialog.show(mManager, tag);
     }
-
-    /**
-     * 创建时间选择器
-     *
-     * @param tag 标示
-     */
-    private void createTimePicker(String tag) {
-        DateTime now = DateTime.now();
-        RadialTimePickerDialogFragment time = RadialTimePickerDialogFragment
-                .newInstance(this, now.getHourOfDay(),
-                        now.getMinuteOfHour(), true);
-        time.setCancelable(false);
-        time.show(mManager, tag);
-    }
+//
+//    /**
+//     * 创建时间选择器
+//     *
+//     * @param tag 标示
+//     */
+//    private void createTimePicker(String tag) {
+//        DateTime now = DateTime.now();
+//        RadialTimePickerDialogFragment time = RadialTimePickerDialogFragment
+//                .newInstance(this, now.getHourOfDay(),
+//                        now.getMinuteOfHour(), true);
+//        time.setCancelable(false);
+//        time.show(mManager, tag);
+//    }
 
     /**
      * 筛选完成监听器

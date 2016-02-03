@@ -9,14 +9,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,12 +23,9 @@ import com.okq.pestcontrol.fragment.ChartFragment;
 import com.okq.pestcontrol.fragment.DataFragment;
 import com.okq.pestcontrol.fragment.DeviceFragment;
 import com.okq.pestcontrol.fragment.SettingFragment;
-import com.okq.pestcontrol.service.TestSocketService;
 
 import org.xutils.view.annotation.ContentView;
-import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
-import org.xutils.x;
 
 import java.util.HashMap;
 
@@ -80,7 +73,7 @@ public class MainActivity extends BaseActivity {
         userHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu menu = new PopupMenu(MainActivity.this, userHeader, Gravity.NO_GRAVITY, R.attr.popupMenuStyle, R.style.menuPopup);
+                PopupMenu menu = new PopupMenu(MainActivity.this, userHeader);
                 menu.inflate(R.menu.user);
                 menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
