@@ -2,9 +2,6 @@ package com.okq.pestcontrol.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.support.v7.graphics.drawable.DrawableUtils;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +14,6 @@ import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.TextureMapView;
@@ -138,18 +134,27 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
                 baiduMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
                     @Override
                     public void onMapLoaded() {
-                        LogUtil.i(String.format("加载完成第%d个", getAdapterPosition() + 1));
-                        baiduMap.snapshot(new BaiduMap.SnapshotReadyCallback() {
+                        new Thread(new Runnable() {
                             @Override
-                            public void onSnapshotReady(Bitmap bitmap) {
-                                LogUtil.i(String.format("截图第%d个", getAdapterPosition() + 1));
-                                iv.setImageBitmap(bitmap);
-                                iv.setVisibility(View.VISIBLE);
-                                map.setVisibility(View.INVISIBLE);
-                                mapFlags.put(getAdapterPosition(), true);
+                            public void run() {
+                                LogUtil.i(String.format("加载完成第%d个", getAdapterPosition() + 1));
+                                try {
+                                    Thread.sleep(1000*5);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                baiduMap.snapshot(new BaiduMap.SnapshotReadyCallback() {
+                                    @Override
+                                    public void onSnapshotReady(Bitmap bitmap) {
+                                        LogUtil.i(String.format("截图第%d个", getAdapterPosition() + 1));
+                                        iv.setImageBitmap(bitmap);
+                                        iv.setVisibility(View.VISIBLE);
+                                        map.setVisibility(View.INVISIBLE);
+                                        mapFlags.put(getAdapterPosition(), true);
+                                    }
+                                });
                             }
-                        });
-
+                        }).start();
                     }
                 });
             }

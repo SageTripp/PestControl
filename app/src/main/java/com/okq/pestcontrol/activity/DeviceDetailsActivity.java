@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -25,8 +24,6 @@ import com.okq.pestcontrol.bean.Device;
 import org.joda.time.DateTime;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
-
-import java.io.Serializable;
 
 /**
  * 设备详情页面
@@ -108,7 +105,7 @@ public class DeviceDetailsActivity extends BaseActivity {
         baiduMap.addOverlay(option);
         MapStatus mapStatus = new MapStatus.Builder()
                 .target(point)
-                .zoom(13)
+                .zoom(14)
                 .build();
         baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(mapStatus));
     }

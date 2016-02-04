@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.okq.pestcontrol.R;
+import com.okq.pestcontrol.activity.AboutUsActivity;
 import com.okq.pestcontrol.service.TestSocketService;
 
 import org.xutils.view.annotation.ContentView;
@@ -23,8 +23,7 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
 /**
- * 设置页面
- * Created by Administrator on 2015/12/15.
+ * 设置页面 Created by Administrator on 2015/12/15.
  */
 @ContentView(value = R.layout.fragment_setting)
 public class SettingFragment extends BaseFragment {
@@ -84,11 +83,12 @@ public class SettingFragment extends BaseFragment {
     }
 
     @Event(value = R.id.setting_about_us)
-    private void aboutUs(View view){
-        Intent view1 = new Intent();
-        view1.setAction(Intent.ACTION_VIEW);
-        view1.setData(Uri.parse("http://www.zzokq.cn/news/web/shtml/T-159.htm"));
-        startActivity(view1);
+    private void aboutUs(View view) {
+//        Intent view1 = new Intent();
+//        view1.setAction(Intent.ACTION_VIEW);
+//        view1.setData(Uri.parse("http://www.zzokq.cn/news/web/shtml/T-159.htm"));
+//        startActivity(view1);
+        startActivity(new Intent(getContext(), AboutUsActivity.class));
     }
 
     /**

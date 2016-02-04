@@ -13,7 +13,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
-        app:cardBackgroundColor="@color/icons"
+        app:cardBackgroundColor="@color/blue"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp">
 
@@ -27,7 +27,7 @@
                 android:id="@+id/device_details_area"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="区域:高新区"
+                tools:text="区域:高新区"
                 android:textColor="@color/primary_text"
                 android:textSize="18sp" />
 
@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-                android:text="具体地点:水电费水电费"
+                tools:text="具体地点:水电费水电费"
                 android:textColor="@color/secondary_text"
                 android:textSize="12sp" />
 
@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-                android:text="坐标:29.047453N119.276586E"
+                tools:text="坐标:29.047453N119.276586E"
                 android:textColor="@color/secondary_text"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -56,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:cardBackgroundColor="@color/icons"
+        app:cardBackgroundColor="@color/DEEP_ORANGE"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp">
 
@@ -70,7 +70,7 @@
                 android:id="@+id/device_details_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="设备状态:在用"
+                tools:text="设备状态:在用"
                 android:textColor="@color/primary_text"
                 android:textSize="18sp" />
 
@@ -79,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-                android:text="购买时间:2015/05/08"
+                tools:text="购买时间:2015/05/08"
                 android:textColor="@color/secondary_text"
                 android:textSize="12sp" />
 
@@ -88,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-                android:text="安装时间:2015/05/08"
+                tools:text="安装时间:2015/05/08"
                 android:textColor="@color/secondary_text"
                 android:textSize="12sp" />
 
@@ -97,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-                android:text="拆除时间:2015/05/08"
+                tools:text="拆除时间:2015/05/08"
                 android:textColor="@color/secondary_text"
                 android:textSize="12sp" />
         </LinearLayout>

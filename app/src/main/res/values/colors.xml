@@ -6,8 +6,8 @@
     <color name="accent">@color/GREEN</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
-    <color name="icons">#FFFFFF</color>
-    <color name="toolbar_text">#FFFFFF</color>
+    <color name="icons">@color/WHITE</color>
+    <color name="toolbar_text">@color/WHITE</color>
     <color name="divider">#B6B6B6</color>
 
     <color name="RED">#F44336</color>
@@ -29,6 +29,7 @@
     <color name="BROWN">#795548</color>
     <color name="GREY">#9E9E9E</color>
     <color name="BLUE_GREY">#607D8B</color>
+    <color name="WHITE">#FFFFFFFF</color>
     <color name="primary_dark_material_light_1">#61b7df</color>
 </resources>
 

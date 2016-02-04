@@ -47,14 +47,11 @@
         </activity>
 
         <activity android:name=".activity.DeviceDetailsActivity" />
+        <activity android:name=".activity.AboutUsActivity"/>
 
         <service
             android:name=".service.TestSocketService"
-            android:label="测试网络" /><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+            android:label="测试网络" />
     </application>
 
 </manifest>

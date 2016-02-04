@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/icons"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +22,7 @@
             android:text="害虫种类"
             android:textColor="@color/primary_text"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/details_pest_kind"
@@ -29,13 +31,13 @@
             android:layout_marginBottom="12dp"
             android:text="玉米螟"
             android:textColor="@color/secondary_text"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/GREY" />
+        android:background="@color/GREY"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,7 +52,7 @@
             android:text="区域"
             android:textColor="@color/primary_text"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/details_area"
@@ -59,13 +61,13 @@
             android:layout_marginBottom="12dp"
             android:text="区域123"
             android:textColor="@color/secondary_text"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/GREY" />
+        android:background="@color/GREY"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -80,7 +82,7 @@
             android:text="温度"
             android:textColor="@color/primary_text"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/details_temperature"
@@ -89,13 +91,13 @@
             android:layout_marginBottom="12dp"
             android:text="35℃"
             android:textColor="@color/secondary_text"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/GREY" />
+        android:background="@color/GREY"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -110,7 +112,7 @@
             android:text="湿度"
             android:textColor="@color/primary_text"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/details_humidity"
@@ -119,13 +121,13 @@
             android:layout_marginBottom="12dp"
             android:text="80%"
             android:textColor="@color/secondary_text"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/GREY" />
+        android:background="@color/GREY"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -140,7 +142,7 @@
             android:text="检测开始时间"
             android:textColor="@color/primary_text"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/details_start_time"
@@ -149,13 +151,13 @@
             android:layout_marginBottom="12dp"
             android:text="2015/08/08 12:25"
             android:textColor="@color/secondary_text"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/GREY" />
+        android:background="@color/GREY"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -170,7 +172,7 @@
             android:text="检测结束时间"
             android:textColor="@color/primary_text"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/details_end_time"
@@ -179,13 +181,13 @@
             android:layout_marginBottom="12dp"
             android:text="----/--/-- --:--"
             android:textColor="@color/secondary_text"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/GREY" />
+        android:background="@color/GREY"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -200,7 +202,7 @@
             android:text="数据采集时间"
             android:textColor="@color/primary_text"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/details_send_time"
@@ -209,7 +211,7 @@
             android:layout_marginBottom="12dp"
             android:text="2015/12/18 09:08"
             android:textColor="@color/secondary_text"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
     </LinearLayout>
 
 </LinearLayout>
