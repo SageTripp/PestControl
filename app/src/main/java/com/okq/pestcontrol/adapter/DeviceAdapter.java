@@ -2,6 +2,8 @@ package com.okq.pestcontrol.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,15 +25,18 @@ import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.adapter.listener.OnItemClickListener;
 import com.okq.pestcontrol.bean.Device;
 
+import org.joda.time.DateTime;
 import org.xutils.common.util.LogUtil;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 /**
- * 设备适配器
- * Created by Administrator on 2015/12/17.
+ * 设备适配器 Created by Administrator on 2015/12/17.
  */
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHolder> {
 
@@ -109,15 +114,22 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
             itemView.setOnClickListener(this);
         }
 
-        public void setMap(double lat, double lon) {
+        public void setMap(final double lat, final double lon) {
             //定义Maker坐标点
             LogUtil.i(String.format("进入第%d个", getAdapterPosition() + 1));
+            Bitmap pic = getMyBitMap(lat, lon);
+            if (null != pic) {
+                iv.setImageBitmap(pic);
+                iv.setVisibility(View.VISIBLE);
+                map.setVisibility(View.INVISIBLE);
+                mapFlags.put(getAdapterPosition(), true);
+            }
             if (null == mapFlags.get(getAdapterPosition()) || !mapFlags.get(getAdapterPosition())) {
                 LogUtil.i(String.format("开始第%d个", getAdapterPosition() + 1));
                 LatLng point = new LatLng(lat, lon);
                 //构建Marker图标
                 BitmapDescriptor bitmap = BitmapDescriptorFactory
-                        .fromResource(R.drawable.ic_slide_menu_device);
+                        .fromResource(R.drawable.ic_map_location);
                 //构建MarkerOption，用于在地图上添加Marker
                 OverlayOptions option = new MarkerOptions()
                         .position(point)
@@ -134,40 +146,36 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
                 baiduMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
                     @Override
                     public void onMapLoaded() {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                LogUtil.i(String.format("加载完成第%d个", getAdapterPosition() + 1));
-                                try {
-                                    Thread.sleep(1000*5);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                baiduMap.snapshot(new BaiduMap.SnapshotReadyCallback() {
-                                    @Override
-                                    public void onSnapshotReady(Bitmap bitmap) {
-                                        LogUtil.i(String.format("截图第%d个", getAdapterPosition() + 1));
-                                        iv.setImageBitmap(bitmap);
-                                        iv.setVisibility(View.VISIBLE);
-                                        map.setVisibility(View.INVISIBLE);
-                                        mapFlags.put(getAdapterPosition(), true);
-                                    }
-                                });
-                            }
-                        }).start();
+                        LoadMapThread thread = new LoadMapThread(lat, lon);
+                        thread.start();
                     }
                 });
             }
         }
 
+        /**
+         * 设置设备编号
+         *
+         * @param num 设备编号
+         */
         public void setDeviceNum(String num) {
             deviceNum.setText(num);
         }
 
+        /**
+         * 设置设备状态
+         *
+         * @param status 设备状态
+         */
         public void setStatus(String status) {
             this.status.setText(status);
         }
 
+        /**
+         * 设置设备坐标
+         *
+         * @param loc 设备坐标
+         */
         public void setLocation(String loc) {
             location.setText(loc);
         }
@@ -178,5 +186,94 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
                 itemClickListener.onItemClick(getAdapterPosition());
             }
         }
+
+        /**
+         * 保存地图图片到本地
+         *
+         * @param mBitmap 要保存的地图图片
+         * @param lat     纬度
+         * @param lon     经度
+         */
+        public void saveMyBitmap(Bitmap mBitmap, double lat, double lon) {
+            String bitName = String.valueOf(lat) +
+                    "__" +
+                    lon;
+            File dir = new File(Environment.getExternalStorageDirectory() + File.separator + "PestControl" + File.separator + "pic");
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            File f = new File(dir.getPath(), bitName.replace(".", "_") + ".jpg");
+            try {
+                f.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                FileOutputStream out = new FileOutputStream(f);
+                mBitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+                out.flush();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        /**
+         * 根据经纬度从本地获取地图图片
+         *
+         * @param lat 纬度
+         * @param lon 经度
+         * @return 如果有返回地图图片, 否则返回null
+         */
+        public Bitmap getMyBitMap(double lat, double lon) {
+            String bitName = String.valueOf(lat) +
+                    "__" +
+                    lon;
+            File file = new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "PestControl" + File.separator + "pic", bitName.replace(".", "_") + ".jpg");
+            if (file.exists()) {
+                DateTime date = new DateTime(file.lastModified());
+                if (date.isBefore(DateTime.now().plusMonths(-1))) {//如果是一个月 前的图片文件,则将其删除
+                    file.delete();
+                    return null;
+                } else
+                    return BitmapFactory.decodeFile(file.getPath());
+            } else {
+                return null;
+            }
+        }
+
+        private class LoadMapThread extends Thread {
+
+            double lat;
+            double lon;
+
+            public LoadMapThread(double lat, double lon) {
+                this.lat = lat;
+                this.lon = lon;
+            }
+
+            @Override
+            public void run() {
+                LogUtil.i(String.format("加载完成第%d个", getAdapterPosition() + 1));
+                try {
+                    Thread.sleep(1000 * 3);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                baiduMap.snapshot(new BaiduMap.SnapshotReadyCallback() {
+                    @Override
+                    public void onSnapshotReady(Bitmap bitmap) {
+                        LogUtil.i(String.format("截图第%d个", getAdapterPosition() + 1));
+                        iv.setImageBitmap(bitmap);
+                        iv.setVisibility(View.VISIBLE);
+                        map.setVisibility(View.INVISIBLE);
+                        mapFlags.put(getAdapterPosition(), true);
+                        saveMyBitmap(bitmap, lat, lon);
+                    }
+                });
+
+            }
+        }
+
     }
 }

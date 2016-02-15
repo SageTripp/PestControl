@@ -26,8 +26,7 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 
 /**
- * 设备详情页面
- * Created by Administrator on 2015/12/23.
+ * 设备详情页面 Created by Administrator on 2015/12/23.
  */
 @ContentView(value = R.layout.activity_device_details)
 public class DeviceDetailsActivity extends BaseActivity {
@@ -94,7 +93,7 @@ public class DeviceDetailsActivity extends BaseActivity {
         LatLng point = new LatLng(lat, lon);
         //构建Marker图标
         BitmapDescriptor bitmap = BitmapDescriptorFactory
-                .fromResource(R.drawable.ic_slide_menu_device);
+                .fromResource(R.drawable.ic_map_location);
         //构建MarkerOption，用于在地图上添加Marker
         OverlayOptions option = new MarkerOptions()
                 .position(point)
