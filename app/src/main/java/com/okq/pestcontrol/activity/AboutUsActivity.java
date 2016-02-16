@@ -1,6 +1,9 @@
 package com.okq.pestcontrol.activity;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.okq.pestcontrol.R;
@@ -15,11 +18,20 @@ import org.xutils.view.annotation.ViewInject;
 public class AboutUsActivity extends BaseActivity {
 
     @ViewInject(value = R.id.about_us_wv)
-    private WebView webView;
+    private WebView aboutUsTv;
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        webView.loadUrl("http://www.zzokq.cn/news/web/shtml/T-159.htm");
+        WebSettings webSettings = aboutUsTv.getSettings();
+
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+        webSettings.setMediaPlaybackRequiresUserGesture(true);
+
+//        aboutUsTv.setBackgroundColor(Color.TRANSPARENT);  //  WebView 背景透明效果
+        aboutUsTv.loadUrl("file:///android_asset/html/about_us.html");
     }
 }

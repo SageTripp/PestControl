@@ -64,12 +64,6 @@
             android:textColor="@color/primary_text"
             android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/test"
-            android:textColor="@color/primary_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
     </LinearLayout>
 
 
