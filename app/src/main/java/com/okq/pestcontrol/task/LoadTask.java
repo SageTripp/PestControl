@@ -66,8 +66,8 @@ public class LoadTask extends BaseTask {
             }
 
             String[] places = new String[]{"地点a", "地点se", "地点we", "地点lks"};
-            double[] lons = new double[]{113.601556, 113.584308, 113.478524, 113.70619};
-            double[] lats = new double[]{34.918237, 34.826311, 34.682055, 34.833897};
+            double[] lons = new double[]{113.601556, 113.584308, 113.478524,113.565151};
+            double[] lats = new double[]{34.918237, 34.826311, 34.682055,34.814058};
 
             for (int i = 0; i < 5; i++) {
                 Device device = new Device();

@@ -1,10 +1,16 @@
 package com.okq.pestcontrol.activity;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.okq.pestcontrol.R;
 
@@ -29,9 +35,51 @@ public class AboutUsActivity extends BaseActivity {
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setUseWideViewPort(true);
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
-        webSettings.setMediaPlaybackRequiresUserGesture(true);
+        webSettings.setSupportZoom(true);
+//        webSettings.setBuiltInZoomControls(true);
+
+        aboutUsTv.setWebChromeClient(new WebChromeClient());
+        aboutUsTv.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, final String url) {
+                if (url.startsWith("tel:")) {
+                    //TODO 打电话
+                    AlertDialog dialog = new AlertDialog.Builder(AboutUsActivity.this).create();
+                    dialog.setTitle("拨打电话");
+                    dialog.setMessage("拨打:" + url.replace("tel:", ""));
+                    dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    dialog.setButton(DialogInterface.BUTTON_POSITIVE, "拨打", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(url));
+                            startActivity(intent);
+                        }
+                    });
+                    dialog.show();
+//                    Toast.makeText(AboutUsActivity.this, url, Toast.LENGTH_LONG).show();
+                    return true;
+                } else {
+                    view.loadUrl(url);
+                    return super.shouldOverrideUrlLoading(view, url);
+                }
+            }
+        });
 
 //        aboutUsTv.setBackgroundColor(Color.TRANSPARENT);  //  WebView 背景透明效果
         aboutUsTv.loadUrl("file:///android_asset/html/about_us.html");
     }
+
+    @Override
+    public void onBackPressed() {
+        if (aboutUsTv.canGoBack())
+            aboutUsTv.goBack();
+        else
+            super.onBackPressed();
+    }
+
 }

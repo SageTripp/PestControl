@@ -10,8 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 为list对象排序的工具类
- * Created by zst on 2015/12/16.
+ * 为list对象排序的工具类 Created by zst on 2015/12/16.
  */
 public class SortUtil1 {
 
@@ -66,8 +65,8 @@ public class SortUtil1 {
             System.out.println(a.toString());
         }
 
-    }
 
+    }
 
     /**
      * 对List对象按照某个成员变量进行排序
