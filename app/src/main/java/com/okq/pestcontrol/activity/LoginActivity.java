@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.task.LoadTask;
+import com.okq.pestcontrol.task.LoginTask;
 import com.okq.pestcontrol.task.TaskInfo;
 import com.okq.pestcontrol.util.Sharepreference;
 
@@ -89,6 +90,29 @@ public class LoginActivity extends BaseActivity {
     @Event(value = R.id.login_btn)
     private void login(View view) {
         if (checked()) {
+
+            final ProgressDialog pd = new ProgressDialog(this);
+            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pd.setCancelable(false);
+            pd.setTitle("登录");
+            pd.setMessage("正在登录,请稍后...");
+//            pd.show();
+
+            LoginTask loginTask = new LoginTask(userTv.getText().toString(),passTv.getText().toString());
+            loginTask.setTaskInfo(new TaskInfo<String>() {
+                @Override
+                public void onPreTask() {
+                    pd.show();
+                }
+
+                @Override
+                public void onTaskFinish(String b,String result) {
+                    Log.d("b",b);
+                    Log.d("result",result);
+                }
+            });
+            loginTask.execute();
+
             setParam(this, Key.REMEMBER_PASSWORD, rememberPassCb.isChecked());
             if (rememberPassCb.isChecked()) {
                 setParam(this, Key.USER_NAME, userTv.getText().toString());
@@ -98,17 +122,15 @@ public class LoginActivity extends BaseActivity {
                 setParam(this, Key.PASSWORD, "");
             }
 
-            final ProgressDialog pd = new ProgressDialog(this);
-            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            pd.setCancelable(false);
-            pd.setTitle("登录");
-            pd.setMessage("正在登录,请稍后...");
-            pd.show();
             LoadTask task = new LoadTask(this);
             task.execute();
-            task.setTaskInfo(new TaskInfo() {
+            task.setTaskInfo(new TaskInfo<Boolean>() {
                 @Override
-                public void onTaskFinish(Object result) {
+                public void onPreTask() {
+                }
+
+                @Override
+                public void onTaskFinish(String b,Boolean result) {
                     if (null != pd && pd.isShowing()) {
                         pd.dismiss();
                     }

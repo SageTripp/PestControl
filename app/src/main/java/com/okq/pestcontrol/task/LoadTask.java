@@ -20,19 +20,15 @@ import java.util.ArrayList;
 /**
  * Created by Administrator on 2015/12/9.
  */
-public class LoadTask extends BaseTask {
+public class LoadTask extends BaseTask<Boolean> {
 
     public LoadTask(Context context) {
         mContext = context;
     }
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
 
     @Override
-    protected Object doInBackground(Void... params) {
+    protected Boolean myDoInBackground() {
         DbManager dbManager = x.getDb(App.getDaoConfig());
         String[] kinds = mContext.getResources().getStringArray(R.array.pest_kind);
         String[] areas = mContext.getResources().getStringArray(R.array.pest_area);
@@ -95,9 +91,4 @@ public class LoadTask extends BaseTask {
         return null;
     }
 
-    @Override
-    protected void onPostExecute(Object o) {
-        super.onPostExecute(o);
-        info.onTaskFinish(o);
-    }
 }

@@ -6,14 +6,31 @@ import android.os.AsyncTask;
 /**
  * Created by Administrator on 2015/12/9.
  */
-public class BaseTask extends AsyncTask<Void, Void, Object> {
+public abstract class BaseTask<R> extends AsyncTask<Void, Void, R> {
 
     TaskInfo info;
     Context mContext;
 
     @Override
-    protected Object doInBackground(Void... params) {
-        return null;
+    protected void onPreExecute() {
+        super.onPreExecute();
+        if(null != info){
+            info.onPreTask();
+        }
+    }
+
+    @Override
+    protected R doInBackground(Void... params) {
+        return myDoInBackground();
+    }
+    protected abstract R myDoInBackground();
+
+    @Override
+    protected void onPostExecute(R r) {
+        super.onPostExecute(r);
+        if(null != info){
+            info.onTaskFinish("",r);
+        }
     }
 
     public void setTaskInfo(TaskInfo info) {
