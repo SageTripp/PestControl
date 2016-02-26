@@ -14,22 +14,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.okq.pestcontrol.R;
+import com.okq.pestcontrol.bean.Test;
 import com.okq.pestcontrol.task.LoadTask;
 import com.okq.pestcontrol.task.LoginTask;
 import com.okq.pestcontrol.task.TaskInfo;
-import com.okq.pestcontrol.util.Sharepreference;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
+import java.util.List;
+
+import static com.okq.pestcontrol.util.Sharepreference.Key;
 import static com.okq.pestcontrol.util.Sharepreference.getParam;
 import static com.okq.pestcontrol.util.Sharepreference.setParam;
-import static com.okq.pestcontrol.util.Sharepreference.Key;
 
 /**
- * 登录界面
- * Created by Administrator on 2015/12/8.
+ * 登录界面 Created by Administrator on 2015/12/8.
  */
 @ContentView(value = R.layout.activity_login)
 public class LoginActivity extends BaseActivity {
@@ -98,17 +99,16 @@ public class LoginActivity extends BaseActivity {
             pd.setMessage("正在登录,请稍后...");
 //            pd.show();
 
-            LoginTask loginTask = new LoginTask(userTv.getText().toString(),passTv.getText().toString());
-            loginTask.setTaskInfo(new TaskInfo<String>() {
-                @Override
+            LoginTask loginTask = new LoginTask(this, userTv.getText().toString(), passTv.getText().toString());
+            loginTask.setTaskInfo(new TaskInfo<List<Test>>() {
                 public void onPreTask() {
                     pd.show();
                 }
 
-                @Override
-                public void onTaskFinish(String b,String result) {
-                    Log.d("b",b);
-                    Log.d("result",result);
+                public void onTaskFinish(String b, List<Test> result) {
+                    Log.d("b", b);
+                    if (null != result)
+                        Log.e("result", result.toString());
                 }
             });
             loginTask.execute();
@@ -130,7 +130,7 @@ public class LoginActivity extends BaseActivity {
                 }
 
                 @Override
-                public void onTaskFinish(String b,Boolean result) {
+                public void onTaskFinish(String b, Boolean result) {
                     if (null != pd && pd.isShowing()) {
                         pd.dismiss();
                     }

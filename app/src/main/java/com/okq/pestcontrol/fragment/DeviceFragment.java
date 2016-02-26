@@ -11,17 +11,11 @@ import com.okq.pestcontrol.activity.DeviceDetailsActivity;
 import com.okq.pestcontrol.adapter.DeviceAdapter;
 import com.okq.pestcontrol.adapter.listener.OnItemClickListener;
 import com.okq.pestcontrol.bean.Device;
-import com.okq.pestcontrol.bean.Test;
-import com.okq.pestcontrol.bean.param.TestParam;
 import com.okq.pestcontrol.dbDao.DeviceDao;
 
-import org.xutils.common.Callback;
-import org.xutils.common.util.LogUtil;
 import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
-import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
-import org.xutils.x;
 
 import java.util.List;
 

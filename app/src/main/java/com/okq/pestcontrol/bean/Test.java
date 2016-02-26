@@ -9,130 +9,100 @@ import org.xutils.http.annotation.HttpResponse;
  */
 @HttpResponse(parser = JsonParser.class)
 public class Test {
-    private String city;
-    private String cityid;
-    private String temp;
-    private String WD;
-    private String WS;
-    private String SD;
-    private String WSE;
-    private String time;
-    private String isRadar;
-    private String Radar;
-    private String njd;
-    private String qy;
+    private String title;
+    private String source;
+    private String article_url;
+    private String group_id;
+    private long behot_time;
+    private long create_time;
+    private int digg_count;
+    private long publish_time;
+    private int repin_count;
 
-    public String getCity() {
-        return city;
+    public String getTitle() {
+        return title;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getCityid() {
-        return cityid;
+    public String getSource() {
+        return source;
     }
 
-    public void setCityid(String cityid) {
-        this.cityid = cityid;
+    public void setSource(String source) {
+        this.source = source;
     }
 
-    public String getTemp() {
-        return temp;
+    public String getArticle_url() {
+        return article_url;
     }
 
-    public void setTemp(String temp) {
-        this.temp = temp;
+    public void setArticle_url(String article_url) {
+        this.article_url = article_url;
     }
 
-    public String getWD() {
-        return WD;
+    public String getGroup_id() {
+        return group_id;
     }
 
-    public void setWD(String WD) {
-        this.WD = WD;
+    public void setGroup_id(String group_id) {
+        this.group_id = group_id;
     }
 
-    public String getWS() {
-        return WS;
+    public long getBehot_time() {
+        return behot_time;
     }
 
-    public void setWS(String WS) {
-        this.WS = WS;
+    public void setBehot_time(long behot_time) {
+        this.behot_time = behot_time;
     }
 
-    public String getSD() {
-        return SD;
+    public long getCreate_time() {
+        return create_time;
     }
 
-    public void setSD(String SD) {
-        this.SD = SD;
+    public void setCreate_time(long create_time) {
+        this.create_time = create_time;
     }
 
-    public String getWSE() {
-        return WSE;
+    public int getDigg_count() {
+        return digg_count;
     }
 
-    public void setWSE(String WSE) {
-        this.WSE = WSE;
+    public void setDigg_count(int digg_count) {
+        this.digg_count = digg_count;
     }
 
-    public String getTime() {
-        return time;
+    public long getPublish_time() {
+        return publish_time;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setPublish_time(long publish_time) {
+        this.publish_time = publish_time;
     }
 
-    public String getIsRadar() {
-        return isRadar;
+    public int getRepin_count() {
+        return repin_count;
     }
 
-    public void setIsRadar(String isRadar) {
-        this.isRadar = isRadar;
-    }
-
-    public String getRadar() {
-        return Radar;
-    }
-
-    public void setRadar(String radar) {
-        Radar = radar;
-    }
-
-    public String getNjd() {
-        return njd;
-    }
-
-    public void setNjd(String njd) {
-        this.njd = njd;
-    }
-
-    public String getQy() {
-        return qy;
-    }
-
-    public void setQy(String qy) {
-        this.qy = qy;
+    public void setRepin_count(int repin_count) {
+        this.repin_count = repin_count;
     }
 
     @Override
     public String toString() {
         return "Test{" +
-                "city='" + city + '\'' +
-                ", cityid='" + cityid + '\'' +
-                ", temp='" + temp + '\'' +
-                ", WD='" + WD + '\'' +
-                ", WS='" + WS + '\'' +
-                ", SD='" + SD + '\'' +
-                ", WSE='" + WSE + '\'' +
-                ", time='" + time + '\'' +
-                ", isRadar='" + isRadar + '\'' +
-                ", Radar='" + Radar + '\'' +
-                ", njd='" + njd + '\'' +
-                ", qy='" + qy + '\'' +
+                "title='" + title + '\'' +
+                ", source='" + source + '\'' +
+                ", article_url='" + article_url + '\'' +
+                ", group_id='" + group_id + '\'' +
+                ", behot_time=" + behot_time +
+                ", create_time=" + create_time +
+                ", digg_count=" + digg_count +
+                ", publish_time=" + publish_time +
+                ", repin_count=" + repin_count +
                 '}';
     }
 }
