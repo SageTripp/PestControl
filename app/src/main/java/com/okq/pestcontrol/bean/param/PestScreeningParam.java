@@ -1,9 +1,6 @@
 package com.okq.pestcontrol.bean.param;
 
-import com.okq.pestcontrol.bean.PestKind;
-
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 害虫筛选参数
@@ -11,13 +8,13 @@ import java.util.List;
  */
 public class PestScreeningParam implements Serializable {
     /**
-     * 区域
+     * 设备
      */
-    private String area;
+    private String device;
     /**
-     * 种类
+     * 数据类型
      */
-    private List<PestKind> kind;
+    private String dataType;
     /**
      * 开始时间
      */
@@ -28,39 +25,39 @@ public class PestScreeningParam implements Serializable {
     private long endTime;
 
     /**
-     * 获取区域
+     * 获取设备
      *
-     * @return 区域
+     * @return 设备
      */
-    public String getArea() {
-        return area;
+    public String getDevice() {
+        return device;
     }
 
     /**
-     * 设置区域
+     * 设置设备
      *
-     * @param area 区域
+     * @param device 设备
      */
-    public void setArea(String area) {
-        this.area = area;
+    public void setDevice(String device) {
+        this.device = device;
     }
 
     /**
-     * 获取害虫种类
+     * 获取数据类型
      *
-     * @return 害虫种类
+     * @return 数据类型
      */
-    public List<PestKind> getKind() {
-        return kind;
+    public String getDataType() {
+        return dataType;
     }
 
     /**
-     * 设置害虫种类
+     * 设置数据类型
      *
-     * @param kind 害虫种类
+     * @param dataType 数据类型
      */
-    public void setKind(List<PestKind> kind) {
-        this.kind = kind;
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
     }
 
     /**

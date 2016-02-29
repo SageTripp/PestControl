@@ -1,7 +1,6 @@
 package com.okq.pestcontrol.dbDao;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.bean.PestInformation;
@@ -58,17 +57,19 @@ public class PestInformationDao {
         try {
             Selector<PestInformation> selector = manager.selector(PestInformation.class);
             selector.where("sendTime", ">", 0);
-            if (!TextUtils.isEmpty(param.getArea()))
-                selector.and("area", "in", param.getArea().split(","));
-            if (null != param.getKind() && param.getKind().size() > 0) {
-                StringBuilder sb = new StringBuilder();
-                for (PestKind kind : param.getKind()) {
-                    sb.append(kind.id);
-                    sb.append(",");
-                }
-                sb.deleteCharAt(sb.length() - 1);
-                selector.and("kindLink", "in", sb.toString().split(","));
-            }
+            if (!TextUtils.isEmpty(param.getDevice()))
+                selector.and("area", "in", param.getDevice().split(","));
+            if (!TextUtils.isEmpty(param.getDevice()))
+                selector.and("kindLink", "in", param.getDataType().split(","));
+//            if (null != param.getDataType() && param.getDataType().size() > 0) {
+//                StringBuilder sb = new StringBuilder();
+//                for (PestKind kind : param.getDataType()) {
+//                    sb.append(kind.id);
+//                    sb.append(",");
+//                }
+//                sb.deleteCharAt(sb.length() - 1);
+//                selector.and("kindLink", "in", sb.toString().split(","));
+//            }
             if (param.getStartTime() > 0 && param.getEndTime() > 0)
                 selector.and("sendTime", "between", new long[]{param.getStartTime(), param.getEndTime()});
             List<PestInformation> all = selector.findAll();

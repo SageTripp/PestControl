@@ -18,27 +18,27 @@
 
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/area_til"
+            android:id="@+id/device_til"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="区域"
             app:hintAnimationEnabled="true">
 
             <com.okq.pestcontrol.widget.CloudEditText
-                android:id="@+id/area_tv"
+                android:id="@+id/device_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/primary_text" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/pest_til"
+            android:id="@+id/data_type_til"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
             <com.okq.pestcontrol.widget.CloudEditText
-                android:id="@+id/pest_tv"
+                android:id="@+id/data_type_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="请选择害虫种类"

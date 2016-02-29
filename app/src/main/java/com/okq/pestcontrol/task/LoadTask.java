@@ -31,7 +31,7 @@ public class LoadTask extends BaseTask<Boolean> {
     protected Boolean myDoInBackground() {
         DbManager dbManager = x.getDb(App.getDaoConfig());
         String[] kinds = mContext.getResources().getStringArray(R.array.pest_kind);
-        String[] areas = mContext.getResources().getStringArray(R.array.pest_area);
+        String[] areas = mContext.getResources().getStringArray(R.array.pest_device);
         try {
             dbManager.dropTable(PestKind.class);
             dbManager.dropTable(PestInformation.class);

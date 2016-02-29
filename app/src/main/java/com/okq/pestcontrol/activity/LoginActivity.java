@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.okq.pestcontrol.R;
-import com.okq.pestcontrol.bean.Test;
+import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.task.LoadTask;
 import com.okq.pestcontrol.task.LoginTask;
 import com.okq.pestcontrol.task.TaskInfo;
@@ -22,8 +22,6 @@ import com.okq.pestcontrol.task.TaskInfo;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
-
-import java.util.List;
 
 import static com.okq.pestcontrol.util.Sharepreference.Key;
 import static com.okq.pestcontrol.util.Sharepreference.getParam;
@@ -100,44 +98,51 @@ public class LoginActivity extends BaseActivity {
 //            pd.show();
 
             LoginTask loginTask = new LoginTask(this, userTv.getText().toString(), passTv.getText().toString());
-            loginTask.setTaskInfo(new TaskInfo<List<Test>>() {
+            loginTask.setTaskInfo(new TaskInfo<String>() {
                 public void onPreTask() {
                     pd.show();
                 }
 
-                public void onTaskFinish(String b, List<Test> result) {
-                    Log.d("b", b);
-                    if (null != result)
-                        Log.e("result", result.toString());
+                public void onTaskFinish(String b, String result) {
+                    if ("success".equals(b)) {
+                        if (result != null) {
+                            App.saveToken(result);
+                        }
+                    } else if ("fail".equals(b)) {
+                        if (null != result) {
+                            //TODO　根据result内容判断失败原因,并提示用户
+                        }
+                    }
+
+                    setParam(LoginActivity.this, Key.REMEMBER_PASSWORD, rememberPassCb.isChecked());
+                    if (rememberPassCb.isChecked()) {
+                        setParam(LoginActivity.this, Key.USER_NAME, userTv.getText().toString());
+                        setParam(LoginActivity.this, Key.PASSWORD, passTv.getText().toString());
+                    } else {
+                        setParam(LoginActivity.this, Key.USER_NAME, "");
+                        setParam(LoginActivity.this, Key.PASSWORD, "");
+                    }
+
+                    LoadTask task = new LoadTask(LoginActivity.this);
+                    task.execute();
+                    task.setTaskInfo(new TaskInfo<Boolean>() {
+                        @Override
+                        public void onPreTask() {
+                        }
+
+                        @Override
+                        public void onTaskFinish(String b, Boolean result) {
+                            if (null != pd && pd.isShowing()) {
+                                pd.dismiss();
+                            }
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
+                        }
+                    });
                 }
             });
             loginTask.execute();
 
-            setParam(this, Key.REMEMBER_PASSWORD, rememberPassCb.isChecked());
-            if (rememberPassCb.isChecked()) {
-                setParam(this, Key.USER_NAME, userTv.getText().toString());
-                setParam(this, Key.PASSWORD, passTv.getText().toString());
-            } else {
-                setParam(this, Key.USER_NAME, "");
-                setParam(this, Key.PASSWORD, "");
-            }
-
-            LoadTask task = new LoadTask(this);
-            task.execute();
-            task.setTaskInfo(new TaskInfo<Boolean>() {
-                @Override
-                public void onPreTask() {
-                }
-
-                @Override
-                public void onTaskFinish(String b, Boolean result) {
-                    if (null != pd && pd.isShowing()) {
-                        pd.dismiss();
-                    }
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
-                }
-            });
 
         }
     }

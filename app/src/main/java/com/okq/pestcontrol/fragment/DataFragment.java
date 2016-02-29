@@ -1,8 +1,10 @@
 package com.okq.pestcontrol.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,30 +13,31 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.activity.PestInfoDetailsActivity;
 import com.okq.pestcontrol.adapter.DataAdapter;
 import com.okq.pestcontrol.adapter.listener.OnItemClickListener;
+import com.okq.pestcontrol.adapter.listener.OnItemLongClickListener;
 import com.okq.pestcontrol.bean.PestInformation;
 import com.okq.pestcontrol.bean.param.PestScreeningParam;
 import com.okq.pestcontrol.dbDao.PestInformationDao;
+import com.okq.pestcontrol.task.DataTask;
 import com.okq.pestcontrol.util.SortUtil;
 import com.okq.pestcontrol.widget.ScreeningDialog;
 import com.tt.whorlviewlibrary.WhorlView;
 
-import org.xutils.common.util.LogUtil;
-import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * 数据展示页面
- * Created by Administrator on 2015/12/3.
+ * 数据展示页面 Created by Administrator on 2015/12/3.
  */
 @ContentView(value = R.layout.fragment_data)
 public class DataFragment extends BaseFragment {
@@ -47,6 +50,12 @@ public class DataFragment extends BaseFragment {
     private SwipeRefreshLayout dataFreshLayout;
     @ViewInject(value = R.id.whorl)
     private WhorlView whorl;
+    @ViewInject(value = R.id.data_select_bottom)
+    private LinearLayout selectBottom;
+    @ViewInject(value = R.id.data_select_button_all)
+    private Button selectBtn;
+    @ViewInject(value = R.id.data_select_button_delete)
+    private Button deleteBtn;
     private RecyclerView.LayoutManager mManager;
 
     private ArrayList<PestInformation> pests;
@@ -112,7 +121,58 @@ public class DataFragment extends BaseFragment {
                 }
 
         );
+        adapter.setOnLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public void onSelect(int position, int id, boolean checked) {
+//                deleteBtn.setBackgroundColor(Color.TRANSPARENT);
+                int size = adapter.getSelected().size();
+                if (size > 0) {
+                    deleteBtn.setBackgroundColor(getResources().getColor(R.color.RED));
+                    deleteBtn.setText(String.format("删除(%d)", size));
+                } else {
+                    deleteBtn.setBackgroundColor(Color.TRANSPARENT);
+                    deleteBtn.setText("取消");
+                }
+                if (size == informations.size()) {
+                    selectBtn.setText("取消全选");
+                }else {
+                    selectBtn.setText("全选");
+                }
+            }
+
+            @Override
+            public void onLongClick(int position, int id, boolean checked) {
+                selectBottom.setVisibility(View.VISIBLE);
+                deleteBtn.setBackgroundColor(getResources().getColor(R.color.RED));
+                deleteBtn.setText(String.format("删除(%d)", adapter.getSelected().size()));
+            }
+        });
 //        loadData();
+    }
+
+    @Event(value = R.id.data_select_button_all)
+    private void selectAll(View v) {
+        if (((Button) v).getText().equals("全选")) {
+            ((Button) v).setText("取消全选");
+            adapter.selectAll(true);
+            deleteBtn.setBackgroundColor(getResources().getColor(R.color.RED));
+            deleteBtn.setText(String.format("删除(%d)", adapter.getSelected().size()));
+        } else {
+            ((Button) v).setText("全选");
+            adapter.selectAll(false);
+            deleteBtn.setBackgroundColor(Color.TRANSPARENT);
+            deleteBtn.setText("取消");
+        }
+    }
+
+    @Event(value = R.id.data_select_button_delete)
+    private void delete(View view) {
+        if (((Button) view).getText().equals("取消")) {
+            adapter.clrSelectMod();
+            selectBottom.setVisibility(View.GONE);
+        } else {
+            Snackbar.make(menuPopupLocFlag, "删除", Snackbar.LENGTH_LONG).show();
+        }
     }
 
     /**
@@ -131,14 +191,36 @@ public class DataFragment extends BaseFragment {
      */
     private void loadAll() {
         whorl.start();
-        try {
-            if (null == screeningParam)
-                informations = new ArrayList<>(PestInformationDao.findAll());
+//        try {
+            if (null == screeningParam){
+                final ScreeningDialog screen = new ScreeningDialog(getContext(), getFragmentManager());
+                screen.setOnScreeningFinishListener(new ScreeningDialog.OnScreeningFinishListener() {
+                    @Override
+                    public void onFinished(PestScreeningParam data) {
+                        screeningParam = data;
+                        loadAll();
+//                        loadData();
+                        adapter.refreshData(informations);
+                        screen.dismiss();
+                    }
+
+                    @Override
+                    public PestScreeningParam onOpen() {
+                        return screeningParam;
+                    }
+                });
+                screen.show();
+                informations = new ArrayList<>();
+            }
+//                informations = new ArrayList<>(PestInformationDao.findAll());
             else
                 informations = new ArrayList<>(PestInformationDao.find(screeningParam));
-        } catch (DbException e) {
-            e.printStackTrace();
-        }
+//        } catch (DbException e) {
+//            e.printStackTrace();
+//        }
+
+        DataTask task = new DataTask("","","");
+
         whorl.stop();
     }
 

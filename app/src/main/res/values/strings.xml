@@ -22,14 +22,19 @@
         <item>蜗牛</item>
         <item>马陆</item>
     </string-array>
-    <string-array name="pest_area">
-        <item>区域wseq</item>
-        <item>区域gq</item>
-        <item>区域qssd</item>
-        <item>区域qfe</item>
-        <item>区域wsq</item>
-        <item>区域qew</item>
-        <item>区域qdf</item>
-        <item>区域qhg</item>
+    <string-array name="pest_data_type">
+        <item>全部</item>
+        <item>报警数据</item>
+        <item>超限数据</item>
+    </string-array>
+    <string-array name="pest_device">
+        <item>ok-1</item>
+        <item>ok-2</item>
+        <item>ok-3</item>
+        <item>ok-4</item>
+        <item>ok-5</item>
+        <item>ok-6</item>
+        <item>ok-7</item>
+        <item>ok-8</item>
     </string-array>
 </resources>

@@ -2,13 +2,10 @@ package com.okq.pestcontrol.application;
 
 import android.app.Application;
 
-import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.SDKInitializer;
 
 import org.xutils.DbManager;
 import org.xutils.x;
-
-import java.io.File;
 
 /**
  * Created by Administrator on 2015/12/3.
@@ -16,6 +13,7 @@ import java.io.File;
 public class App extends Application {
     private static DbManager.DaoConfig daoConfig;
     private static int mToolbarHeignt;
+    private static String mToken;
 
 
     @Override
@@ -55,5 +53,15 @@ public class App extends Application {
 
     public static int getToolbarHeignt() {
         return mToolbarHeignt;
+    }
+
+    public static void saveToken(String token) {
+        if (token != null) {
+            mToken = token;
+        }
+    }
+
+    public static String getToken() {
+        return null == mToken ? "" : mToken;
     }
 }

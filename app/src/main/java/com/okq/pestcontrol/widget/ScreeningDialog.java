@@ -14,7 +14,7 @@ import android.widget.EditText;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.application.App;
-import com.okq.pestcontrol.bean.PestKind;
+import com.okq.pestcontrol.bean.Device;
 import com.okq.pestcontrol.bean.param.PestScreeningParam;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
@@ -37,10 +37,10 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
     private static final String DATE_PICKER_END_TIME = "endTime";
     private static final String DATE_FORMAT = "yyyy/MM/dd HH:mm";
     private Button sureBtn;
-    private TextInputLayout areaTil;
-    private CloudEditText areaTv;
-    private TextInputLayout pestTil;
-    private CloudEditText pestTv;
+    private TextInputLayout deviceTil;
+    private CloudEditText deviceTv;
+    private TextInputLayout dataTypeTil;
+    private CloudEditText dataTypeTv;
     private TextInputLayout startTimeTil;
     private EditText startTimeTv;
     private TextInputLayout endTimeTil;
@@ -50,8 +50,8 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
     private DateTime startTimeDt;
     private DateTime endTimeDt;
     private FragmentManager mManager;
-    private String area;
-    private String pest;
+    private String device;
+    private String dataType;
     private String startTime;
     private String endTime;
 //    private CalendarDatePickerDialogFragment dialog;
@@ -109,39 +109,40 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
         PestScreeningParam psp = mListener.onOpen();
         if (null == psp)
             psp = new PestScreeningParam();
-        if (null != psp.getKind() && psp.getKind().size() > 0) {
-            StringBuilder sb = new StringBuilder();
-            for (PestKind kind :
-                    psp.getKind()) {
-                sb.append(kind.getKindName());
-                sb.append(",");
-            }
-            sb.deleteCharAt(sb.length() - 1);
-            pest = sb.toString();
-        } else
-            pest = "";
-        area = null == psp.getArea() ? "" : psp.getArea();
-//        pest = null == psp.getKind() ? "" : psp.getKind().getKindName();
+//        if (null != psp.getDataType() && psp.getDataType().size() > 0) {
+//            StringBuilder sb = new StringBuilder();
+//            for (PestKind kind :
+//                    psp.getDataType()) {
+//                sb.append(kind.getKindName());
+//                sb.append(",");
+//            }
+//            sb.deleteCharAt(sb.length() - 1);
+//            dataType = sb.toString();
+//        } else
+//            dataType = "";
+        dataType = null == psp.getDataType() ? "" : psp.getDataType();
+        device = null == psp.getDevice() ? "" : psp.getDevice();
+//        dataType = null == psp.getDataType() ? "" : psp.getDataType().getKindName();
         startTimeDt = psp.getStartTime() == 0 ? DateTime.now() : new DateTime(psp.getStartTime());
         endTimeDt = psp.getEndTime() == 0 ? DateTime.now() : new DateTime(psp.getEndTime());
-        areaTv.addSpan(area);
-        pestTv.addSpan(pest);
+        deviceTv.addSpan(device);
+        dataTypeTv.addSpan(dataType);
         startTimeTv.setText(startTimeDt.toString(DATE_FORMAT));
         endTimeTv.setText(endTimeDt.toString(DATE_FORMAT));
     }
 
     private void findView() {
         sureBtn = (Button) findViewById(R.id.sure_btn);
-        areaTil = (TextInputLayout) findViewById(R.id.area_til);
-        areaTv = (CloudEditText) findViewById(R.id.area_tv);
-        pestTil = (TextInputLayout) findViewById(R.id.pest_til);
-        pestTv = (CloudEditText) findViewById(R.id.pest_tv);
+        deviceTil = (TextInputLayout) findViewById(R.id.device_til);
+        deviceTv = (CloudEditText) findViewById(R.id.device_tv);
+        dataTypeTil = (TextInputLayout) findViewById(R.id.data_type_til);
+        dataTypeTv = (CloudEditText) findViewById(R.id.data_type_tv);
         startTimeTil = (TextInputLayout) findViewById(R.id.start_time_til);
         startTimeTv = (EditText) findViewById(R.id.start_time_tv);
         endTimeTil = (TextInputLayout) findViewById(R.id.end_time_til);
         endTimeTv = (EditText) findViewById(R.id.end_time_tv);
-        areaTil.setHint("区域");
-        pestTil.setHint("害虫种类");
+        deviceTil.setHint("设备");
+        dataTypeTil.setHint("数据类型");
         startTimeTil.setHint("开始时间");
         endTimeTil.setHint("结束时间");
         sureBtn.setOnClickListener(this);
@@ -159,23 +160,23 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
                     createDatePicker(DATE_PICKER_END_TIME);
             }
         });
-        areaTv.setOnClickListener(this);
-        pestTv.setOnClickListener(this);
-        ArrayList<String> areaItems = new ArrayList<>();
-        String[] areaArray = getContext().getResources().getStringArray(R.array.pest_area);
-        Collections.addAll(areaItems, areaArray);
-        ArrayList<String> pestItems = new ArrayList<>();
+        deviceTv.setOnClickListener(this);
+        dataTypeTv.setOnClickListener(this);
+        ArrayList<String> dataTypeItems = new ArrayList<>();
+        String[] dataTypeArray = getContext().getResources().getStringArray(R.array.pest_data_type);
+        Collections.addAll(dataTypeItems, dataTypeArray);
+        ArrayList<String> deviceItems = new ArrayList<>();
         DbManager db = x.getDb(App.getDaoConfig());
         try {
-            List<PestKind> all = db.findAll(PestKind.class);
-            for (PestKind kind : all) {
-                pestItems.add(kind.getKindName());
+            List<Device> all = db.findAll(Device.class);
+            for (Device device : all) {
+                deviceItems.add(device.getDeviceNum());
             }
         } catch (DbException e) {
             e.printStackTrace();
         }
-        pestTv.setItems(pestItems);
-        areaTv.setItems(areaItems);
+        dataTypeTv.setItems(dataTypeItems);
+        deviceTv.setItems(deviceItems);
     }
 
     @Override
@@ -184,9 +185,9 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
             case R.id.sure_btn:
                 onSureBtnClicked();
                 break;
-            case R.id.area_tv:
+            case R.id.device_tv:
                 break;
-            case R.id.pest_tv:
+            case R.id.data_type_tv:
                 break;
         }
     }
@@ -313,21 +314,22 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
      */
     private void onSureBtnClicked() {
         PestScreeningParam psp = new PestScreeningParam();
-        List<PestKind> pk = new ArrayList<>();
-        try {
-            pk = x.getDb(App.getDaoConfig()).selector(PestKind.class).where("kindName", "in", pestTv.getAllReturnStringList()).findAll();
-        } catch (DbException e) {
-            e.printStackTrace();
-        }
         StringBuilder a = new StringBuilder();
-        for (String area : areaTv.getAllReturnStringList()) {
-            a.append(area);
+        for (String device : dataTypeTv.getAllReturnStringList()) {
+            a.append(device);
             a.append(",");
         }
         if (a.length() > 0)
             a.deleteCharAt(a.length() - 1);
-        psp.setArea(a.toString());
-        psp.setKind(pk);
+        StringBuilder d = new StringBuilder();
+        for (String device : deviceTv.getAllReturnStringList()) {
+            d.append(device);
+            d.append(",");
+        }
+        if (d.length() > 0)
+            d.deleteCharAt(a.length() - 1);
+        psp.setDevice(d.toString());
+        psp.setDataType(a.toString());
         psp.setStartTime(startTimeDt.getMillis());
         psp.setEndTime(endTimeDt.getMillis());
         mListener.onFinished(psp);

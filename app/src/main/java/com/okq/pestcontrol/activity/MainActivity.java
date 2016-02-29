@@ -92,24 +92,6 @@ public class MainActivity extends BaseActivity {
                     }
                 });
                 menu.show();
-
-//                MenuBuilder builder = new MenuBuilder(MainActivity.this);
-//                builder.add("我的账户").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//                    @Override
-//                    public boolean onMenuItemClick(MenuItem item) {
-//
-//                        return true;
-//                    }
-//                });
-//                builder.add("注销").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//                    @Override
-//                    public boolean onMenuItemClick(MenuItem item) {
-//
-//                        return true;
-//                    }
-//                });
-//                MenuPopupHelper helper = new MenuPopupHelper(MainActivity.this, builder, userHeader,false,R.style.menuPopup,R.style.menuPopup);
-//                helper.show();
             }
         });
     }

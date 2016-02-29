@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:menu="data_menu"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:menu="data_menu">
 
     <View
         android:id="@+id/data_fra_menu_flag"
         android:layout_width="match_parent"
-        android:layout_height="1dp" />
+        android:layout_height="1dp"/>
 
     <com.tt.whorlviewlibrary.WhorlView
         android:id="@+id/whorl"
@@ -26,14 +26,41 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/data_fra_data_fresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/data_select_bottom">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/data_fra_data_recy"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="vertical" />
+            android:scrollbars="vertical"/>
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/data_select_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/BLUE_GREY"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/data_select_button_all"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="全选"/>
+
+        <Button
+            android:id="@+id/data_select_button_delete"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="删除"/>
+    </LinearLayout>
 
 </RelativeLayout>

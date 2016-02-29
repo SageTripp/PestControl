@@ -4,14 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.provider.Settings;
 import android.view.WindowManager;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.okq.pestcontrol.util.NetUtil;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
@@ -37,7 +34,7 @@ public abstract class HttpTask<R> {
                 dialog.setButton(DialogInterface.BUTTON_POSITIVE, "去设置", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent("android.settings.WIRELESS_SETTINGS");
+                        Intent intent = new Intent(Settings.ACTION_SETTINGS);
                         mContext.startActivity(intent);
                     }
                 });
@@ -48,6 +45,7 @@ public abstract class HttpTask<R> {
                     }
                 });
                 dialog.show();
+                return;
             }
         }
         if (null != info) {
@@ -58,28 +56,31 @@ public abstract class HttpTask<R> {
 
     void doInBackground() {
         RequestParams params = setParams();
+        params.setConnectTimeout(15 * 1000);
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                LogUtil.e("success:" + result);
-                String detail = "";
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    detail = jsonObject.getString("detail");
-                    LogUtil.e(detail);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Gson gson = new Gson();
-                R o = gson.fromJson(detail, new TypeToken<R>() {}.getType());
-                if(null != info){
-                    info.onTaskFinish("success",o);
-                }
+//                LogUtil.e("success:" + result);
+//                String detail = "";
+//                try {
+//                    JSONObject jsonObject = new JSONObject(result);
+//                    detail = jsonObject.getString("detail");
+//                    LogUtil.e(detail);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//                Gson gson = new Gson();
+//                R o = gson.fromJson(detail, new TypeToken<R>() {}.getType());
+//                if(null != info){
+//                    info.onTaskFinish("success",o);
+//                }
+                finish(result);
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 LogUtil.e("fail:" + ex);
+                finish("ex:" + ex.getLocalizedMessage());
             }
 
             @Override
@@ -89,10 +90,10 @@ public abstract class HttpTask<R> {
 
             @Override
             public void onFinished() {
-                LogUtil.e("finish");
-                if (null != info) {
-                    info.onTaskFinish("", null);
-                }
+//                LogUtil.e("finish");
+//                if (null != info) {
+//                    info.onTaskFinish("", null);
+//                }
             }
         });
     }
