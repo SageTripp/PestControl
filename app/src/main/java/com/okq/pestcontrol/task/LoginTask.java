@@ -35,7 +35,7 @@ public class LoginTask extends HttpTask<String> {
     void finish(String r) {
         if (null != info) {
 
-            if (!r.equals("ex:")) {
+            if (!r.contains("ex:")) {
                 try {
                     JSONObject jsonObject = new JSONObject(r);
                     String status = jsonObject.getString("status");
@@ -52,6 +52,7 @@ public class LoginTask extends HttpTask<String> {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    info.onTaskFinish("fail", null);
                 }
             } else {
                 Toast.makeText(mContext, r, Toast.LENGTH_LONG).show();
