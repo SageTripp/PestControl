@@ -1,8 +1,11 @@
 package com.okq.pestcontrol.widget;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -23,6 +26,7 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -40,7 +44,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2015/12/7.
  */
-public class CloudEditText extends EditText {
+public class ThresholdCloudEditText extends EditText {
     private Paint textPaint = new Paint();
     private Rect textRect = new Rect();
     private Drawable rightDrawable;
@@ -53,19 +57,21 @@ public class CloudEditText extends EditText {
     private ArrayList<String> showItems;
     private boolean touchable = true;
 
-    public CloudEditText(Context context) {
+    private EditText editText;
+
+    public ThresholdCloudEditText(Context context) {
         super(context);
         mPopup = new ListPopupWindow(context);
         init();
     }
 
-    public CloudEditText(Context context, AttributeSet attrs) {
+    public ThresholdCloudEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         mPopup = new ListPopupWindow(context);
         init();
     }
 
-    public CloudEditText(Context context, AttributeSet attrs, int defStyle) {
+    public ThresholdCloudEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mPopup = new ListPopupWindow(context);
         init();
@@ -88,7 +94,7 @@ public class CloudEditText extends EditText {
             List<String> allReturnStringList = getAllReturnStringList();
             for (String span : allReturnStringList) {
                 if (items.contains(span.split("=")[0]))
-                    showItems.remove(span);
+                    showItems.remove(span.split("=")[0]);
             }
             mPopup.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, showItems));
             mPopup.setAnchorView(this);
@@ -100,9 +106,24 @@ public class CloudEditText extends EditText {
     private void initPopup() {
         mPopup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                addSpan(showItems.get(position), showItems.get(position));
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+//                addSpan(showItems.get(position), showItems.get(position));
                 mPopup.dismiss();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                editText = new EditText(getContext());
+                editText.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+                editText.setTextColor(Color.BLACK);
+                builder.setTitle("设置" + showItems.get(position) + "限值");
+                builder.setView(editText);
+                builder.setNegativeButton("完成", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!TextUtils.isEmpty(editText.getText()))
+                            addSpan(showItems.get(position) + "=" + editText.getText(), showItems.get(position) + "=" + editText.getText());
+                    }
+                });
+                builder.setCancelable(false);
+                builder.create().show();
 //                clearFocus();
             }
         });
@@ -176,6 +197,7 @@ public class CloudEditText extends EditText {
             return;
         }
         getText().append(showText);
+//        setText(getText() + showText);
         SpannableString spannableString = new SpannableString(getText());
         generateOneSpan(spannableString, new UnSpanText(spannableString.length() - showText.length(), spannableString.length(), showText, returnText));
         setText(spannableString);
@@ -196,6 +218,22 @@ public class CloudEditText extends EditText {
             list.add(unSpanText.returnText.toString());
         }
         return list;
+    }
+
+    /**
+     * 获得所有的returnText列表
+     */
+    public String getAllReturnString() {
+        List<String> list = new ArrayList<String>(getAllReturnStringList());
+        StringBuilder sb = new StringBuilder();
+        for (String s : list) {
+            sb.append(s);
+            sb.append(",");
+        }
+        if (",".equals(sb.charAt(sb.length() - 1))) {
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        return sb.toString();
     }
 
     @Override
@@ -393,10 +431,9 @@ public class CloudEditText extends EditText {
     }
 
     /**
-     * If an object of this type is attached to the text of a TextView
-     * with a movement method of LinkTouchMovementMethod, the affected spans of
-     * text can be selected.  If touched, the {@link #onTouchDelete} method will
-     * be called.
+     * If an object of this type is attached to the text of a TextView with a movement method of
+     * LinkTouchMovementMethod, the affected spans of text can be selected.  If touched, the {@link
+     * #onTouchDelete} method will be called.
      */
     public abstract class TouchableSpan extends CharacterStyle implements UpdateAppearance {
         private UnSpanText unSpanText;

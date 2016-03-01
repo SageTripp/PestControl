@@ -52,6 +52,7 @@
 
     </android.support.v7.widget.CardView>
 
+
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -59,6 +60,14 @@
         app:cardBackgroundColor="@color/DEEP_ORANGE"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp">
+
+        <Button
+            android:id="@+id/device_details_edit_btn"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="end"
+            android:background="@drawable/ic_device_edit"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -75,31 +84,40 @@
                 tools:text="设备状态:在用"/>
 
             <TextView
-                android:id="@+id/device_details_buy_time"
+                android:id="@+id/device_details_collect_interval"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
                 android:textColor="@color/toolbar_text"
                 android:textSize="12sp"
-                tools:text="购买时间:2015/05/08"/>
+                tools:text="采集间隔:20"/>
 
             <TextView
-                android:id="@+id/device_details_install_time"
+                android:id="@+id/device_details_upload_interval"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
                 android:textColor="@color/toolbar_text"
                 android:textSize="12sp"
-                tools:text="安装时间:2015/05/08"/>
+                tools:text="上传间隔:20"/>
 
             <TextView
-                android:id="@+id/device_details_remove_time"
+                android:id="@+id/device_details_tels"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
                 android:textColor="@color/toolbar_text"
                 android:textSize="12sp"
-                tools:text="拆除时间:2015/05/08"/>
+                tools:text="报警电话:1231213232"/>
+
+            <TextView
+                android:id="@+id/device_details_pest_threshold"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/toolbar_text"
+                android:textSize="12sp"
+                tools:text="害虫阈值:0010"/>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

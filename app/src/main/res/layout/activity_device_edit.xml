@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical">
+
+    <include layout="@layout/toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="间隔设置:"
+                android:textColor="@color/BLUE"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/device_edit_collect_interval"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:allowUndo="true"
+                        android:hint="采集间隔(小时)"
+                        android:inputType="number"
+                        android:textColor="@color/primary_text"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/device_edit_upload_interval"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:allowUndo="true"
+                        android:hint="上传间隔(小时)"
+                        android:inputType="number"
+                        android:textColor="@color/primary_text"/>
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="报警号码:"
+                android:textColor="@color/BLUE"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/device_edit_alert_num_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:allowUndo="true"
+                        android:hint="报警号码一"
+                        android:inputType="phone"
+                        android:textColor="@color/primary_text"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/device_edit_alert_num_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:allowUndo="true"
+                        android:hint="报警号码二"
+                        android:inputType="phone"
+                        android:textColor="@color/primary_text"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/device_edit_alert_num_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:allowUndo="true"
+                        android:hint="报警号码三"
+                        android:inputType="phone"
+                        android:textColor="@color/primary_text"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/device_edit_alert_num_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:allowUndo="true"
+                        android:hint="报警号码四"
+                        android:inputType="phone"
+                        android:textColor="@color/primary_text"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/device_edit_alert_num_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:allowUndo="true"
+                        android:hint="报警号码五"
+                        android:inputType="phone"
+                        android:textColor="@color/primary_text"/>
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="害虫阈值:"
+                android:textColor="@color/BLUE"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintAnimationEnabled="true">
+
+                <com.okq.pestcontrol.widget.ThresholdCloudEditText
+                    android:id="@+id/device_edit_pest_threshold"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:allowUndo="true"
+                    android:hint="设置害虫阈值"
+                    android:maxLines="10"
+                    android:singleLine="false"
+                    />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

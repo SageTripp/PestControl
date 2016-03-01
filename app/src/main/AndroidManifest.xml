@@ -52,6 +52,7 @@
 
         <activity android:name=".activity.DeviceDetailsActivity"/>
         <activity android:name=".activity.AboutUsActivity"/>
+        <activity android:name=".activity.EditDeviceActivity"/>
 
         <service
             android:name=".service.TestSocketService"

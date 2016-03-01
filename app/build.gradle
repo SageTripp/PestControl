@@ -29,7 +29,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
-//    compile 'com.code-troopers.betterpickers:library:2.2.1'
+    //    compile 'com.code-troopers.betterpickers:library:2.2.1'
     compile 'com.github.flavienlaurent.datetimepicker:library:0.0.2'
     compile 'org.xutils:xutils:3.1.20'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'

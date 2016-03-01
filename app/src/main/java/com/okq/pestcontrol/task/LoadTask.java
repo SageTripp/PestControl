@@ -36,6 +36,8 @@ public class LoadTask extends BaseTask<Boolean> {
             dbManager.dropTable(PestKind.class);
             dbManager.dropTable(PestInformation.class);
             dbManager.dropTable(Device.class);
+
+            //
             ArrayList<PestKind> kindList = new ArrayList<>();
             for (int i = 0; i < kinds.length; i++) {
                 String kind = kinds[i];
@@ -44,6 +46,8 @@ public class LoadTask extends BaseTask<Boolean> {
                 pestKind.setKindName(kind);
                 kindList.add(pestKind);
             }
+
+            //虫害信息/历史数据
             for (int i = 0; i < 300; i++) {
                 PestInformation pestInformation = new PestInformation();
                 pestInformation.setArea(areas[((int) (Math.random() * areas.length))]);
@@ -61,26 +65,21 @@ public class LoadTask extends BaseTask<Boolean> {
                 PestInformationDao.save(pestInformation);
             }
 
-            String[] places = new String[]{"地点a", "地点se", "地点we", "地点lks"};
-            double[] lons = new double[]{113.601556, 113.584308, 113.478524,113.565151};
-            double[] lats = new double[]{34.918237, 34.826311, 34.682055,34.814058};
+            //设备信息
+            double[] lons = new double[]{113.601556, 113.584308, 113.478524, 113.565151};
+            double[] lats = new double[]{34.918237, 34.826311, 34.682055, 34.814058};
 
             for (int i = 0; i < 5; i++) {
                 Device device = new Device();
-                device.setStatus("在用");
+                device.setStatus(i % 2);
                 device.setDeviceNum("0000000" + i);
                 device.setDeviceModel("Q" + i);
-                device.setArea(areas[i%4]);
-                device.setPlace(places[i%4]);
-                device.setLat(lats[i%4]);
-                device.setLon(lons[i%4]);
-                long buy = new DateTime(2015, i % 12 + 1, i % 30 + 1, i % 24, i % 60).getMillis();
-//                long send = new DateTime(2015, (int) ((Math.random() * 3 + 10)), (int) (Math.random() * 30 + 1), (i + 5) % 24, (i + 5) % 60).getMillis();
-                long install = new DateTime(2015, (i + 2) % 12 + 1, (i + 4) % 30 + 1, (i + 5) % 24, (i + 2) % 60).getMillis();
-                long remove = DateTime.now().plusDays((int) -(Math.random() * 90)).getMillis();
-                device.setBuyTime(buy);
-                device.setInstallTime(install);
-                device.setRemoveTime(remove);
+                device.setCollectInterval(2 * i);
+                device.setUploadInterval(3 * i);
+                device.setTels("15912345678,15887654321");
+                device.setPestThreshold("棉铃虫=12,马陆=13");
+                device.setLat(lats[i % 4]);
+                device.setLon(lons[i % 4]);
                 DeviceDao.save(device);
             }
 

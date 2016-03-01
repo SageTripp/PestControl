@@ -21,6 +21,12 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.adapter.listener.OnItemClickListener;
 import com.okq.pestcontrol.bean.Device;
@@ -60,12 +66,28 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
     }
 
     @Override
-    public void onBindViewHolder(DeviceAdapter.DeviceHolder holder, int position) {
+    public void onBindViewHolder(final DeviceAdapter.DeviceHolder holder, int position) {
         Device device = deviceList.get(position);
         holder.setDeviceNum(String.format("%s(%s)", device.getDeviceNum(), device.getDeviceModel()));
-        holder.setLocation(String.format("%s %s", device.getArea(), device.getPlace()));
+        GeoCoder geoCoder = GeoCoder.newInstance();
+        geoCoder.setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener() {
+            @Override
+            public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+            }
+
+            @Override
+            public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
+                if (reverseGeoCodeResult != null && reverseGeoCodeResult.error == SearchResult.ERRORNO.NO_ERROR) {
+                    holder.setLocation(reverseGeoCodeResult.getAddress());
+                }
+            }
+        });
+        ReverseGeoCodeOption option = new ReverseGeoCodeOption();
+        option.location(new LatLng(device.getLat(), device.getLon()));
+        geoCoder.reverseGeoCode(option);
+//        holder.setLocation(String.format("%s %s", device.getArea(), device.getPlace()));
         holder.setMap(device.getLat(), device.getLon());
-        holder.setStatus(String.format("状态:%s", device.getStatus()));
+        holder.setStatus(String.format("状态:%s", device.getStatus() == 1 ? "在线" : "离线"));
     }
 
     @Override

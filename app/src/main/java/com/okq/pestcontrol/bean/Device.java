@@ -6,8 +6,7 @@ import org.xutils.db.annotation.Table;
 import java.io.Serializable;
 
 /**
- * 设备信息
- * Created by Administrator on 2015/12/17.
+ * 设备信息 Created by Administrator on 2015/12/17.
  */
 @Table(name = "Device")
 public class Device implements Serializable {
@@ -23,31 +22,31 @@ public class Device implements Serializable {
      */
     @Column(name = "deviceModel")
     private String deviceModel;
-    /**
-     * 购买时间
-     */
-    @Column(name = "buyTime")
-    private long buyTime;
-    /**
-     * 安装时间
-     */
-    @Column(name = "installTime")
-    private long installTime;
-    /**
-     * 拆除时间
-     */
-    @Column(name = "removeTime")
-    private long removeTime;
-    /**
-     * 区域
-     */
-    @Column(name = "area")
-    private String area;
-    /**
-     * 具体地点
-     */
-    @Column(name = "place")
-    private String place;
+//    /**
+//     * 购买时间
+//     */
+//    @Column(name = "buyTime")
+//    private long buyTime;
+//    /**
+//     * 安装时间
+//     */
+//    @Column(name = "installTime")
+//    private long installTime;
+//    /**
+//     * 拆除时间
+//     */
+//    @Column(name = "removeTime")
+//    private long removeTime;
+//    /**
+//     * 区域
+//     */
+//    @Column(name = "area")
+//    private String area;
+//    /**
+//     * 具体地点
+//     */
+//    @Column(name = "place")
+//    private String place;
     /**
      * 纬度
      */
@@ -63,8 +62,31 @@ public class Device implements Serializable {
      * 状态
      */
     @Column(name = "status")
-    private String status;
+    private int status;
 
+    /**
+     * 采集间隔
+     */
+    @Column(name = "collectInterval")
+    private int collectInterval;
+
+    /**
+     * 上传间隔
+     */
+    @Column(name = "uploadInterval")
+    private int uploadInterval;
+
+    /**
+     * 报警号码 (,间隔)
+     */
+    @Column(name = "tels")
+    private String tels;
+
+    /**
+     * 害虫阈值 (格式: 害虫1=12,害虫2=3,...)
+     */
+    @Column(name = "pestThreshold")
+    private String pestThreshold;
 
     /**
      * 获取设备编号
@@ -102,95 +124,95 @@ public class Device implements Serializable {
         this.deviceModel = deviceModel;
     }
 
-    /**
-     * 获取购买时间
-     *
-     * @return 购买时间
-     */
-    public long getBuyTime() {
-        return buyTime;
-    }
-
-    /**
-     * 设置购买时间
-     *
-     * @param buyTime 购买时间
-     */
-    public void setBuyTime(long buyTime) {
-        this.buyTime = buyTime;
-    }
-
-    /**
-     * 获取安装时间
-     *
-     * @return 安装时间
-     */
-    public long getInstallTime() {
-        return installTime;
-    }
-
-    /**
-     * 设置安装时间
-     *
-     * @param installTime 安装时间
-     */
-    public void setInstallTime(long installTime) {
-        this.installTime = installTime;
-    }
-
-    /**
-     * 获取拆除时间
-     *
-     * @return 拆除时间
-     */
-    public long getRemoveTime() {
-        return removeTime;
-    }
-
-    /**
-     * 设置拆除时间
-     *
-     * @param removeTime 拆除时间
-     */
-    public void setRemoveTime(long removeTime) {
-        this.removeTime = removeTime;
-    }
-
-    /**
-     * 获取区域
-     *
-     * @return 区域
-     */
-    public String getArea() {
-        return area;
-    }
-
-    /**
-     * 设置区域
-     *
-     * @param area 区域
-     */
-    public void setArea(String area) {
-        this.area = area;
-    }
-
-    /**
-     * 获取具体地点
-     *
-     * @return 具体地点
-     */
-    public String getPlace() {
-        return place;
-    }
-
-    /**
-     * 设置具体地点
-     *
-     * @param place 具体地点
-     */
-    public void setPlace(String place) {
-        this.place = place;
-    }
+//    /**
+//     * 获取购买时间
+//     *
+//     * @return 购买时间
+//     */
+//    public long getBuyTime() {
+//        return buyTime;
+//    }
+//
+//    /**
+//     * 设置购买时间
+//     *
+//     * @param buyTime 购买时间
+//     */
+//    public void setBuyTime(long buyTime) {
+//        this.buyTime = buyTime;
+//    }
+//
+//    /**
+//     * 获取安装时间
+//     *
+//     * @return 安装时间
+//     */
+//    public long getInstallTime() {
+//        return installTime;
+//    }
+//
+//    /**
+//     * 设置安装时间
+//     *
+//     * @param installTime 安装时间
+//     */
+//    public void setInstallTime(long installTime) {
+//        this.installTime = installTime;
+//    }
+//
+//    /**
+//     * 获取拆除时间
+//     *
+//     * @return 拆除时间
+//     */
+//    public long getRemoveTime() {
+//        return removeTime;
+//    }
+//
+//    /**
+//     * 设置拆除时间
+//     *
+//     * @param removeTime 拆除时间
+//     */
+//    public void setRemoveTime(long removeTime) {
+//        this.removeTime = removeTime;
+//    }
+//
+//    /**
+//     * 获取区域
+//     *
+//     * @return 区域
+//     */
+//    public String getArea() {
+//        return area;
+//    }
+//
+//    /**
+//     * 设置区域
+//     *
+//     * @param area 区域
+//     */
+//    public void setArea(String area) {
+//        this.area = area;
+//    }
+//
+//    /**
+//     * 获取具体地点
+//     *
+//     * @return 具体地点
+//     */
+//    public String getPlace() {
+//        return place;
+//    }
+//
+//    /**
+//     * 设置具体地点
+//     *
+//     * @param place 具体地点
+//     */
+//    public void setPlace(String place) {
+//        this.place = place;
+//    }
 
     /**
      * 获取纬度
@@ -233,7 +255,7 @@ public class Device implements Serializable {
      *
      * @return 设备状态
      */
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
@@ -242,7 +264,79 @@ public class Device implements Serializable {
      *
      * @param status 设备状态
      */
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
+    }
+
+    /**
+     * 获取采集间隔
+     *
+     * @return 采集间隔
+     */
+    public int getCollectInterval() {
+        return collectInterval;
+    }
+
+    /**
+     * 设置采集间隔
+     *
+     * @param collectInterval 采集间隔
+     */
+    public void setCollectInterval(int collectInterval) {
+        this.collectInterval = collectInterval;
+    }
+
+    /**
+     * 获取上传间隔
+     *
+     * @return 上传间隔
+     */
+    public int getUploadInterval() {
+        return uploadInterval;
+    }
+
+    /**
+     * 设置上传间隔
+     *
+     * @param uploadInterval 上传间隔
+     */
+    public void setUploadInterval(int uploadInterval) {
+        this.uploadInterval = uploadInterval;
+    }
+
+    /**
+     * 获取报警号码
+     *
+     * @return 报警号码
+     */
+    public String getTels() {
+        return tels;
+    }
+
+    /**
+     * 设置报警号码
+     *
+     * @param tels 报警号码
+     */
+    public void setTels(String tels) {
+        this.tels = tels;
+    }
+
+    /**
+     * 获取害虫阈值
+     *
+     * @return 害虫阈值
+     */
+    public String getPestThreshold() {
+        return pestThreshold;
+    }
+
+    /**
+     * 设置害虫阈值
+     *
+     * @param pestThreshold 害虫阈值
+     */
+    public void setPestThreshold(String pestThreshold) {
+        this.pestThreshold = pestThreshold;
     }
 }

@@ -113,7 +113,7 @@ public class LoginActivity extends BaseActivity {
                             //TODO　根据result内容判断失败原因,并提示用户
                         }
                     }
-
+                    //登录成功之后加载数据并跳转到主页面
                     setParam(LoginActivity.this, Key.REMEMBER_PASSWORD, rememberPassCb.isChecked());
                     if (rememberPassCb.isChecked()) {
                         setParam(LoginActivity.this, Key.USER_NAME, userTv.getText().toString());

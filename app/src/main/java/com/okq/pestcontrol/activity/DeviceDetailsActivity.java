@@ -1,11 +1,13 @@
 package com.okq.pestcontrol.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.baidu.mapapi.map.BaiduMap;
@@ -18,11 +20,17 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.bean.Device;
 
-import org.joda.time.DateTime;
 import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
 /**
@@ -47,12 +55,16 @@ public class DeviceDetailsActivity extends BaseActivity {
 
     @ViewInject(value = R.id.device_details_status)
     private TextView statusTv;
-    @ViewInject(value = R.id.device_details_buy_time)
-    private TextView buyTimeTv;
-    @ViewInject(value = R.id.device_details_install_time)
-    private TextView installTimeTv;
-    @ViewInject(value = R.id.device_details_remove_time)
-    private TextView removeTimeTv;
+    @ViewInject(value = R.id.device_details_collect_interval)
+    private TextView collectIntervalTv;
+    @ViewInject(value = R.id.device_details_upload_interval)
+    private TextView upIntervalTv;
+    @ViewInject(value = R.id.device_details_tels)
+    private TextView telsTv;
+    @ViewInject(value = R.id.device_details_pest_threshold)
+    private TextView pestThresholdTv;
+    @ViewInject(value = R.id.device_details_edit_btn)
+    private Button editBtn;
     private BaiduMap baiduMap;
     private Device device;
 
@@ -104,20 +116,55 @@ public class DeviceDetailsActivity extends BaseActivity {
         baiduMap.addOverlay(option);
         MapStatus mapStatus = new MapStatus.Builder()
                 .target(point)
-                .zoom(14)
+                .zoom(15)
                 .build();
         baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(mapStatus));
     }
 
     private void setDeviceData() {
-        areaTv.setText(device.getArea());
-        addressTv.setText(device.getPlace());
+//        areaTv.setText(device.getArea());
+        GeoCoder geoCoder = GeoCoder.newInstance();
+        geoCoder.setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener() {
+            @Override
+            public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+            }
+
+            @Override
+            public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
+                if (reverseGeoCodeResult != null && reverseGeoCodeResult.error == SearchResult.ERRORNO.NO_ERROR)
+                    addressTv.setText(reverseGeoCodeResult.getAddress());
+            }
+        });
+        ReverseGeoCodeOption option = new ReverseGeoCodeOption();
+        option.location(new LatLng(device.getLat(), device.getLon()));
+        geoCoder.reverseGeoCode(option);
         positionTv.setText(String.format("%s,%s", device.getLat(), device.getLon()));
 
-        statusTv.setText(device.getStatus());
-        buyTimeTv.setText(String.format("购买时间:%s", device.getBuyTime() == 0.0 ? "----/--/--" : new DateTime(device.getBuyTime()).toString(DATE_FORMAT)));
-        installTimeTv.setText(String.format("安装时间:%s", device.getInstallTime() == 0.0 ? "----/--/--" : new DateTime(device.getInstallTime()).toString(DATE_FORMAT)));
-        removeTimeTv.setText(String.format("拆除时间:%s", device.getRemoveTime() == 0.0 ? "----/--/--" : new DateTime(device.getRemoveTime()).toString(DATE_FORMAT)));
+        statusTv.setText(device.getStatus() == 1 ? "在线" : "离线");
+        collectIntervalTv.setText(String.format("%d", device.getCollectInterval()));
+        upIntervalTv.setText(String.format("%d", device.getUploadInterval()));
+        telsTv.setText(device.getTels());
+        pestThresholdTv.setText(device.getPestThreshold());
+        if (device.getStatus() == 1) {
+            editBtn.setVisibility(View.VISIBLE);
+        }
+//        collectIntervalTv.setText(String.format("购买时间:%s", device.getBuyTime() == 0.0 ? "----/--/--" : new DateTime(device.getBuyTime()).toString(DATE_FORMAT)));
+//        upIntervalTv.setText(String.format("安装时间:%s", device.getInstallTime() == 0.0 ? "----/--/--" : new DateTime(device.getInstallTime()).toString(DATE_FORMAT)));
+//        telsTv.setText(String.format("拆除时间:%s", device.getRemoveTime() == 0.0 ? "----/--/--" : new DateTime(device.getRemoveTime()).toString(DATE_FORMAT)));
     }
 
+    @Event(value = R.id.device_details_edit_btn)
+    private void editDevice(View view) {
+        Intent intent = new Intent(this, EditDeviceActivity.class);
+        intent.putExtra("device",device);
+        startActivityForResult(intent,123);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 123){
+
+        }
+    }
 }
