@@ -25,6 +25,7 @@ import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.bean.Device;
 import com.okq.pestcontrol.bean.PestInformation;
 import com.okq.pestcontrol.bean.param.PestScreeningParam;
+import com.okq.pestcontrol.dbDao.PestInformationDao;
 import com.okq.pestcontrol.task.DataTask;
 import com.okq.pestcontrol.task.DeleteHistoryDataTask;
 import com.okq.pestcontrol.task.TaskInfo;
@@ -295,7 +296,12 @@ public class DataFragment extends BaseFragment {
                     pd.dismiss();
                 dataFreshLayout.setRefreshing(false);
                 if (b.equals("fail")) {
-
+                    try {
+                        informations = new ArrayList<>(PestInformationDao.findAll());
+                        adapter.refreshData(informations);
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                    }
                 } else if (b.equals("success")) {
                     informations = new ArrayList<PestInformation>(result);
                     adapter.refreshData(informations);

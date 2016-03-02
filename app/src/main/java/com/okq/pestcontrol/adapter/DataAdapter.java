@@ -1,6 +1,7 @@
 package com.okq.pestcontrol.adapter;
 
 import android.content.Context;
+import android.os.Vibrator;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -176,6 +177,8 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
             isCheckMod = true;
             if (null != longClickListener) {
 //                setSelected();
+                Vibrator vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+                vibrator.vibrate(500);
                 sba.put(getAdapterPosition(), true);
                 longClickListener.onLongClick(getAdapterPosition(), getAdapterPosition(), true);
                 notifyDataSetChanged();

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,11 +18,9 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.formatter.XAxisValueFormatter;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.renderer.YAxisRenderer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.bean.PestInformation;
@@ -39,13 +36,10 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
- * 图表页面
- * Created by Administrator on 2015/12/12.
+ * 图表页面 Created by Administrator on 2015/12/12.
  */
 @ContentView(value = R.layout.fragment_chart)
 public class ChartFragment extends BaseFragment implements OnChartValueSelectedListener {
@@ -143,7 +137,7 @@ public class ChartFragment extends BaseFragment implements OnChartValueSelectedL
             }
         }
 
-        LineDataSet set1 = new LineDataSet(yVals, "害虫总数");
+        LineDataSet set1 = new LineDataSet(yVals, "害虫数目");
 //        set1.enableDashedLine(10f, 5f, 0f);
 //        set1.enableDashedHighlightLine(10f, 5f, 0f);
         set1.setColor(Color.GREEN);
@@ -188,7 +182,6 @@ public class ChartFragment extends BaseFragment implements OnChartValueSelectedL
 
     @Override
     public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-
     }
 
     @Override
