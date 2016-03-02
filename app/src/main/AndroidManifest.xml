@@ -29,7 +29,9 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="nIzzahFdC75BZKz9qD4XgFdl"/>
 
-        <activity android:name=".activity.MainActivity">
+        <activity
+            android:name=".activity.MainActivity"
+            android:windowSoftInputMode="stateHidden">
 
         </activity>
         <activity android:name=".activity.LoadActivity">
@@ -52,7 +54,9 @@
 
         <activity android:name=".activity.DeviceDetailsActivity"/>
         <activity android:name=".activity.AboutUsActivity"/>
-        <activity android:name=".activity.EditDeviceActivity"/>
+        <activity
+            android:name=".activity.EditDeviceActivity"
+            android:windowSoftInputMode="stateHidden"/>
 
         <service
             android:name=".service.TestSocketService"

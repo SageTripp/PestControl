@@ -50,7 +50,7 @@ public class LoadTask extends BaseTask<Boolean> {
             //虫害信息/历史数据
             for (int i = 0; i < 300; i++) {
                 PestInformation pestInformation = new PestInformation();
-                pestInformation.setArea(areas[((int) (Math.random() * areas.length))]);
+                pestInformation.setDevice(areas[((int) (Math.random() * areas.length))]);
                 pestInformation.setPestKind(kindList.get((int) (Math.random() * (kinds.length - 1))));
                 pestInformation.setTemperature((int) (30 + Math.random() * 9));
                 pestInformation.setHumidity((int) (80 + Math.random() * 9));

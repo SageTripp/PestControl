@@ -85,7 +85,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
         ReverseGeoCodeOption option = new ReverseGeoCodeOption();
         option.location(new LatLng(device.getLat(), device.getLon()));
         geoCoder.reverseGeoCode(option);
-//        holder.setLocation(String.format("%s %s", device.getArea(), device.getPlace()));
+//        holder.setLocation(String.format("%s %s", device.getDevice(), device.getPlace()));
         holder.setMap(device.getLat(), device.getLon());
         holder.setStatus(String.format("状态:%s", device.getStatus() == 1 ? "在线" : "离线"));
     }

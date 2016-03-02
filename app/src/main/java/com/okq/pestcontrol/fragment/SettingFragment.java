@@ -1,5 +1,8 @@
 package com.okq.pestcontrol.fragment;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -9,7 +12,9 @@ import android.widget.TextView;
 
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.activity.AboutUsActivity;
-import com.okq.pestcontrol.service.TestSocketService;
+import com.okq.pestcontrol.task.DownloadTask;
+import com.okq.pestcontrol.task.TaskInfo;
+import com.okq.pestcontrol.task.UpdateTask;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -23,9 +28,6 @@ public class SettingFragment extends BaseFragment {
 
     @ViewInject(value = R.id.setting_current_version)
     private TextView currentVersion;
-    @ViewInject(value = R.id.setting_about_us)
-    private TextView aboutUs;
-    private TestSocketService testService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,57 @@ public class SettingFragment extends BaseFragment {
     @Event(value = R.id.setting_check_update)
     private void checkUpdateEvent(View view) {
         //TODO 检查更新网络请求代码
+        final UpdateTask task = new UpdateTask(getVersion());
+        task.setTaskInfo(new TaskInfo<String>() {
+            ProgressDialog dialog = new ProgressDialog(getContext());
+
+            @Override
+            public void onPreTask() {
+                dialog.setMessage("正在检查更新");
+                dialog.setCancelable(false);
+                dialog.show();
+            }
+
+            @Override
+            public void onTaskFinish(String b, String result) {
+                if (null != dialog && dialog.isShowing())
+                    dialog.dismiss();
+                if (b.equals("success")) {
+                    String[] split = result.split("##");
+                    final String url = split[0];
+                    final String version = split[1];
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("检查更新")
+                            .setMessage("发现新版本:" + version)
+                            .setNegativeButton("知道了", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+                            .setPositiveButton("现在更新", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    DownloadTask task1 = new DownloadTask(getContext(), url, version);
+                                    task1.setListener(new TaskInfo<Void>() {
+                                        @Override
+                                        public void onPreTask() {
+
+                                        }
+
+                                        @Override
+                                        public void onTaskFinish(String b, Void result) {
+
+                                        }
+                                    });
+                                    task1.execute();
+                                }
+                            })
+                            .create().show();
+                }
+            }
+        });
+        task.execute();
     }
 
     @Event(value = R.id.setting_about_us)

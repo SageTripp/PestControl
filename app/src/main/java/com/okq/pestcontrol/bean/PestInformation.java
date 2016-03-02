@@ -16,8 +16,8 @@ public class PestInformation implements Serializable {
     /**
      * 区域
      */
-    @Column(name = "area")
-    private String area;
+    @Column(name = "device")
+    private String device;
     /**
      * 开始时间
      */
@@ -69,17 +69,17 @@ public class PestInformation implements Serializable {
      *
      * @return 区域
      */
-    public String getArea() {
-        return area;
+    public String getDevice() {
+        return device;
     }
 
     /**
      * 设置区域
      *
-     * @param area 区域
+     * @param device 区域
      */
-    public void setArea(String area) {
-        this.area = area;
+    public void setDevice(String device) {
+        this.device = device;
     }
 
     /**

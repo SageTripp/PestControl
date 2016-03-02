@@ -3,6 +3,8 @@ package com.okq.pestcontrol.task;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.okq.pestcontrol.util.Config;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.http.RequestParams;
@@ -23,11 +25,11 @@ public class LoginTask extends HttpTask<String> {
 
     @Override
     RequestParams setParams() {
-//        RequestParams params = new RequestParams(Config.URL+"login");
-//        params.addQueryStringParameter("user", userName);
-//        params.addQueryStringParameter("pass", passWord);
-        RequestParams params = new RequestParams("http://api.1-blog.com/biz/bizserver/news/list.do");
-        params.addQueryStringParameter("size", "8");
+        RequestParams params = new RequestParams(Config.URL + "login");
+        params.addQueryStringParameter("user", userName);
+        params.addQueryStringParameter("pass", passWord);
+//        RequestParams params = new RequestParams("http://api.1-blog.com/biz/bizserver/news/list.do");
+//        params.addQueryStringParameter("size", "8");
         return params;
     }
 
@@ -56,6 +58,7 @@ public class LoginTask extends HttpTask<String> {
                 }
             } else {
                 Toast.makeText(mContext, r, Toast.LENGTH_LONG).show();
+                info.onTaskFinish("fail", null);
             }
         }
     }

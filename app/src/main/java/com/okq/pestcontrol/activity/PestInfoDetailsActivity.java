@@ -1,7 +1,6 @@
 package com.okq.pestcontrol.activity;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -13,8 +12,6 @@ import com.okq.pestcontrol.bean.PestInformation;
 import org.joda.time.DateTime;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
-
-import java.io.Serializable;
 
 /**
  * 虫害信息详情页面
@@ -59,7 +56,7 @@ public class PestInfoDetailsActivity extends BaseActivity {
         }
         PestInformation pestInfo = (PestInformation) getIntent().getSerializableExtra("pestInfo");
         pestKindTv.setText(pestInfo.getPestKind().getKindName());
-        areaTv.setText(pestInfo.getArea());
+        areaTv.setText(pestInfo.getDevice());
         temperatureTv.setText(String.format("%d℃", pestInfo.getTemperature()));
         humidityTv.setText(String.format("%d%%", pestInfo.getHumidity()));
         startTimeTv.setText(new DateTime(pestInfo.getStartTime()).toString("YYYY/MM/dd HH:mm"));

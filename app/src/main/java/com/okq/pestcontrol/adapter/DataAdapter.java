@@ -47,7 +47,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.divider.setVisibility(View.VISIBLE);
         PestInformation pi = pestList.get(position);
-        holder.setArea(pi.getArea());
+        holder.setArea(pi.getDevice());
         holder.setTemperature(pi.getTemperature());
         holder.setHumidity(pi.getHumidity());
         holder.setPestKind(pi.getPestKind().getKindName() + "  " + position + "/" + getItemCount());
@@ -161,7 +161,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
                 if (null != longClickListener) {
                     sba.put(getAdapterPosition(), !sba.get(getAdapterPosition(), false));
 //                    setSelected();
-                    longClickListener.onSelect(getAdapterPosition(), getAdapterPosition(), true);
+                    longClickListener.onSelect(getAdapterPosition(), getAdapterPosition(), sba.get(getAdapterPosition()));
                     notifyDataSetChanged();
                 }
             } else {

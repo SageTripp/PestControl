@@ -183,7 +183,7 @@ public class Device implements Serializable {
 //     *
 //     * @return 区域
 //     */
-//    public String getArea() {
+//    public String getDevice() {
 //        return area;
 //    }
 //
@@ -192,7 +192,7 @@ public class Device implements Serializable {
 //     *
 //     * @param area 区域
 //     */
-//    public void setArea(String area) {
+//    public void setDevice(String area) {
 //        this.area = area;
 //    }
 //

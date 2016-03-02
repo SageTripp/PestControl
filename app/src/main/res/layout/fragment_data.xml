@@ -12,17 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
 
-    <com.tt.whorlviewlibrary.WhorlView
-        android:id="@+id/whorl"
-        android:layout_width="1dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="12dp"
-        app:whorlview_circle_colors="#F14336_#ffffff_#5677fc_#F44336_#4CAF50"
-        app:whorlview_circle_speed="270"
-        app:whorlview_parallax="fast"
-        app:whorlview_strokeWidth="6"
-        app:whorlview_sweepAngle="90"></com.tt.whorlviewlibrary.WhorlView>
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/data_fra_data_fresh"
         android:layout_width="match_parent"

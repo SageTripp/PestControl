@@ -2,14 +2,17 @@ package com.okq.pestcontrol.widget;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.okq.pestcontrol.R;
@@ -25,7 +28,7 @@ import org.xutils.ex.DbException;
 import org.xutils.x;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,12 +38,12 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
 
     private static final String DATE_PICKER_START_TIME = "startTime";
     private static final String DATE_PICKER_END_TIME = "endTime";
-    private static final String DATE_FORMAT = "yyyy/MM/dd HH:mm";
+    private static final String DATE_FORMAT = "yyyy/MM/dd";
     private Button sureBtn;
     private TextInputLayout deviceTil;
     private CloudEditText deviceTv;
     private TextInputLayout dataTypeTil;
-    private CloudEditText dataTypeTv;
+    private EditText dataTypeTv;
     private TextInputLayout startTimeTil;
     private EditText startTimeTv;
     private TextInputLayout endTimeTil;
@@ -59,7 +62,7 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
     public static final String DATEPICKER_TAG = "datepicker";
     public static final String TIMEPICKER_TAG = "timepicker";
 
-    private final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this, DateTime.now().getYear(), DateTime.now().getMonthOfYear() - 1, DateTime.now().getDayOfMonth(), false);
+    private DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this, DateTime.now().getYear(), DateTime.now().getMonthOfYear() - 1, DateTime.now().getDayOfMonth(), false);
     private final TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, DateTime.now().getHourOfDay(), DateTime.now().getMinuteOfHour(), true, false);
     private String dateFlag = "";
 
@@ -109,24 +112,12 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
         PestScreeningParam psp = mListener.onOpen();
         if (null == psp)
             psp = new PestScreeningParam();
-//        if (null != psp.getDataType() && psp.getDataType().size() > 0) {
-//            StringBuilder sb = new StringBuilder();
-//            for (PestKind kind :
-//                    psp.getDataType()) {
-//                sb.append(kind.getKindName());
-//                sb.append(",");
-//            }
-//            sb.deleteCharAt(sb.length() - 1);
-//            dataType = sb.toString();
-//        } else
-//            dataType = "";
         dataType = null == psp.getDataType() ? "" : psp.getDataType();
         device = null == psp.getDevice() ? "" : psp.getDevice();
-//        dataType = null == psp.getDataType() ? "" : psp.getDataType().getKindName();
         startTimeDt = psp.getStartTime() == 0 ? DateTime.now() : new DateTime(psp.getStartTime());
         endTimeDt = psp.getEndTime() == 0 ? DateTime.now() : new DateTime(psp.getEndTime());
         deviceTv.addSpan(device);
-        dataTypeTv.addSpan(dataType);
+        dataTypeTv.setText(dataType);
         startTimeTv.setText(startTimeDt.toString(DATE_FORMAT));
         endTimeTv.setText(endTimeDt.toString(DATE_FORMAT));
     }
@@ -136,7 +127,7 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
         deviceTil = (TextInputLayout) findViewById(R.id.device_til);
         deviceTv = (CloudEditText) findViewById(R.id.device_tv);
         dataTypeTil = (TextInputLayout) findViewById(R.id.data_type_til);
-        dataTypeTv = (CloudEditText) findViewById(R.id.data_type_tv);
+        dataTypeTv = (EditText) findViewById(R.id.data_type_tv);
         startTimeTil = (TextInputLayout) findViewById(R.id.start_time_til);
         startTimeTv = (EditText) findViewById(R.id.start_time_tv);
         endTimeTil = (TextInputLayout) findViewById(R.id.end_time_til);
@@ -146,25 +137,10 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
         startTimeTil.setHint("开始时间");
         endTimeTil.setHint("结束时间");
         sureBtn.setOnClickListener(this);
-        startTimeTv.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus)
-                    createDatePicker(DATE_PICKER_START_TIME);
-            }
-        });
-        endTimeTv.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus)
-                    createDatePicker(DATE_PICKER_END_TIME);
-            }
-        });
+        startTimeTv.setOnClickListener(this);
+        endTimeTv.setOnClickListener(this);
         deviceTv.setOnClickListener(this);
         dataTypeTv.setOnClickListener(this);
-        ArrayList<String> dataTypeItems = new ArrayList<>();
-        String[] dataTypeArray = getContext().getResources().getStringArray(R.array.pest_data_type);
-        Collections.addAll(dataTypeItems, dataTypeArray);
         ArrayList<String> deviceItems = new ArrayList<>();
         DbManager db = x.getDb(App.getDaoConfig());
         try {
@@ -175,7 +151,6 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
         } catch (DbException e) {
             e.printStackTrace();
         }
-        dataTypeTv.setItems(dataTypeItems);
         deviceTv.setItems(deviceItems);
     }
 
@@ -188,6 +163,29 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
             case R.id.device_tv:
                 break;
             case R.id.data_type_tv:
+                AlertDialog.Builder b = new Builder(mContext);
+                b.setTitle("请选择数据类型");
+                b.setItems(R.array.pest_data_type, new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dataTypeTv.setText((which + 1) + "");
+                    }
+                });
+                b.create().show();
+                break;
+            case R.id.start_time_tv:
+                if (!TextUtils.isEmpty(startTimeTv.getText())) {
+                    DateTime dateTime = new DateTime(new Date(startTimeTv.getText().toString()).getTime());
+                    datePickerDialog = DatePickerDialog.newInstance(this, dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth(), false);
+                }
+                createDatePicker(DATE_PICKER_START_TIME);
+                break;
+            case R.id.end_time_tv:
+                if (!TextUtils.isEmpty(endTimeTv.getText())) {
+                    DateTime dateTime = new DateTime(new Date(endTimeTv.getText().toString()).getTime());
+                    datePickerDialog = DatePickerDialog.newInstance(this, dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth(), false);
+                }
+                createDatePicker(DATE_PICKER_END_TIME);
                 break;
         }
     }
@@ -201,47 +199,21 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
         mListener = listener;
     }
 
-//    @Override
-//    public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-//        switch (dialog.getTag()) {
-//            case DATE_PICKER_START_TIME:
-//                startTimeDt = new DateTime(year, monthOfYear + 1, dayOfMonth, 0, 0, 0);
-//                createTimePicker(DATE_PICKER_START_TIME);
-//                break;
-//            case DATE_PICKER_END_TIME:
-//                endTimeDt = new DateTime(year, monthOfYear + 1, dayOfMonth, 0, 0, 0);
-//                createTimePicker(DATE_PICKER_END_TIME);
-//                break;
-//        }
-//    }
-//
-//    @Override
-//    public void onTimeSet(RadialTimePickerDialogFragment dialog, int hourOfDay, int minute) {
-//        switch (dialog.getTag()) {
-//            case DATE_PICKER_START_TIME:
-//                startTimeDt = startTimeDt.plusHours(hourOfDay).plusMinutes(minute);
-//                startTimeTv.setText(startTimeDt.toString(DATE_FORMAT));
-//                break;
-//            case DATE_PICKER_END_TIME:
-//                endTimeDt = endTimeDt.plusHours(hourOfDay).plusMinutes(minute);
-//                endTimeTv.setText(endTimeDt.toString(DATE_FORMAT));
-//                break;
-//        }
-//    }
-
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
         switch (datePickerDialog.getTag()) {
             case DATE_PICKER_START_TIME:
                 startTimeDt = new DateTime(year, month + 1, day, 0, 0, 0);
+                startTimeTv.setText(startTimeDt.toString(DATE_FORMAT));
                 break;
             case DATE_PICKER_END_TIME:
                 endTimeDt = new DateTime(year, month + 1, day, 0, 0, 0);
+                endTimeTv.setText(endTimeDt.toString(DATE_FORMAT));
                 break;
         }
         dateFlag = datePickerDialog.getTag();
         timePickerDialog.setStartTime(DateTime.now().getHourOfDay(), DateTime.now().getMinuteOfHour());
-        timePickerDialog.show(mManager, datePickerDialog.getTag());
+//        timePickerDialog.show(mManager, datePickerDialog.getTag());
     }
 
     @Override
@@ -265,30 +237,11 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
      */
     private void createDatePicker(String tag) {
         DateTime now = DateTime.now();
-//        dialog = CalendarDatePickerDialogFragment
-//                .newInstance(this, now.getYear(), now.getMonthOfYear() - 1,
-//                        now.getDayOfMonth());
-//        dialog.setCancelable(false);
-//        dialog.show(mManager, tag);
         datePickerDialog.setYearRange(now.getYear() - 10, now.getYear());
-        datePickerDialog.setCloseOnSingleTapDay(true);
+//        datePickerDialog.setCloseOnSingleTapDay(true);
         datePickerDialog.setCancelable(false);
         datePickerDialog.show(mManager, tag);
     }
-//
-//    /**
-//     * 创建时间选择器
-//     *
-//     * @param tag 标示
-//     */
-//    private void createTimePicker(String tag) {
-//        DateTime now = DateTime.now();
-//        RadialTimePickerDialogFragment time = RadialTimePickerDialogFragment
-//                .newInstance(this, now.getHourOfDay(),
-//                        now.getMinuteOfHour(), true);
-//        time.setCancelable(false);
-//        time.show(mManager, tag);
-//    }
 
     /**
      * 筛选完成监听器
@@ -314,25 +267,47 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
      */
     private void onSureBtnClicked() {
         PestScreeningParam psp = new PestScreeningParam();
-        StringBuilder a = new StringBuilder();
-        for (String device : dataTypeTv.getAllReturnStringList()) {
-            a.append(device);
-            a.append(",");
-        }
-        if (a.length() > 0)
-            a.deleteCharAt(a.length() - 1);
+//        StringBuilder a = new StringBuilder();
+//        for (String device : dataTypeTv.getAllReturnStringList()) {
+//            a.append(device);
+//            a.append(",");
+//        }
+//        if (a.length() > 0)
+//            a.deleteCharAt(a.length() - 1);
         StringBuilder d = new StringBuilder();
         for (String device : deviceTv.getAllReturnStringList()) {
             d.append(device);
             d.append(",");
         }
         if (d.length() > 0)
-            d.deleteCharAt(a.length() - 1);
+            d.deleteCharAt(d.length() - 1);
+        else {
+            ArrayList<String> deviceItems = new ArrayList<>();
+            DbManager db = x.getDb(App.getDaoConfig());
+            try {
+                List<Device> all = db.findAll(Device.class);
+                for (Device device : all) {
+                    deviceItems.add(device.getDeviceNum());
+                }
+            } catch (DbException e) {
+                e.printStackTrace();
+            }
+            for (String s : deviceItems) {
+                d.append(s);
+                d.append(",");
+            }
+        }
+        if (d.length() > 0)
+            d.deleteCharAt(d.length() - 1);
         psp.setDevice(d.toString());
-        psp.setDataType(a.toString());
+        psp.setDataType(dataTypeTv.getText().toString());
         psp.setStartTime(startTimeDt.getMillis());
         psp.setEndTime(endTimeDt.getMillis());
-        mListener.onFinished(psp);
+        if (startTimeDt.isBefore(endTimeDt))
+            mListener.onFinished(psp);
+        else {
+            Toast.makeText(mContext, "开始时间要小于结束时间", Toast.LENGTH_LONG).show();
+        }
     }
 
 }

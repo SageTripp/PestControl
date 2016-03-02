@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -28,10 +29,14 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.bean.Device;
+import com.okq.pestcontrol.task.DeviceParamGetTask;
+import com.okq.pestcontrol.task.TaskInfo;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+
+import java.util.List;
 
 /**
  * 设备详情页面 Created by Administrator on 2015/12/23.
@@ -65,6 +70,8 @@ public class DeviceDetailsActivity extends BaseActivity {
     private TextView pestThresholdTv;
     @ViewInject(value = R.id.device_details_edit_btn)
     private Button editBtn;
+    @ViewInject(value = R.id.device_details_param_card)
+    private CardView paramCard;
     private BaiduMap baiduMap;
     private Device device;
 
@@ -122,7 +129,7 @@ public class DeviceDetailsActivity extends BaseActivity {
     }
 
     private void setDeviceData() {
-//        areaTv.setText(device.getArea());
+//        areaTv.setText(device.getDevice());
         GeoCoder geoCoder = GeoCoder.newInstance();
         geoCoder.setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener() {
             @Override
@@ -132,7 +139,8 @@ public class DeviceDetailsActivity extends BaseActivity {
             @Override
             public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
                 if (reverseGeoCodeResult != null && reverseGeoCodeResult.error == SearchResult.ERRORNO.NO_ERROR)
-                    addressTv.setText(reverseGeoCodeResult.getAddress());
+                    areaTv.setText(reverseGeoCodeResult.getAddressDetail().district);
+                addressTv.setText(reverseGeoCodeResult.getAddress());
             }
         });
         ReverseGeoCodeOption option = new ReverseGeoCodeOption();
@@ -141,30 +149,54 @@ public class DeviceDetailsActivity extends BaseActivity {
         positionTv.setText(String.format("%s,%s", device.getLat(), device.getLon()));
 
         statusTv.setText(device.getStatus() == 1 ? "在线" : "离线");
-        collectIntervalTv.setText(String.format("%d", device.getCollectInterval()));
-        upIntervalTv.setText(String.format("%d", device.getUploadInterval()));
-        telsTv.setText(device.getTels());
-        pestThresholdTv.setText(device.getPestThreshold());
+        collectIntervalTv.setText(String.format("采集间隔:%d", device.getCollectInterval()));
+        upIntervalTv.setText(String.format("上传间隔:%d", device.getUploadInterval()));
+        telsTv.setText(String.format("报警号码:%s", device.getTels()));
+        pestThresholdTv.setText(String.format("害虫阈值:%s", device.getPestThreshold()));
         if (device.getStatus() == 1) {
             editBtn.setVisibility(View.VISIBLE);
+            paramCard.setBackgroundColor(getResources().getColor(R.color.TEAL));
         }
-//        collectIntervalTv.setText(String.format("购买时间:%s", device.getBuyTime() == 0.0 ? "----/--/--" : new DateTime(device.getBuyTime()).toString(DATE_FORMAT)));
-//        upIntervalTv.setText(String.format("安装时间:%s", device.getInstallTime() == 0.0 ? "----/--/--" : new DateTime(device.getInstallTime()).toString(DATE_FORMAT)));
-//        telsTv.setText(String.format("拆除时间:%s", device.getRemoveTime() == 0.0 ? "----/--/--" : new DateTime(device.getRemoveTime()).toString(DATE_FORMAT)));
+    }
+
+    /**
+     * 刷新设备参数信息
+     */
+    private void refresh() {
+        statusTv.setText(device.getStatus() == 1 ? "在线" : "离线");
+        collectIntervalTv.setText(String.format("%d", device.getCollectInterval()));
+        upIntervalTv.setText(String.format("%d", device.getUploadInterval()));
+        telsTv.setText(String.format("报警号码:%s", device.getTels()));
+        pestThresholdTv.setText(String.format("害虫阈值:%s", device.getPestThreshold()));
     }
 
     @Event(value = R.id.device_details_edit_btn)
     private void editDevice(View view) {
         Intent intent = new Intent(this, EditDeviceActivity.class);
-        intent.putExtra("device",device);
-        startActivityForResult(intent,123);
+        intent.putExtra("device", device);
+        startActivityForResult(intent, 123);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 123){
+        if (requestCode == 2) {//修改成功
+            DeviceParamGetTask task = new DeviceParamGetTask(device.getDeviceNum());
+            task.setTaskInfo(new TaskInfo<List<Device>>() {
+                @Override
+                public void onPreTask() {
 
+                }
+
+                @Override
+                public void onTaskFinish(String b, List<Device> result) {
+                    if (b.equals("success")) {
+                        device = result.get(0);
+                        refresh();
+                    }
+                }
+            });
+            task.execute();
         }
     }
 }

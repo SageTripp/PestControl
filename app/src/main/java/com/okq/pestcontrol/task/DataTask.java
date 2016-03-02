@@ -21,6 +21,7 @@ public class DataTask extends HttpTask<List<PestInformation>> {
     private String devs;
     private String begin;
     private String end;
+    private String dataType;
 
     /**
      * 历史数据查询
@@ -29,10 +30,11 @@ public class DataTask extends HttpTask<List<PestInformation>> {
      * @param begin 开始日期
      * @param end   结束日期
      */
-    public DataTask(String devs, String begin, String end) {
+    public DataTask(String devs, String begin, String end, String dataType) {
         this.devs = devs;
         this.begin = begin;
         this.end = end;
+        this.dataType = dataType;
     }
 
     @Override
@@ -43,29 +45,33 @@ public class DataTask extends HttpTask<List<PestInformation>> {
         params.addQueryStringParameter("devs", devs);//设备列表,多个设备用逗号间隔
         params.addQueryStringParameter("begin", begin);//开始日期 2016-10-10
         params.addQueryStringParameter("end", end);//结束日期 2016-10-10
-        params.addQueryStringParameter("datatype", "1");
+        params.addQueryStringParameter("datatype", dataType);
         return params;
     }
 
     @Override
     void finish(String r) {
         if (null != info) {
-            try {
-                JSONObject object = new JSONObject(r);
-                String total = object.getString("total");
-                JSONArray rows = object.getJSONArray("rows");
-                Gson gson = new Gson();
-                List<PestInformation> list = gson.fromJson(rows.toString(), new TypeToken<List<PestInformation>>() {
-                }.getType());
-                if (list != null) {
-                    info.onTaskFinish("success", list);
-                    return;
-                } else {
-                    info.onTaskFinish("fail", null);
-                    return;
+            if (!r.contains("ex:")) {
+                try {
+                    JSONObject object = new JSONObject(r);
+                    String total = object.getString("total");
+                    JSONArray rows = object.getJSONArray("rows");
+                    Gson gson = new Gson();
+                    List<PestInformation> list = gson.fromJson(rows.toString(), new TypeToken<List<PestInformation>>() {
+                    }.getType());
+                    if (list != null) {
+                        info.onTaskFinish("success", list);
+                        return;
+                    } else {
+                        info.onTaskFinish("fail", null);
+                        return;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            } else {
+                info.onTaskFinish("fail",null);
             }
         }
 

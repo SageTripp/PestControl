@@ -92,6 +92,7 @@ public class EditDeviceActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add("完成");
+        menu.getItem(0).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
     }
 
@@ -118,7 +119,7 @@ public class EditDeviceActivity extends BaseActivity {
 
                 @Override
                 public void onTaskFinish(String b, String result) {
-                    if (b.equals("success")) {
+                    if (b.equals("success")) {//修改成功
                         Intent intent = new Intent();
                         intent.putExtra("result", b);
                         setResult(2, intent);
