@@ -55,9 +55,6 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
     private FragmentManager mManager;
     private String device;
     private String dataType;
-    private String startTime;
-    private String endTime;
-//    private CalendarDatePickerDialogFragment dialog;
 
     public static final String DATEPICKER_TAG = "datepicker";
     public static final String TIMEPICKER_TAG = "timepicker";
@@ -113,11 +110,23 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
         if (null == psp)
             psp = new PestScreeningParam();
         dataType = null == psp.getDataType() ? "" : psp.getDataType();
+        String type = "全部";
+        switch (dataType) {
+            case "1":
+                type = "全部";
+                break;
+            case "2":
+                type = "报警数据";
+                break;
+            case "3":
+                type = "超限数据";
+                break;
+        }
         device = null == psp.getDevice() ? "" : psp.getDevice();
         startTimeDt = psp.getStartTime() == 0 ? DateTime.now() : new DateTime(psp.getStartTime());
         endTimeDt = psp.getEndTime() == 0 ? DateTime.now() : new DateTime(psp.getEndTime());
         deviceTv.addSpan(device);
-        dataTypeTv.setText(dataType);
+        dataTypeTv.setText(type);
         startTimeTv.setText(startTimeDt.toString(DATE_FORMAT));
         endTimeTv.setText(endTimeDt.toString(DATE_FORMAT));
     }
@@ -165,10 +174,12 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
             case R.id.data_type_tv:
                 AlertDialog.Builder b = new Builder(mContext);
                 b.setTitle("请选择数据类型");
+                final String[] array = mContext.getResources().getStringArray(R.array.pest_data_type);
                 b.setItems(R.array.pest_data_type, new OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dataTypeTv.setText((which + 1) + "");
+                        dataTypeTv.setText(array[which]);
+                        dataType = which + "";
                     }
                 });
                 b.create().show();
@@ -267,40 +278,8 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
      */
     private void onSureBtnClicked() {
         PestScreeningParam psp = new PestScreeningParam();
-//        StringBuilder a = new StringBuilder();
-//        for (String device : dataTypeTv.getAllReturnStringList()) {
-//            a.append(device);
-//            a.append(",");
-//        }
-//        if (a.length() > 0)
-//            a.deleteCharAt(a.length() - 1);
-        StringBuilder d = new StringBuilder();
-        for (String device : deviceTv.getAllReturnStringList()) {
-            d.append(device);
-            d.append(",");
-        }
-        if (d.length() > 0)
-            d.deleteCharAt(d.length() - 1);
-        else {
-            ArrayList<String> deviceItems = new ArrayList<>();
-            DbManager db = x.getDb(App.getDaoConfig());
-            try {
-                List<Device> all = db.findAll(Device.class);
-                for (Device device : all) {
-                    deviceItems.add(device.getDeviceNum());
-                }
-            } catch (DbException e) {
-                e.printStackTrace();
-            }
-            for (String s : deviceItems) {
-                d.append(s);
-                d.append(",");
-            }
-        }
-        if (d.length() > 0)
-            d.deleteCharAt(d.length() - 1);
-        psp.setDevice(d.toString());
-        psp.setDataType(dataTypeTv.getText().toString());
+        psp.setDevice(deviceTv.getAllReturnString(true));
+        psp.setDataType(dataType);
         psp.setStartTime(startTimeDt.getMillis());
         psp.setEndTime(endTimeDt.getMillis());
         if (startTimeDt.isBefore(endTimeDt))

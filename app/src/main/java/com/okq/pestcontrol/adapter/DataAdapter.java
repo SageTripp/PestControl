@@ -51,7 +51,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         holder.setArea(pi.getDevice());
         holder.setTemperature(pi.getTemperature());
         holder.setHumidity(pi.getHumidity());
-        holder.setPestKind(pi.getPestKind().getKindName() + "  " + position + "/" + getItemCount());
+        holder.setPestKind(pi.getPestKind().getKindName());
         holder.setSendTime(pi.getSendTime());
         holder.clrSelected();
         if (isCheckMod && sba.get(position, false))
@@ -174,16 +174,18 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
         @Override
         public boolean onLongClick(View v) {
-            isCheckMod = true;
-            if (null != longClickListener) {
-//                setSelected();
-                Vibrator vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
-                vibrator.vibrate(500);
-                sba.put(getAdapterPosition(), true);
-                longClickListener.onLongClick(getAdapterPosition(), getAdapterPosition(), true);
-                notifyDataSetChanged();
+            if (!isCheckMod) {
+                isCheckMod = true;
+                if (null != longClickListener) {
+                    Vibrator vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+                    vibrator.vibrate(200);
+                    sba.put(getAdapterPosition(), true);
+                    longClickListener.onLongClick(getAdapterPosition(), getAdapterPosition(), true);
+                    notifyDataSetChanged();
+                }
+                return true;
             }
-            return true;
+            return false;
         }
     }
 }

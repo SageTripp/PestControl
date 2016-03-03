@@ -26,14 +26,14 @@
             <com.baidu.mapapi.map.TextureMapView
                 android:id="@+id/holder_device_map"
                 android:layout_width="match_parent"
-                android:layout_height="144dp" />
+                android:layout_height="144dp"/>
 
             <ImageView
                 android:id="@+id/holder_device_map_image"
                 android:layout_width="match_parent"
                 android:layout_height="144dp"
                 android:contentDescription="正在加载..."
-                android:visibility="invisible" />
+                android:visibility="invisible"/>
         </RelativeLayout>
 
         <LinearLayout
@@ -46,18 +46,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                tools:text="郑州市高新区 枫杨街"
                 android:textColor="@color/secondary_text"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:text="郑州市高新区 枫杨街"/>
 
             <TextView
                 android:id="@+id/holder_device_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                tools:text="状态:在用"
                 android:textColor="@color/primary_text"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:text="状态:在用"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -68,8 +68,15 @@
         android:layout_height="wrap_content"
         android:background="#6603A9F4"
         android:gravity="center"
-        tools:text="000000001(Q3)"
         android:textColor="@color/icons"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        tools:text="000000001(Q3)"/>
+
+    <View
+        android:id="@+id/holder_device_touch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:duplicateParentState="true"/>
 
 </android.support.v7.widget.CardView>

@@ -119,6 +119,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
         private BaiduMap baiduMap;
         private MapStatus mapStatus;
         private ImageView iv;
+        private View touchView;
 
         public DeviceHolder(View itemView) {
             super(itemView);
@@ -127,13 +128,14 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
             status = (TextView) itemView.findViewById(R.id.holder_device_status);
             location = (TextView) itemView.findViewById(R.id.holder_device_location);
             iv = (ImageView) itemView.findViewById(R.id.holder_device_map_image);
+            touchView = itemView.findViewById(R.id.holder_device_touch);
             map.showScaleControl(false);
             map.showZoomControls(false);
             baiduMap = map.getMap();
             baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
             UiSettings uiSettings = baiduMap.getUiSettings();
             uiSettings.setAllGesturesEnabled(false);
-            itemView.setOnClickListener(this);
+            touchView.setOnClickListener(this);
         }
 
         public void setMap(final double lat, final double lon) {

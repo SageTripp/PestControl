@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/icons"
-    android:orientation="vertical"
-    tools:context=".activity.LoginActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/icons"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical"
+              tools:context=".activity.LoginActivity">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,7 +29,7 @@
                 android:drawableLeft="@mipmap/ic_menu_cc_am"
                 android:hint="@string/login_user"
                 android:inputType="textVisiblePassword"
-                android:textColor="@color/primary_text" />
+                android:textColor="@color/primary_text"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -44,7 +45,7 @@
                 android:drawableLeft="@mipmap/ic_menu_login"
                 android:hint="@string/login_password"
                 android:inputType="textPassword"
-                android:textColor="@color/primary_text" />
+                android:textColor="@color/primary_text"/>
         </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
@@ -59,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/remember_password"
-                android:textColor="@color/primary_text" />
+                android:textColor="@color/primary_text"/>
 
             <TextView
                 android:id="@+id/login_forget_password"
@@ -67,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="@string/forget_password" />
+                android:text="@string/forget_password"/>
         </LinearLayout>
 
         <Button
@@ -78,6 +79,6 @@
             android:layout_marginTop="16dp"
             android:background="@color/primary"
             android:text="登录"
-            android:textSize="22sp" />
+            android:textSize="22sp"/>
     </LinearLayout>
 </LinearLayout>

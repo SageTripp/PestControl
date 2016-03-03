@@ -198,6 +198,28 @@ public class CloudEditText extends EditText {
         return list;
     }
 
+    /**
+     * 获得所有的returnText列表
+     */
+    public String getAllReturnString(boolean isReturnAll) {
+        List<String> list = new ArrayList<String>(getAllReturnStringList());
+        StringBuilder sb = new StringBuilder();
+        for (String s : list) {
+            sb.append(s);
+            sb.append(",");
+        }
+        if (sb.length() == 0 && isReturnAll) {
+            for (String s : items) {
+                sb.append(s);
+                sb.append(",");
+            }
+        }
+        if (",".equals(sb.charAt(sb.length() - 1))) {
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        return sb.toString();
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -393,10 +415,9 @@ public class CloudEditText extends EditText {
     }
 
     /**
-     * If an object of this type is attached to the text of a TextView
-     * with a movement method of LinkTouchMovementMethod, the affected spans of
-     * text can be selected.  If touched, the {@link #onTouchDelete} method will
-     * be called.
+     * If an object of this type is attached to the text of a TextView with a movement method of
+     * LinkTouchMovementMethod, the affected spans of text can be selected.  If touched, the {@link
+     * #onTouchDelete} method will be called.
      */
     public abstract class TouchableSpan extends CharacterStyle implements UpdateAppearance {
         private UnSpanText unSpanText;

@@ -155,7 +155,7 @@ public class DeviceDetailsActivity extends BaseActivity {
         pestThresholdTv.setText(String.format("害虫阈值:%s", device.getPestThreshold()));
         if (device.getStatus() == 1) {
             editBtn.setVisibility(View.VISIBLE);
-            paramCard.setBackgroundColor(getResources().getColor(R.color.TEAL));
+            paramCard.setCardBackgroundColor(getResources().getColor(R.color.TEAL));
         }
     }
 

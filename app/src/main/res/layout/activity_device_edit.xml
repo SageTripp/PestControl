@@ -163,6 +163,7 @@
                     android:allowUndo="true"
                     android:hint="设置害虫阈值"
                     android:maxLines="10"
+                    android:textColor="@color/primary_text"
                     android:singleLine="false"
                     />
             </android.support.design.widget.TextInputLayout>
