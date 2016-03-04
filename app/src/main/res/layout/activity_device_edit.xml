@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/white"
               android:fitsSystemWindows="true"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              tools:context=".activity.EditDeviceActivity">
 
     <include layout="@layout/toolbar"/>
 
@@ -163,8 +165,8 @@
                     android:allowUndo="true"
                     android:hint="设置害虫阈值"
                     android:maxLines="10"
+                    android:minLines="2"
                     android:textColor="@color/primary_text"
-                    android:singleLine="false"
                     />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
