@@ -149,7 +149,6 @@ public class DataFragment extends BaseFragment {
                 }
             }
         });
-//        loadData();
     }
 
     @Event(value = R.id.data_select_button_all)
@@ -204,10 +203,8 @@ public class DataFragment extends BaseFragment {
      * 初始化排序
      */
     private void initSort() {
-        isASC.put(R.id.data_menu_sort_area, false);
+        isASC.put(R.id.data_menu_sort_device, false);
         isASC.put(R.id.data_menu_sort_pest_kind, false);
-        isASC.put(R.id.data_menu_sort_temperature, false);
-        isASC.put(R.id.data_menu_sort_humidity, false);
         isASC.put(R.id.data_menu_sort_time, false);
     }
 
@@ -215,34 +212,6 @@ public class DataFragment extends BaseFragment {
      * 加载所有数据
      */
     private void loadAll() {
-////        try {
-//        if (null == screeningParam) {
-//            final ScreeningDialog screen = new ScreeningDialog(getContext(), getFragmentManager());
-//            screen.setOnScreeningFinishListener(new ScreeningDialog.OnScreeningFinishListener() {
-//                @Override
-//                public void onFinished(PestScreeningParam data) {
-//                    screeningParam = data;
-//                    loadAll();
-////                        loadData();
-//                    adapter.refreshData(informations);
-//                    screen.dismiss();
-//                }
-//
-//                @Override
-//                public PestScreeningParam onOpen() {
-//                    return screeningParam;
-//                }
-//            });
-//            screen.show();
-//            informations = new ArrayList<>();
-//        }
-////                informations = new ArrayList<>(PestInformationDao.findAll());
-//        else
-//            informations = new ArrayList<>(PestInformationDao.find(screeningParam));
-////        } catch (DbException e) {
-////            e.printStackTrace();
-////        }
-
         informations = new ArrayList<>();
 
         DataTask task;
@@ -325,22 +294,15 @@ public class DataFragment extends BaseFragment {
             case R.id.data_menu_sort://排序
                 break;
 
-            case R.id.data_menu_sort_area:
-                SortUtil.sortList(informations, "area", isASC.get(item.getItemId()));
+            case R.id.data_menu_sort_device:
+                SortUtil.sortList(informations, "device", isASC.get(item.getItemId()));
                 break;
             case R.id.data_menu_sort_pest_kind:
                 SortUtil.sortList(informations, "pestKind.kindName", isASC.get(item.getItemId()));
                 break;
-            case R.id.data_menu_sort_temperature:
-                SortUtil.sortList(informations, "temperature", isASC.get(item.getItemId()));
-                break;
-            case R.id.data_menu_sort_humidity:
-                SortUtil.sortList(informations, "humidity", isASC.get(item.getItemId()));
-                break;
             case R.id.data_menu_sort_time:
                 SortUtil.sortList(informations, "sendTime", isASC.get(item.getItemId()));
                 break;
-
             case R.id.data_menu_screening://筛选
                 final ScreeningDialog screen = new ScreeningDialog(getContext(), getFragmentManager());
                 screen.setOnScreeningFinishListener(new ScreeningDialog.OnScreeningFinishListener() {
@@ -348,7 +310,6 @@ public class DataFragment extends BaseFragment {
                     public void onFinished(PestScreeningParam data) {
                         screeningParam = data;
                         loadAll();
-//                        loadData();
                         adapter.refreshData(informations);
                         screen.dismiss();
                     }
@@ -364,7 +325,6 @@ public class DataFragment extends BaseFragment {
         //排序翻转
         if (isASC.containsKey(item.getItemId())) {
             isASC.put(item.getItemId(), !isASC.get(item.getItemId()));
-//            loadData();
             adapter.refreshData(informations);
         }
         return true;

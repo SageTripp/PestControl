@@ -280,7 +280,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
             public void run() {
                 LogUtil.i(String.format("加载完成第%d个", getAdapterPosition() + 1));
                 try {
-                    Thread.sleep(1000 * 3);
+                    Thread.sleep(1000 * 5);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

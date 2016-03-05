@@ -28,6 +28,7 @@
                 android:id="@+id/device_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="false"
                 android:textColor="@color/primary_text"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -41,6 +42,8 @@
                 android:id="@+id/data_type_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="true"
+                android:focusable="false"
                 android:hint="请选择数据类型"
                 android:textColor="@color/primary_text"/>
         </android.support.design.widget.TextInputLayout>
@@ -61,6 +64,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="true"
+                    android:focusable="false"
                     android:editable="false"
                     android:hint="请选择开始时间"
                     android:textColor="@color/primary_text"/>
@@ -77,6 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="true"
+                    android:focusable="false"
                     android:editable="false"
                     android:hint="请选择结束时间"
                     android:textColor="@color/primary_text"/>

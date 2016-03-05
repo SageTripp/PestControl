@@ -18,16 +18,8 @@
                     android:title="按种类排序"
                     app:showAsAction="never" />
                 <item
-                    android:id="@+id/data_menu_sort_area"
-                    android:title="按区域排序"
-                    app:showAsAction="never" />
-                <item
-                    android:id="@+id/data_menu_sort_temperature"
-                    android:title="按温度排序"
-                    app:showAsAction="never" />
-                <item
-                    android:id="@+id/data_menu_sort_humidity"
-                    android:title="按湿度排序"
+                    android:id="@+id/data_menu_sort_device"
+                    android:title="按设备排序"
                     app:showAsAction="never" />
 
             </group>

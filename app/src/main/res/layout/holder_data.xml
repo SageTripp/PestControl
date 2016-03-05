@@ -24,25 +24,6 @@
             android:textColor="@color/primary_text"
             android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/holder_data_temperature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:gravity="center"
-            android:text="25℃"
-            android:textColor="@color/secondary_text"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/holder_data_humidity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:gravity="center"
-            android:text="75%"
-            android:textColor="@color/secondary_text"
-            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -54,11 +35,11 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:id="@+id/holder_data_area"
+            android:id="@+id/holder_data_device"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="区域1"
+            android:text="设备"
             android:textColor="@color/secondary_text"
             android:textSize="14sp" />
 

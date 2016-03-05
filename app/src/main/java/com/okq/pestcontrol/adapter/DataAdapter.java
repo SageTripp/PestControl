@@ -48,9 +48,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.divider.setVisibility(View.VISIBLE);
         PestInformation pi = pestList.get(position);
-        holder.setArea(pi.getDevice());
-        holder.setTemperature(pi.getTemperature());
-        holder.setHumidity(pi.getHumidity());
+        holder.setDevice(pi.getDevice());
         holder.setPestKind(pi.getPestKind().getKindName());
         holder.setSendTime(pi.getSendTime());
         holder.clrSelected();
@@ -106,9 +104,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private TextView pestKind;
-        private TextView temperature;
-        private TextView humidity;
-        private TextView area;
+        private TextView device;
         private TextView sendTime;
         public View divider;
         private View holder;
@@ -116,9 +112,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
             pestKind = (TextView) itemView.findViewById(R.id.holder_data_pest_kind);
-            temperature = (TextView) itemView.findViewById(R.id.holder_data_temperature);
-            humidity = (TextView) itemView.findViewById(R.id.holder_data_humidity);
-            area = (TextView) itemView.findViewById(R.id.holder_data_area);
+            device = (TextView) itemView.findViewById(R.id.holder_data_device);
             sendTime = (TextView) itemView.findViewById(R.id.holder_data_send_time);
             divider = itemView.findViewById(R.id.data_fra_item_divider);
             divider.setVisibility(View.VISIBLE);
@@ -136,20 +130,12 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
             holder.setBackgroundColor(mContext.getResources().getColor(R.color.white));
         }
 
-        public void setArea(String area) {
-            this.area.setText(area);
+        public void setDevice(String device) {
+            this.device.setText(device);
         }
 
         public void setPestKind(String pestKind) {
             this.pestKind.setText(pestKind);
-        }
-
-        public void setTemperature(int temperature) {
-            this.temperature.setText(String.format("%d℃", temperature));
-        }
-
-        public void setHumidity(int humidity) {
-            this.humidity.setText(String.format("%d%%", humidity));
         }
 
         public void setSendTime(long sendTime) {

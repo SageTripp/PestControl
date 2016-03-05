@@ -14,20 +14,10 @@ public class PestInformation implements Serializable {
     @Column(name = "id", isId = true, autoGen = true)
     private long id;
     /**
-     * 区域
+     * 设备
      */
     @Column(name = "device")
     private String device;
-    /**
-     * 开始时间
-     */
-    @Column(name = "startTime")
-    private long startTime;
-    /**
-     * 截止时间
-     */
-    @Column(name = "endTime")
-    private long endTime;
     /**
      * 害虫种类
      */
@@ -38,16 +28,6 @@ public class PestInformation implements Serializable {
      */
     @Column(name = "kindLink")
     public long kindLink;
-    /**
-     * 温度
-     */
-    @Column(name = "temperature")
-    private int temperature;
-    /**
-     * 湿度
-     */
-    @Column(name = "humidity")
-    private int humidity;
     /**
      * 害虫数量
      */
@@ -83,42 +63,6 @@ public class PestInformation implements Serializable {
     }
 
     /**
-     * 获取开始时间
-     *
-     * @return 开始时间
-     */
-    public long getStartTime() {
-        return startTime;
-    }
-
-    /**
-     * 设置开始时间
-     *
-     * @param startTime 开始时间
-     */
-    public void setStartTime(long startTime) {
-        this.startTime = startTime;
-    }
-
-    /**
-     * 获取截止时间
-     *
-     * @return 截止时间
-     */
-    public long getEndTime() {
-        return endTime;
-    }
-
-    /**
-     * 设置截止时间
-     *
-     * @param endTime 截止时间
-     */
-    public void setEndTime(long endTime) {
-        this.endTime = endTime;
-    }
-
-    /**
      * 获取害虫种类
      *
      * @return 害虫种类
@@ -134,42 +78,6 @@ public class PestInformation implements Serializable {
      */
     public void setPestKind(PestKind pestKind) {
         this.pestKind = pestKind;
-    }
-
-    /**
-     * 获取温度
-     *
-     * @return 温度
-     */
-    public int getTemperature() {
-        return temperature;
-    }
-
-    /**
-     * 设置温度
-     *
-     * @param temperature 温度
-     */
-    public void setTemperature(int temperature) {
-        this.temperature = temperature;
-    }
-
-    /**
-     * 获取湿度
-     *
-     * @return 湿度
-     */
-    public int getHumidity() {
-        return humidity;
-    }
-
-    /**
-     * 设置湿度
-     *
-     * @param humidity 湿度
-     */
-    public void setHumidity(int humidity) {
-        this.humidity = humidity;
     }
 
     /**

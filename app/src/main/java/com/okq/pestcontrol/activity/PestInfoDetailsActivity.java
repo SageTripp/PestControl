@@ -23,14 +23,6 @@ public class PestInfoDetailsActivity extends BaseActivity {
     private TextView pestKindTv;
     @ViewInject(value = R.id.details_area)
     private TextView areaTv;
-    @ViewInject(value = R.id.details_temperature)
-    private TextView temperatureTv;
-    @ViewInject(value = R.id.details_humidity)
-    private TextView humidityTv;
-    @ViewInject(value = R.id.details_start_time)
-    private TextView startTimeTv;
-    @ViewInject(value = R.id.details_end_time)
-    private TextView endTimeTv;
     @ViewInject(value = R.id.details_send_time)
     private TextView sendTimeTv;
     @ViewInject(value = R.id.toolbar)
@@ -57,10 +49,6 @@ public class PestInfoDetailsActivity extends BaseActivity {
         PestInformation pestInfo = (PestInformation) getIntent().getSerializableExtra("pestInfo");
         pestKindTv.setText(pestInfo.getPestKind().getKindName());
         areaTv.setText(pestInfo.getDevice());
-        temperatureTv.setText(String.format("%d℃", pestInfo.getTemperature()));
-        humidityTv.setText(String.format("%d%%", pestInfo.getHumidity()));
-        startTimeTv.setText(new DateTime(pestInfo.getStartTime()).toString("YYYY/MM/dd HH:mm"));
-        endTimeTv.setText(new DateTime(pestInfo.getEndTime()).toString("YYYY/MM/dd HH:mm"));
         sendTimeTv.setText(new DateTime(pestInfo.getSendTime()).toString("YYYY/MM/dd HH:mm"));
     }
 
