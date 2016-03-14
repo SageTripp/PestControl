@@ -11,7 +11,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
-import android.text.InputType;
+import android.text.InputFilter;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
@@ -27,6 +27,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -78,7 +79,8 @@ public class ThresholdCloudEditText extends EditText {
     }
 
     private void init() {
-        setInputType(InputType.TYPE_NULL);
+//        setInputType(InputType.TYPE_NULL);
+        setKeyListener(null);
         setMovementMethod(new LinkTouchMovementMethod());
         rightDrawable = getResources().getDrawable(R.mipmap.exit_pressed);
         drawablePadding = UIUtils.dip2px(getContext(), 5);
@@ -113,6 +115,10 @@ public class ThresholdCloudEditText extends EditText {
                 editText = new EditText(getContext());
                 editText.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
                 editText.setTextColor(Color.BLACK);
+                editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(5)});
+                editText.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
                 builder.setTitle("设置" + showItems.get(position) + "限值");
                 builder.setView(editText);
                 builder.setNegativeButton("完成", new DialogInterface.OnClickListener() {
@@ -273,7 +279,6 @@ public class ThresholdCloudEditText extends EditText {
      * @param unSpanText
      */
     private void generateOneSpan(Spannable spannableString, UnSpanText unSpanText) {
-        // TODO: 2015/12/12 获取到编辑框的宽度来取代设置的3000;这表示span可以画的最大宽度
         View spanView = getSpanView(getContext(), unSpanText.showText.toString(), 3000);
         BitmapDrawable bitmapDrawable = (BitmapDrawable) UIUtils.convertViewToDrawable(spanView);
         bitmapDrawable.setBounds(0, 0, bitmapDrawable.getIntrinsicWidth(), bitmapDrawable.getIntrinsicHeight());

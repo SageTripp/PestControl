@@ -110,7 +110,11 @@ public class EditDeviceActivity extends BaseActivity {
             }
             if (",".equals(tels.charAt(tels.length() - 1)))
                 tels.deleteCharAt(tels.length() - 1);
-            DeviceParamUpdateTask task = new DeviceParamUpdateTask(device.getDeviceNum(), collectInterval, uploadInterval, tels.toString(), pestThresholdEt.getAllReturnString());
+            DeviceParamUpdateTask task = new DeviceParamUpdateTask(device.getDeviceNum(),
+                    collectInterval,
+                    uploadInterval,
+                    tels.toString(),
+                    pestThresholdEt.getAllReturnString());
             task.setTaskInfo(new TaskInfo<String>() {
                 @Override
                 public void onPreTask() {

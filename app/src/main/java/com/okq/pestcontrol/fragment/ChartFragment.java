@@ -31,6 +31,8 @@ import com.okq.pestcontrol.widget.ScreeningDialog;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
@@ -130,7 +132,7 @@ public class ChartFragment extends BaseFragment implements OnChartValueSelectedL
         ArrayList<PestInformation> list = new ArrayList<>(informations);
         for (PestInformation information : list) {
             int y = information.getPestNum();
-            int x = Days.daysBetween(startVal, new DateTime(information.getSendTime())).getDays();
+            int x = Days.daysBetween(startVal, DateTime.parse(information.getSendTime(), DateTimeFormat.forPattern("YYYY/MM/dd HH:mm:ss"))).getDays();
             if (x >= 0 && x < yVals.size()) {
                 Entry entry = yVals.get(x);
                 entry.setVal(entry.getVal() + y);

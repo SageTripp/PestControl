@@ -8,7 +8,6 @@ import com.okq.pestcontrol.bean.Device;
 import com.okq.pestcontrol.bean.PestInformation;
 import com.okq.pestcontrol.bean.PestKind;
 import com.okq.pestcontrol.dbDao.DeviceDao;
-import com.okq.pestcontrol.dbDao.PestInformationDao;
 
 import org.joda.time.DateTime;
 import org.xutils.DbManager;
@@ -37,16 +36,6 @@ public class LoadTask extends BaseTask<Boolean> {
             dbManager.dropTable(PestInformation.class);
             dbManager.dropTable(Device.class);
 
-            //
-            ArrayList<PestKind> kindList = new ArrayList<>();
-            for (int i = 0; i < kinds.length; i++) {
-                String kind = kinds[i];
-                PestKind pestKind = new PestKind();
-                pestKind.setKindFlag(i);
-                pestKind.setKindName(kind);
-                kindList.add(pestKind);
-            }
-
             //设备信息
             double[] lons = new double[]{113.601556, 113.584308, 113.478524, 113.565151};
             double[] lats = new double[]{34.918237, 34.826311, 34.682055, 34.814058};
@@ -69,11 +58,12 @@ public class LoadTask extends BaseTask<Boolean> {
             for (int i = 0; i < 300; i++) {
                 PestInformation pestInformation = new PestInformation();
                 pestInformation.setDevice("0000000" + (i % 5));
-                pestInformation.setPestKind(kindList.get((int) (Math.random() * (kinds.length - 1))));
-                long send = DateTime.now().plusDays((int) -(Math.random() * 90)).getMillis();
+                pestInformation.setName(kinds[(int) (Math.random() * (kinds.length - 1))]);
+                String send = DateTime.now().plusDays((int) -(Math.random() * 90)).toString("YYYY/MM/dd HH:mm:ss");
                 pestInformation.setSendTime(send);
                 pestInformation.setPestNum((int) (Math.random() * 5 + 3));
-                PestInformationDao.save(pestInformation);
+                pestInformation.setEnvironments("温度=12.3,湿度=32,露点=1.2");
+                dbManager.save(pestInformation);
             }
 
         } catch (DbException e) {

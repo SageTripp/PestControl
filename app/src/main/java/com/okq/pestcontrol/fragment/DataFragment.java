@@ -1,11 +1,13 @@
 package com.okq.pestcontrol.fragment;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -172,14 +174,13 @@ public class DataFragment extends BaseFragment {
             adapter.clrSelectMod();
             selectBottom.setVisibility(View.GONE);
         } else {
-            Snackbar.make(menuPopupLocFlag, "删除", Snackbar.LENGTH_LONG).show();
             StringBuilder IDs = new StringBuilder();
             for (String id : ids) {
                 IDs.append(id).append(",");
             }
             if (IDs.length() > 0)
                 IDs.deleteCharAt(IDs.length() - 1);
-            DeleteHistoryDataTask task = new DeleteHistoryDataTask(IDs.toString());
+            final DeleteHistoryDataTask task = new DeleteHistoryDataTask(IDs.toString());
             task.setTaskInfo(new TaskInfo<String>() {
                 @Override
                 public void onPreTask() {
@@ -190,12 +191,33 @@ public class DataFragment extends BaseFragment {
                 public void onTaskFinish(String b, String result) {
 
                     if (b.equals("success")) {
+                        adapter.clrSelectMod();
+                        selectBottom.setVisibility(View.GONE);
                         loadAll();
                     }
 
                 }
             });
-            task.execute();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setCancelable(false)
+                    .setTitle("删除数据")
+                    .setMessage("确定要删除这些数据")
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Snackbar.make(menuPopupLocFlag, "删除", Snackbar.LENGTH_LONG).show();
+                            task.execute();
+                        }
+                    })
+                    .create()
+                    .show();
         }
     }
 

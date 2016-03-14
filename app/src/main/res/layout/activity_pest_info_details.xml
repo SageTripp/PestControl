@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/icons"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -18,92 +19,59 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:orientation="vertical">
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="@color/blue"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="2dp"
+                app:contentPadding="8dp">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="12dp"
-                    android:text="害虫种类"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/details_pest_kind"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="12dp"
-                    android:text="玉米螟"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="14sp"/>
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/pest_info_details_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primary_text"
+                        android:textSize="22sp"
+                        tools:text="棉铃虫" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/GREY"/>
+                    <TextView
+                        android:id="@+id/pest_info_details_device"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="采集设备:123456" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/pest_info_details_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="采集时间:2014/05/12 12:22:22" />
+                </LinearLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="12dp"
-                    android:text="区域"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+            </android.support.v7.widget.CardView>
 
-                <TextView
-                    android:id="@+id/details_area"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="12dp"
-                    android:text="区域123"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="14sp"/>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/GREY"/>
-
-            <LinearLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:orientation="vertical">
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="@color/accent"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="2dp"
+                app:contentPadding="8dp">
 
-                <TextView
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/pest_info_details_environments"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="12dp"
-                    android:text="数据采集时间"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/details_send_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="12dp"
-                    android:text="2015/12/18 09:08"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="14sp"/>
-            </LinearLayout>
+            </android.support.v7.widget.CardView>
         </LinearLayout>
-
     </ScrollView>
 
 

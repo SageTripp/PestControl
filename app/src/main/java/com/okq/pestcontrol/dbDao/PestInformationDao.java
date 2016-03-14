@@ -30,26 +30,17 @@ public class PestInformationDao {
      * @throws DbException
      */
     public static void save(PestInformation information) throws DbException {
-        PestKind pestKind = information.getPestKind();
-        manager.saveOrUpdate(pestKind);
-        information.kindLink = pestKind.id;
-        manager.saveBindingId(information);
+        manager.save(information);
     }
 
     /**
      * 查询所有虫害信息
      *
-     * @return 所欲哦虫害信息
+     * @return 所有虫害信息
      * @throws DbException
      */
     public static List<PestInformation> findAll() throws DbException {
-        List<PestInformation> all = manager.findAll(PestInformation.class);
-        PestKind pestKind = all.get(1).getPestKind();
-        for (PestInformation information : all) {
-            PestKind kind = manager.findById(PestKind.class, information.kindLink);
-            information.setPestKind(kind);
-        }
-        return all;
+        return manager.findAll(PestInformation.class);
     }
 
     public static List<PestInformation> find(PestScreeningParam param) {
@@ -61,23 +52,9 @@ public class PestInformationDao {
                 selector.and("area", "in", param.getDevice().split(","));
             if (!TextUtils.isEmpty(param.getDevice()))
                 selector.and("kindLink", "in", param.getDataType().split(","));
-//            if (null != param.getDataType() && param.getDataType().size() > 0) {
-//                StringBuilder sb = new StringBuilder();
-//                for (PestKind kind : param.getDataType()) {
-//                    sb.append(kind.id);
-//                    sb.append(",");
-//                }
-//                sb.deleteCharAt(sb.length() - 1);
-//                selector.and("kindLink", "in", sb.toString().split(","));
-//            }
             if (param.getStartTime() > 0 && param.getEndTime() > 0)
                 selector.and("sendTime", "between", new long[]{param.getStartTime(), param.getEndTime()});
-            List<PestInformation> all = selector.findAll();
-            for (PestInformation information : all) {
-                PestKind kind = manager.findById(PestKind.class, information.kindLink);
-                information.setPestKind(kind);
-                returnList.add(information);
-            }
+            returnList = selector.findAll();
         } catch (DbException e) {
             e.printStackTrace();
         }

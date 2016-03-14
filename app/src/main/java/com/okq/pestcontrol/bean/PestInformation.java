@@ -14,70 +14,47 @@ public class PestInformation implements Serializable {
     @Column(name = "id", isId = true, autoGen = true)
     private long id;
     /**
+     * 害虫名称
+     */
+    @Column(name = "name")
+    private String name;
+    /**
      * 设备
      */
     @Column(name = "device")
     private String device;
-    /**
-     * 害虫种类
-     */
-    @Column(name = "pestKind")
-    private PestKind pestKind;
-    /**
-     * 关联的种类
-     */
-    @Column(name = "kindLink")
-    public long kindLink;
     /**
      * 害虫数量
      */
     @Column(name = "pestNum")
     private int pestNum;
     /**
-     * 设备号
-     */
-    @Column(name = "deviceNum")
-    private String deviceNum;
-    /**
      * 发送时间
      */
     @Column(name = "sendTime")
-    private long sendTime;
+    private String sendTime;
+    /**
+     * 环境
+     */
+    @Column(name = "environment")
+    private String environments;
 
     /**
-     * 获取区域
+     * 获取设备
      *
-     * @return 区域
+     * @return 设备
      */
     public String getDevice() {
         return device;
     }
 
     /**
-     * 设置区域
+     * 设置设备
      *
-     * @param device 区域
+     * @param device 设备
      */
     public void setDevice(String device) {
         this.device = device;
-    }
-
-    /**
-     * 获取害虫种类
-     *
-     * @return 害虫种类
-     */
-    public PestKind getPestKind() {
-        return pestKind;
-    }
-
-    /**
-     * 设置害虫种类
-     *
-     * @param pestKind 害虫种类
-     */
-    public void setPestKind(PestKind pestKind) {
-        this.pestKind = pestKind;
     }
 
     /**
@@ -99,29 +76,11 @@ public class PestInformation implements Serializable {
     }
 
     /**
-     * 获取设备号
-     *
-     * @return 设备号
-     */
-    public String getDeviceNum() {
-        return deviceNum;
-    }
-
-    /**
-     * 设置设备号
-     *
-     * @param deviceNum 设备号
-     */
-    public void setDeviceNum(String deviceNum) {
-        this.deviceNum = deviceNum;
-    }
-
-    /**
      * 获取发送时间
      *
      * @return 发送时间
      */
-    public long getSendTime() {
+    public String getSendTime() {
         return sendTime;
     }
 
@@ -130,7 +89,43 @@ public class PestInformation implements Serializable {
      *
      * @param sendTime 发送时间
      */
-    public void setSendTime(long sendTime) {
+    public void setSendTime(String sendTime) {
         this.sendTime = sendTime;
+    }
+
+    /**
+     * 获取害虫名称
+     *
+     * @return 害虫名称
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * 设置害虫名称
+     *
+     * @param name 害虫名称
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * 获取环境
+     *
+     * @return 所有环境
+     */
+    public String getEnvironments() {
+        return environments;
+    }
+
+    /**
+     * 设置环境
+     *
+     * @param environments 环境
+     */
+    public void setEnvironments(String environments) {
+        this.environments = environments;
     }
 }

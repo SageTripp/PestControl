@@ -49,7 +49,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         holder.divider.setVisibility(View.VISIBLE);
         PestInformation pi = pestList.get(position);
         holder.setDevice(pi.getDevice());
-        holder.setPestKind(pi.getPestKind().getKindName());
+        holder.setPestKind(pi.getName());
         holder.setSendTime(pi.getSendTime());
         holder.clrSelected();
         if (isCheckMod && sba.get(position, false))
@@ -138,8 +138,8 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
             this.pestKind.setText(pestKind);
         }
 
-        public void setSendTime(long sendTime) {
-            this.sendTime.setText(new DateTime(sendTime).toString("yyyy/MM/dd HH:mm"));
+        public void setSendTime(String sendTime) {
+            this.sendTime.setText(sendTime);
         }
 
         @Override

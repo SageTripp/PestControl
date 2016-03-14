@@ -72,7 +72,7 @@ public class CloudEditText extends EditText {
     }
 
     private void init() {
-        setInputType(InputType.TYPE_NULL);
+        setKeyListener(null);
         setMovementMethod(new LinkTouchMovementMethod());
         rightDrawable = getResources().getDrawable(R.mipmap.exit_pressed);
         drawablePadding = UIUtils.dip2px(getContext(), 5);

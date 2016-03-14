@@ -39,7 +39,7 @@ public class DeleteHistoryDataTask extends HttpTask<String> {
                 String status = jsonObject.getString("status");
                 info.onTaskFinish(status, status);
             } catch (JSONException e) {
-                e.printStackTrace();
+                info.onTaskFinish("success", "");
             }
         }
     }
