@@ -142,9 +142,9 @@ public class ChartFragment extends BaseFragment implements OnChartValueSelectedL
         LineDataSet set1 = new LineDataSet(yVals, "害虫数目");
 //        set1.enableDashedLine(10f, 5f, 0f);
 //        set1.enableDashedHighlightLine(10f, 5f, 0f);
-        set1.setColor(Color.GREEN);
+        set1.setColor(Color.BLUE);
 //        set1.setCircleColor(Color.BLUE);
-        set1.setLineWidth(1f);
+        set1.setLineWidth(3f);
 //        set1.setCircleSize(3f);
 //        set1.setDrawCircleHole(true);
         set1.setDrawCircles(false);

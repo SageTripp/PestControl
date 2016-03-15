@@ -16,7 +16,7 @@ public class CustomLayoutManager extends RecyclerView.LayoutManager {
 
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
-
+        //
     }
 
     @Override

@@ -12,9 +12,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.application.App;
+import com.okq.pestcontrol.bean.Device;
+import com.okq.pestcontrol.task.DeviceTask;
 import com.okq.pestcontrol.task.LoadTask;
 import com.okq.pestcontrol.task.LoginTask;
 import com.okq.pestcontrol.task.TaskInfo;
@@ -22,6 +25,8 @@ import com.okq.pestcontrol.task.TaskInfo;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+
+import java.util.List;
 
 import static com.okq.pestcontrol.util.Sharepreference.Key;
 import static com.okq.pestcontrol.util.Sharepreference.getParam;
@@ -107,31 +112,32 @@ public class LoginActivity extends BaseActivity {
                     if ("success".equals(b)) {
                         if (result != null) {
                             App.saveToken(result);
+                            //登录成功之后加载数据并跳转到主页面
+                            setParam(LoginActivity.this, Key.REMEMBER_PASSWORD, rememberPassCb.isChecked());
+                            if (rememberPassCb.isChecked()) {
+                                setParam(LoginActivity.this, Key.USER_NAME, userTv.getText().toString());
+                                setParam(LoginActivity.this, Key.PASSWORD, passTv.getText().toString());
+                            } else {
+                                setParam(LoginActivity.this, Key.USER_NAME, "");
+                                setParam(LoginActivity.this, Key.PASSWORD, "");
+                            }
+
                         }
                     } else if ("fail".equals(b)) {
-                        if (null != result) {
-                            //TODO　根据result内容判断失败原因,并提示用户
+                        if (!TextUtils.isEmpty(result)) {
+                            Toast.makeText(LoginActivity.this, result, Toast.LENGTH_LONG).show();
                         }
                     }
-                    //登录成功之后加载数据并跳转到主页面
-                    setParam(LoginActivity.this, Key.REMEMBER_PASSWORD, rememberPassCb.isChecked());
-                    if (rememberPassCb.isChecked()) {
-                        setParam(LoginActivity.this, Key.USER_NAME, userTv.getText().toString());
-                        setParam(LoginActivity.this, Key.PASSWORD, passTv.getText().toString());
-                    } else {
-                        setParam(LoginActivity.this, Key.USER_NAME, "");
-                        setParam(LoginActivity.this, Key.PASSWORD, "");
-                    }
 
-                    LoadTask task = new LoadTask(LoginActivity.this);
+                    DeviceTask task = new DeviceTask(1);
                     task.execute();
-                    task.setTaskInfo(new TaskInfo<Boolean>() {
+                    task.setTaskInfo(new TaskInfo<List<Device>>() {
                         @Override
                         public void onPreTask() {
                         }
 
                         @Override
-                        public void onTaskFinish(String b, Boolean result) {
+                        public void onTaskFinish(String b, List<Device> result) {
                             if (null != pd && pd.isShowing()) {
                                 pd.dismiss();
                             }

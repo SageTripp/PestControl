@@ -69,6 +69,7 @@ public class DataTask extends HttpTask<List<PestInformation>> {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    info.onTaskFinish("fail",null);
                 }
             } else {
                 info.onTaskFinish("fail",null);

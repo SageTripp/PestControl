@@ -78,8 +78,6 @@ public class DataFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         //设置开始就进行加载(需要同时设置偏移和setRefreshing(true))
 //        dataFreshLayout.setProgressViewOffset(true, 0, 200);
-        loadAll();
-        initSort();
         dataFreshLayout.setProgressViewEndTarget(true, 200);
         dataFreshLayout.setSize(SwipeRefreshLayout.LARGE);
         dataFreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -87,13 +85,17 @@ public class DataFragment extends BaseFragment {
             public void onRefresh() {
                 dataFreshLayout.setEnabled(false);
                 //加载数据
+                loadAll();
                 dataFreshLayout.setEnabled(true);
             }
         });
-        dataFreshLayout.setColorSchemeColors(R.color.BLUE, R.color.GREEN, R.color.RED, R.color.YELLOW);
-//        dataFreshLayout.setRefreshing(true);
-        dataFreshLayout.setEnabled(false);
-        dataRecy.scrollBy(0, 200);
+//        dataFreshLayout.setColorSchemeColors(R.color.BLUE, R.color.GREEN, R.color.RED, R.color.YELLOW);
+        dataFreshLayout.setColorSchemeResources(R.color.BLUE, R.color.GREEN, R.color.RED, R.color.YELLOW);
+        dataFreshLayout.setRefreshing(true);
+        dataFreshLayout.setEnabled(true);
+        dataRecy.scrollBy(0, 100);
+        loadAll();
+        initSort();
         mManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         dataRecy.setLayoutManager(mManager);
         adapter = new DataAdapter(getContext(), informations);
@@ -294,7 +296,7 @@ public class DataFragment extends BaseFragment {
                         e.printStackTrace();
                     }
                 } else if (b.equals("success")) {
-                    informations = new ArrayList<PestInformation>(result);
+                    informations = new ArrayList<>(result);
                     adapter.refreshData(informations);
                 }
             }

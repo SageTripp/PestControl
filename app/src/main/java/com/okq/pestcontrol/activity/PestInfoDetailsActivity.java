@@ -2,7 +2,10 @@ package com.okq.pestcontrol.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,9 @@ import com.okq.pestcontrol.widget.CustomLayoutManager;
 import org.joda.time.DateTime;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 虫害信息详情页面
@@ -56,13 +62,20 @@ public class PestInfoDetailsActivity extends BaseActivity {
         nameTv.setText(pestInfo.getName());
         deviceTv.setText(String.format("采集设备:%s", pestInfo.getDevice()));
         dateTv.setText(pestInfo.getSendTime());
-        environments.setLayoutManager(new CustomLayoutManager());
-        environments.setAdapter(new Adapter());
-        environments.setHasFixedSize(true);
+//        environments.setHasFixedSize(true);
+        environments.setAdapter(new Adapter(pestInfo.getEnvironments()));
+        environments.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 
     }
 
     private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+
+        private List<String> list;
+
+        public Adapter(String envirs) {
+            envirs.split(",");
+            list = Arrays.asList(envirs.split(","));
+        }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -71,12 +84,12 @@ public class PestInfoDetailsActivity extends BaseActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.setEnvironment(pestInfo.getEnvironments().split(",")[position].replace("=", ":"));
+            holder.setEnvironment(list.get(position).replace("=", ":"));
         }
 
         @Override
         public int getItemCount() {
-            return pestInfo.getEnvironments().split(",").length;
+            return list.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {

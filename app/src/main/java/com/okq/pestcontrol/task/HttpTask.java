@@ -14,6 +14,8 @@ import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.net.SocketTimeoutException;
+
 /**
  * Created by zst on 2016/2/23. http通信任务
  */
@@ -60,27 +62,16 @@ public abstract class HttpTask<R> {
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-//                LogUtil.e("success:" + result);
-//                String detail = "";
-//                try {
-//                    JSONObject jsonObject = new JSONObject(result);
-//                    detail = jsonObject.getString("detail");
-//                    LogUtil.e(detail);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//                Gson gson = new Gson();
-//                R o = gson.fromJson(detail, new TypeToken<R>() {}.getType());
-//                if(null != info){
-//                    info.onTaskFinish("success",o);
-//                }
                 finish(result);
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 LogUtil.e("fail:" + ex);
-                finish("ex:" + ex.getLocalizedMessage());
+                if(ex instanceof SocketTimeoutException)
+                    finish("ex:请求设备超时");
+                else
+                    finish("ex:"+ex.getMessage());
             }
 
             @Override

@@ -1,5 +1,7 @@
 package com.okq.pestcontrol.task;
 
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.okq.pestcontrol.application.App;
@@ -35,7 +37,7 @@ public class DeviceTask extends HttpTask<List<Device>> {
     RequestParams setParams() {
         RequestParams params = new RequestParams(Config.URL + "devices");
         params.addQueryStringParameter("token", App.getToken());
-        params.addQueryStringParameter("devType", "4");
+        params.addQueryStringParameter("devtype", "4");
         params.addQueryStringParameter("scope", scope + "");
         return params;
     }
@@ -43,21 +45,28 @@ public class DeviceTask extends HttpTask<List<Device>> {
     @Override
     void finish(String r) {
         if (null != info) {
-            try {
-                JSONObject object = new JSONObject(r);
-                JSONArray devices = object.getJSONArray("devices");
-                Gson gson = new Gson();
-                List<Device> list = gson.fromJson(devices.toString(), new TypeToken<List<Device>>() {
-                }.getType());
-                if (list != null) {
-                    info.onTaskFinish("success", list);
-                    return;
-                } else {
+            if (!r.contains("ex:")) {
+                try {
+                    JSONObject object = new JSONObject(r);
+                    JSONArray devices = object.getJSONArray("devices");
+                    Gson gson = new Gson();
+                    List<Device> list = gson.fromJson(devices.toString(), new TypeToken<List<Device>>() {
+                    }.getType());
+                    if (list != null) {
+                        info.onTaskFinish("success", list);
+                        return;
+                    } else {
+                        info.onTaskFinish("fail", null);
+                        return;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(mContext, "解析设备数据失败", Toast.LENGTH_LONG).show();
                     info.onTaskFinish("fail", null);
-                    return;
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            } else {
+                Toast.makeText(mContext, r, Toast.LENGTH_LONG).show();
+                info.onTaskFinish("fail", null);
             }
         }
     }
