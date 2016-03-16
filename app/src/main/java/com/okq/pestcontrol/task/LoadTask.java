@@ -14,8 +14,6 @@ import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 import org.xutils.x;
 
-import java.util.ArrayList;
-
 /**
  * Created by Administrator on 2015/12/9.
  */
@@ -57,11 +55,11 @@ public class LoadTask extends BaseTask<Boolean> {
             //虫害信息/历史数据
             for (int i = 0; i < 300; i++) {
                 PestInformation pestInformation = new PestInformation();
-                pestInformation.setDevice("0000000" + (i % 5));
-                pestInformation.setName(kinds[(int) (Math.random() * (kinds.length - 1))]);
+                pestInformation.setDeviceid("0000000" + (i % 5));
+                pestInformation.setPest(kinds[(int) (Math.random() * (kinds.length - 1))]);
                 String send = DateTime.now().plusDays((int) -(Math.random() * 90)).toString("YYYY/MM/dd HH:mm:ss");
-                pestInformation.setSendTime(send);
-                pestInformation.setPestNum((int) (Math.random() * 5 + 3));
+                pestInformation.setTime(send);
+                pestInformation.setValue((int) (Math.random() * 5 + 3));
                 pestInformation.setEnvironments("温度=12.3,湿度=32,露点=1.2");
                 dbManager.save(pestInformation);
             }

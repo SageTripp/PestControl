@@ -16,23 +16,23 @@ public class PestInformation implements Serializable {
     /**
      * 害虫名称
      */
-    @Column(name = "name")
-    private String name;
+    @Column(name = "pest")
+    private String pest;
     /**
      * 设备
      */
-    @Column(name = "device")
-    private String device;
+    @Column(name = "deviceid")
+    private String deviceid;
     /**
      * 害虫数量
      */
-    @Column(name = "pestNum")
-    private int pestNum;
+    @Column(name = "value")
+    private int value;
     /**
      * 发送时间
      */
-    @Column(name = "sendTime")
-    private String sendTime;
+    @Column(name = "time")
+    private String time;
     /**
      * 环境
      */
@@ -44,17 +44,17 @@ public class PestInformation implements Serializable {
      *
      * @return 设备
      */
-    public String getDevice() {
-        return device;
+    public String getDeviceid() {
+        return deviceid;
     }
 
     /**
      * 设置设备
      *
-     * @param device 设备
+     * @param deviceid 设备
      */
-    public void setDevice(String device) {
-        this.device = device;
+    public void setDeviceid(String deviceid) {
+        this.deviceid = deviceid;
     }
 
     /**
@@ -62,17 +62,17 @@ public class PestInformation implements Serializable {
      *
      * @return 害虫数量
      */
-    public int getPestNum() {
-        return pestNum;
+    public int getValue() {
+        return value;
     }
 
     /**
      * 设置害虫数量
      *
-     * @param pestNum 害虫数量
+     * @param value 害虫数量
      */
-    public void setPestNum(int pestNum) {
-        this.pestNum = pestNum;
+    public void setValue(int value) {
+        this.value = value;
     }
 
     /**
@@ -80,17 +80,17 @@ public class PestInformation implements Serializable {
      *
      * @return 发送时间
      */
-    public String getSendTime() {
-        return sendTime;
+    public String getTime() {
+        return time;
     }
 
     /**
      * 设置发送时间
      *
-     * @param sendTime 发送时间
+     * @param time 发送时间
      */
-    public void setSendTime(String sendTime) {
-        this.sendTime = sendTime;
+    public void setTime(String time) {
+        this.time = time;
     }
 
     /**
@@ -98,17 +98,17 @@ public class PestInformation implements Serializable {
      *
      * @return 害虫名称
      */
-    public String getName() {
-        return name;
+    public String getPest() {
+        return pest;
     }
 
     /**
      * 设置害虫名称
      *
-     * @param name 害虫名称
+     * @param pest 害虫名称
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setPest(String pest) {
+        this.pest = pest;
     }
 
     /**

@@ -6,12 +6,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.Settings;
 import android.view.WindowManager;
+import android.widget.Toast;
 
+import com.okq.pestcontrol.activity.LoginActivity;
+import com.okq.pestcontrol.util.Config;
 import com.okq.pestcontrol.util.NetUtil;
+import com.okq.pestcontrol.util.Sharepreference;
 
 import org.xutils.common.Callback;
 import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
+import org.xutils.http.app.HttpRetryHandler;
 import org.xutils.x;
 
 import java.net.SocketTimeoutException;
@@ -23,8 +28,10 @@ public abstract class HttpTask<R> {
 
     TaskInfo<R> info;
     Context mContext;
+    private boolean reLogin;
 
     void onPre() {
+        reLogin = true;
         if (null != mContext) {
             //检测网络,如果没有网络,跳转到网络设置页面
             if (!NetUtil.isNetworkAvailable(mContext)) {
@@ -59,19 +66,50 @@ public abstract class HttpTask<R> {
     void doInBackground() {
         RequestParams params = setParams();
         params.setConnectTimeout(15 * 1000);
+        params.setCharset("utf-8");
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                finish(result);
+                LogUtil.i("请求结果:" + result);
+                if (result.contains("权限认证失败") && reLogin) {
+                    LoginTask task = new LoginTask(mContext,
+                            (String) Sharepreference.getParam(mContext, Sharepreference.Key.USER_NAME, ""),
+                            (String) Sharepreference.getParam(mContext, Sharepreference.Key.PASSWORD, ""));
+                    task.setTaskInfo(new TaskInfo<String>() {
+                        @Override
+                        public void onPreTask() {
+
+                        }
+
+                        @Override
+                        public void onTaskFinish(String b, String result) {
+                            reLogin = false;
+                            if (b.equals("success"))
+                                doInBackground();
+                            else {
+                                Toast.makeText(mContext, "账户权限已过期,请重新登录", Toast.LENGTH_LONG).show();
+                                mContext.startActivity(new Intent(mContext, LoginActivity.class));
+                            }
+                        }
+                    });
+                    task.execute();
+                } else {
+                    if (reLogin)
+                        finish(result);
+                    else {
+                        Toast.makeText(mContext, "账户权限已过期,请重新登录", Toast.LENGTH_LONG).show();
+                        mContext.startActivity(new Intent(mContext, LoginActivity.class));
+                    }
+                }
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 LogUtil.e("fail:" + ex);
-                if(ex instanceof SocketTimeoutException)
+                if (ex instanceof SocketTimeoutException)
                     finish("ex:请求设备超时");
                 else
-                    finish("ex:"+ex.getMessage());
+                    finish("ex:" + ex.getMessage());
             }
 
             @Override

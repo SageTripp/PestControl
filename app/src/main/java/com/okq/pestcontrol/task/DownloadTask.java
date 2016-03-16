@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.widget.Toast;
 
 import com.okq.pestcontrol.util.Config;
 
@@ -82,6 +83,7 @@ public class DownloadTask {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 LogUtil.e("下载失败", ex);
+                Toast.makeText(mContext,"下载失败",Toast.LENGTH_LONG).show();
             }
 
             @Override

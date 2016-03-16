@@ -154,9 +154,10 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
         DbManager db = x.getDb(App.getDaoConfig());
         try {
             List<Device> all = db.findAll(Device.class);
-            for (Device device : all) {
-                deviceItems.add(device.getDeviceNum());
-            }
+            if (null != all)
+                for (Device device : all) {
+                    deviceItems.add(device.getDeviceNum());
+                }
         } catch (DbException e) {
             e.printStackTrace();
         }

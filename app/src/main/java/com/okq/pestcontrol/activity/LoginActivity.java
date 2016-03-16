@@ -22,9 +22,11 @@ import com.okq.pestcontrol.task.LoadTask;
 import com.okq.pestcontrol.task.LoginTask;
 import com.okq.pestcontrol.task.TaskInfo;
 
+import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.List;
 
@@ -114,37 +116,49 @@ public class LoginActivity extends BaseActivity {
                             App.saveToken(result);
                             //登录成功之后加载数据并跳转到主页面
                             setParam(LoginActivity.this, Key.REMEMBER_PASSWORD, rememberPassCb.isChecked());
-                            if (rememberPassCb.isChecked()) {
+//                            if (rememberPassCb.isChecked()) {
                                 setParam(LoginActivity.this, Key.USER_NAME, userTv.getText().toString());
                                 setParam(LoginActivity.this, Key.PASSWORD, passTv.getText().toString());
-                            } else {
-                                setParam(LoginActivity.this, Key.USER_NAME, "");
-                                setParam(LoginActivity.this, Key.PASSWORD, "");
-                            }
+//                            } else {
+//                                setParam(LoginActivity.this, Key.USER_NAME, "");
+//                                setParam(LoginActivity.this, Key.PASSWORD, "");
+//                            }
+                            DeviceTask task = new DeviceTask(1);
+                            task.execute();
+                            task.setTaskInfo(new TaskInfo<List<Device>>() {
+                                @Override
+                                public void onPreTask() {
+                                }
 
+                                @Override
+                                public void onTaskFinish(String b, List<Device> result) {
+                                    if (pd.isShowing()) {
+                                        pd.dismiss();
+                                    }
+                                    if (b.equals("success")) {
+                                        if (null != result)
+                                            for (Device device : result) {
+                                                try {
+                                                    x.getDb(App.getDaoConfig()).save(device);
+                                                } catch (DbException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                    } else {
+                                        Toast.makeText(LoginActivity.this, "获取设备列表失败!", Toast.LENGTH_LONG).show();
+                                    }
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    finish();
+                                }
+                            });
                         }
                     } else if ("fail".equals(b)) {
+                        if (pd.isShowing())
+                            pd.dismiss();
                         if (!TextUtils.isEmpty(result)) {
                             Toast.makeText(LoginActivity.this, result, Toast.LENGTH_LONG).show();
                         }
                     }
-
-                    DeviceTask task = new DeviceTask(1);
-                    task.execute();
-                    task.setTaskInfo(new TaskInfo<List<Device>>() {
-                        @Override
-                        public void onPreTask() {
-                        }
-
-                        @Override
-                        public void onTaskFinish(String b, List<Device> result) {
-                            if (null != pd && pd.isShowing()) {
-                                pd.dismiss();
-                            }
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            finish();
-                        }
-                    });
                 }
             });
             loginTask.execute();

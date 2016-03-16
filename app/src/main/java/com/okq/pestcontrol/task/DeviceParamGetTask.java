@@ -1,5 +1,7 @@
 package com.okq.pestcontrol.task;
 
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.okq.pestcontrol.application.App;
@@ -33,8 +35,8 @@ public class DeviceParamGetTask extends HttpTask<List<Device>> {
     RequestParams setParams() {
         RequestParams params = new RequestParams(Config.URL + "param");
         params.addQueryStringParameter("token", App.getToken());
-        params.addQueryStringParameter("devices", devs);
-        params.addQueryStringParameter("type", "get");//设备列表,多个设备用逗号间隔
+        params.addQueryStringParameter("devices", devs);//设备列表,多个设备用逗号间隔
+        params.addQueryStringParameter("type", "get");
         return params;
     }
 
@@ -43,26 +45,32 @@ public class DeviceParamGetTask extends HttpTask<List<Device>> {
         if (null != info) {
             try {
                 JSONObject jsonObject = new JSONObject(r);
-                String status = jsonObject.getString("status");
-                if ("success".equals(status)) {
-                    JSONArray content = jsonObject.getJSONArray("content");
-                    Gson gson = new Gson();
-                    List<Device> list = gson.fromJson(content.toString(), new TypeToken<List<Device>>() {
-                    }.getType());
-                    if (list != null) {
-                        info.onTaskFinish("success", list);
-                        return;
+                if (r.contains("status")) {
+                    String status = jsonObject.getString("status");
+                    if ("success".equals(status)) {
+                        JSONArray content = jsonObject.getJSONArray("content");
+                        Gson gson = new Gson();
+                        List<Device> list = gson.fromJson(content.toString(), new TypeToken<List<Device>>() {
+                        }.getType());
+                        if (list != null) {
+                            info.onTaskFinish("success", list);
+                            return;
+                        } else {
+                            info.onTaskFinish("fail", null);
+                            return;
+                        }
                     } else {
                         info.onTaskFinish("fail", null);
                         return;
                     }
                 } else {
-                    info.onTaskFinish("fail", null);
-                    return;
+                    String errMsg = jsonObject.getString("errmsg");
+                    Toast.makeText(mContext, errMsg, Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            info.onTaskFinish("fail", null);
         }
     }
 }

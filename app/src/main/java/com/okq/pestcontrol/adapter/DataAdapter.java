@@ -14,8 +14,6 @@ import com.okq.pestcontrol.adapter.listener.OnItemClickListener;
 import com.okq.pestcontrol.adapter.listener.OnItemLongClickListener;
 import com.okq.pestcontrol.bean.PestInformation;
 
-import org.joda.time.DateTime;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,9 +46,9 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.divider.setVisibility(View.VISIBLE);
         PestInformation pi = pestList.get(position);
-        holder.setDevice(pi.getDevice());
-        holder.setPestKind(pi.getName());
-        holder.setSendTime(pi.getSendTime());
+        holder.setDevice(pi.getDeviceid());
+        holder.setPestKind(pi.getPest());
+        holder.setSendTime(pi.getTime());
         holder.clrSelected();
         if (isCheckMod && sba.get(position, false))
             holder.setSelected();

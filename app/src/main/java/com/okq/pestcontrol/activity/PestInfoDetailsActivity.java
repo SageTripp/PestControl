@@ -2,8 +2,6 @@ package com.okq.pestcontrol.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -13,9 +11,7 @@ import android.widget.TextView;
 
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.bean.PestInformation;
-import com.okq.pestcontrol.widget.CustomLayoutManager;
 
-import org.joda.time.DateTime;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 
@@ -59,9 +55,9 @@ public class PestInfoDetailsActivity extends BaseActivity {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
         }
         pestInfo = (PestInformation) getIntent().getSerializableExtra("pestInfo");
-        nameTv.setText(pestInfo.getName());
-        deviceTv.setText(String.format("采集设备:%s", pestInfo.getDevice()));
-        dateTv.setText(pestInfo.getSendTime());
+        nameTv.setText(pestInfo.getPest());
+        deviceTv.setText(String.format("采集设备:%s", pestInfo.getDeviceid()));
+        dateTv.setText(pestInfo.getTime());
 //        environments.setHasFixedSize(true);
         environments.setAdapter(new Adapter(pestInfo.getEnvironments()));
         environments.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));

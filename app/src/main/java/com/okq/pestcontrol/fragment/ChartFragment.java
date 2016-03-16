@@ -1,5 +1,6 @@
 package com.okq.pestcontrol.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
@@ -23,9 +25,13 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.okq.pestcontrol.R;
+import com.okq.pestcontrol.application.App;
+import com.okq.pestcontrol.bean.Device;
 import com.okq.pestcontrol.bean.PestInformation;
 import com.okq.pestcontrol.bean.param.PestScreeningParam;
 import com.okq.pestcontrol.dbDao.PestInformationDao;
+import com.okq.pestcontrol.task.DataTask;
+import com.okq.pestcontrol.task.TaskInfo;
 import com.okq.pestcontrol.util.SortUtil;
 import com.okq.pestcontrol.widget.ScreeningDialog;
 
@@ -33,9 +39,11 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +54,7 @@ import java.util.List;
 @ContentView(value = R.layout.fragment_chart)
 public class ChartFragment extends BaseFragment implements OnChartValueSelectedListener {
 
+    private static final String DATE_FORMAT = "YYYY-MM-dd";
     @ViewInject(value = R.id.chart_fra_chart)
     private LineChart mChart;
     private PestScreeningParam screeningParam;
@@ -131,8 +140,8 @@ public class ChartFragment extends BaseFragment implements OnChartValueSelectedL
 
         ArrayList<PestInformation> list = new ArrayList<>(informations);
         for (PestInformation information : list) {
-            int y = information.getPestNum();
-            int x = Days.daysBetween(startVal, DateTime.parse(information.getSendTime(), DateTimeFormat.forPattern("YYYY/MM/dd HH:mm:ss"))).getDays();
+            int y = information.getValue();
+            int x = Days.daysBetween(startVal, DateTime.parse(information.getTime(), DateTimeFormat.forPattern("YYYY/MM/dd HH:mm:ss"))).getDays();
             if (x >= 0 && x < yVals.size()) {
                 Entry entry = yVals.get(x);
                 entry.setVal(entry.getVal() + y);
@@ -170,6 +179,75 @@ public class ChartFragment extends BaseFragment implements OnChartValueSelectedL
      * 加载所有数据
      */
     private void loadAll() {
+        informations = new ArrayList<>();
+
+        DataTask task;
+        if (null == screeningParam) {//默认查询最近3个月内的所有设备的全部数据
+            screeningParam = new PestScreeningParam();
+            String dataType = "1";
+            long start = DateTime.now().plusMonths(-3).getMillis();
+            long end = DateTime.now().getMillis();
+
+            StringBuilder devs = new StringBuilder();
+            ArrayList<String> deviceItems = new ArrayList<>();
+            DbManager db = x.getDb(App.getDaoConfig());
+            try {
+                List<Device> all = db.findAll(Device.class);
+                if (null != all)
+                    for (Device device : all) {
+                        deviceItems.add(device.getDeviceNum());
+                    }
+            } catch (DbException e) {
+                e.printStackTrace();
+            }
+            for (String s : deviceItems) {
+                devs.append(s);
+                devs.append(",");
+            }
+            if (devs.length() > 0)
+                devs.deleteCharAt(devs.length() - 1);
+
+            screeningParam.setDataType(dataType);
+            screeningParam.setDevice(devs.toString());
+            screeningParam.setStartTime(start);
+            screeningParam.setEndTime(end);
+        }
+
+        String start = new DateTime(screeningParam.getStartTime()).toString(DATE_FORMAT);
+        String end = new DateTime(screeningParam.getEndTime()).toString(DATE_FORMAT);
+        task = new DataTask(screeningParam.getDevice(), start, end, screeningParam.getDataType());
+        task.setTaskInfo(new TaskInfo<List<PestInformation>>() {
+            ProgressDialog pd = new ProgressDialog(getContext());
+
+            @Override
+            public void onPreTask() {
+                pd.setMessage("正在加载数据");
+                pd.setCancelable(false);
+                pd.show();
+//                dataFreshLayout.setRefreshing(true);
+            }
+
+            @Override
+            public void onTaskFinish(String b, List<PestInformation> result) {
+                if (null != pd && pd.isShowing())
+                    pd.dismiss();
+//                dataFreshLayout.setRefreshing(false);
+                if (b.equals("fail")) {
+                    Toast.makeText(getContext(), "获取数据失败!", Toast.LENGTH_LONG).show();
+                } else if (b.equals("success")) {
+                    informations = new ArrayList<>(result);
+//                    adapter.refreshData(informations);
+                }
+            }
+        });
+        task.execute();
+
+    }
+
+    /**
+     * 加载所有数据
+     */
+    private void loadAll1() {
         try {
             if (null == screeningParam)
                 informations = new ArrayList<>(PestInformationDao.findAll());
@@ -179,7 +257,8 @@ public class ChartFragment extends BaseFragment implements OnChartValueSelectedL
             e.printStackTrace();
         }
         //按照发送时间对数据进行排序
-        SortUtil.sortList(informations, "sendTime", false);
+        if (null != informations && informations.size() > 1)
+            SortUtil.sortList(informations, "sendTime", false);
     }
 
     @Override

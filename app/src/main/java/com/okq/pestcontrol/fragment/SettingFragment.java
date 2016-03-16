@@ -42,7 +42,6 @@ public class SettingFragment extends BaseFragment {
 
     @Event(value = R.id.setting_check_update)
     private void checkUpdateEvent(View view) {
-        //TODO 检查更新网络请求代码
         final UpdateTask task = new UpdateTask(getVersion());
         task.setTaskInfo(new TaskInfo<String>() {
             ProgressDialog dialog = new ProgressDialog(getContext());

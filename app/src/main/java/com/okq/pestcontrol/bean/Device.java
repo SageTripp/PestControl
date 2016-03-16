@@ -22,31 +22,6 @@ public class Device implements Serializable {
      */
     @Column(name = "deviceModel")
     private String deviceModel;
-//    /**
-//     * 购买时间
-//     */
-//    @Column(name = "buyTime")
-//    private long buyTime;
-//    /**
-//     * 安装时间
-//     */
-//    @Column(name = "installTime")
-//    private long installTime;
-//    /**
-//     * 拆除时间
-//     */
-//    @Column(name = "removeTime")
-//    private long removeTime;
-//    /**
-//     * 区域
-//     */
-//    @Column(name = "area")
-//    private String area;
-//    /**
-//     * 具体地点
-//     */
-//    @Column(name = "place")
-//    private String place;
     /**
      * 纬度
      */
@@ -123,96 +98,6 @@ public class Device implements Serializable {
     public void setDeviceModel(String deviceModel) {
         this.deviceModel = deviceModel;
     }
-
-//    /**
-//     * 获取购买时间
-//     *
-//     * @return 购买时间
-//     */
-//    public long getBuyTime() {
-//        return buyTime;
-//    }
-//
-//    /**
-//     * 设置购买时间
-//     *
-//     * @param buyTime 购买时间
-//     */
-//    public void setBuyTime(long buyTime) {
-//        this.buyTime = buyTime;
-//    }
-//
-//    /**
-//     * 获取安装时间
-//     *
-//     * @return 安装时间
-//     */
-//    public long getInstallTime() {
-//        return installTime;
-//    }
-//
-//    /**
-//     * 设置安装时间
-//     *
-//     * @param installTime 安装时间
-//     */
-//    public void setInstallTime(long installTime) {
-//        this.installTime = installTime;
-//    }
-//
-//    /**
-//     * 获取拆除时间
-//     *
-//     * @return 拆除时间
-//     */
-//    public long getRemoveTime() {
-//        return removeTime;
-//    }
-//
-//    /**
-//     * 设置拆除时间
-//     *
-//     * @param removeTime 拆除时间
-//     */
-//    public void setRemoveTime(long removeTime) {
-//        this.removeTime = removeTime;
-//    }
-//
-//    /**
-//     * 获取区域
-//     *
-//     * @return 区域
-//     */
-//    public String getDevice() {
-//        return area;
-//    }
-//
-//    /**
-//     * 设置区域
-//     *
-//     * @param area 区域
-//     */
-//    public void setDevice(String area) {
-//        this.area = area;
-//    }
-//
-//    /**
-//     * 获取具体地点
-//     *
-//     * @return 具体地点
-//     */
-//    public String getPlace() {
-//        return place;
-//    }
-//
-//    /**
-//     * 设置具体地点
-//     *
-//     * @param place 具体地点
-//     */
-//    public void setPlace(String place) {
-//        this.place = place;
-//    }
 
     /**
      * 获取纬度

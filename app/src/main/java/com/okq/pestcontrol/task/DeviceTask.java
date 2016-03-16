@@ -1,5 +1,6 @@
 package com.okq.pestcontrol.task;
 
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -11,8 +12,11 @@ import com.okq.pestcontrol.util.Config;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xutils.ex.DbException;
 import org.xutils.http.RequestParams;
+import org.xutils.x;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,18 +51,28 @@ public class DeviceTask extends HttpTask<List<Device>> {
         if (null != info) {
             if (!r.contains("ex:")) {
                 try {
+                    if(scope == 1)
+                        try {
+                            x.getDb(App.getDaoConfig()).dropTable(Device.class);
+                        } catch (DbException e) {
+                            e.printStackTrace();
+                        }
+
+                    List<Device> list = new ArrayList<>();
                     JSONObject object = new JSONObject(r);
-                    JSONArray devices = object.getJSONArray("devices");
-                    Gson gson = new Gson();
-                    List<Device> list = gson.fromJson(devices.toString(), new TypeToken<List<Device>>() {
-                    }.getType());
-                    if (list != null) {
-                        info.onTaskFinish("success", list);
-                        return;
-                    } else {
+                    String devices = object.getString("devices");
+                    if(TextUtils.isEmpty(devices)){
                         info.onTaskFinish("fail", null);
                         return;
+                    }else {
+                        String[] split = devices.split(",");
+                        for (String s :split) {
+                            Device device = new Device();
+                            device.setDeviceNum(s);
+                            list.add(device);
+                        }
                     }
+                    info.onTaskFinish("success", list);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(mContext, "解析设备数据失败", Toast.LENGTH_LONG).show();

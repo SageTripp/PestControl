@@ -129,7 +129,7 @@ public class DeviceDetailsActivity extends BaseActivity {
     }
 
     private void setDeviceData() {
-//        areaTv.setText(device.getDevice());
+//        areaTv.setText(device.getDeviceid());
         GeoCoder geoCoder = GeoCoder.newInstance();
         geoCoder.setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener() {
             @Override

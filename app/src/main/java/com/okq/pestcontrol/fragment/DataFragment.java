@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.activity.PestInfoDetailsActivity;
@@ -250,9 +251,10 @@ public class DataFragment extends BaseFragment {
             DbManager db = x.getDb(App.getDaoConfig());
             try {
                 List<Device> all = db.findAll(Device.class);
-                for (Device device : all) {
-                    deviceItems.add(device.getDeviceNum());
-                }
+                if (null != all)
+                    for (Device device : all) {
+                        deviceItems.add(device.getDeviceNum());
+                    }
             } catch (DbException e) {
                 e.printStackTrace();
             }
@@ -289,12 +291,7 @@ public class DataFragment extends BaseFragment {
                     pd.dismiss();
                 dataFreshLayout.setRefreshing(false);
                 if (b.equals("fail")) {
-                    try {
-                        informations = new ArrayList<>(PestInformationDao.findAll());
-                        adapter.refreshData(informations);
-                    } catch (DbException e) {
-                        e.printStackTrace();
-                    }
+                    Toast.makeText(getContext(), "获取数据失败!", Toast.LENGTH_LONG).show();
                 } else if (b.equals("success")) {
                     informations = new ArrayList<>(result);
                     adapter.refreshData(informations);
