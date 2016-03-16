@@ -22,9 +22,9 @@ import java.util.List;
  * 虫害信息详情页面
  * Created by Administrator on 2015/12/18.
  */
-@ContentView(value = R.layout.activity_pest_info_details)
+@ContentView(value = R.layout.activity_pest_details)
 public class PestInfoDetailsActivity extends BaseActivity {
-    @ViewInject(value = R.id.toolbar)
+    @ViewInject(value = R.id.pest_details_toolbar)
     private Toolbar mToolbar;
     @ViewInject(value = R.id.pest_info_details_name)
     private TextView nameTv;
