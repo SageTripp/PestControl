@@ -1,5 +1,6 @@
 package com.okq.pestcontrol.task;
 
+import android.content.Context;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -27,7 +28,8 @@ public class DeviceParamGetTask extends HttpTask<List<Device>> {
      *
      * @param devs 要获取的设备
      */
-    public DeviceParamGetTask(String devs) {
+    public DeviceParamGetTask(Context context, String devs) {
+        mContext = context;
         this.devs = devs;
     }
 

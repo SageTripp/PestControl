@@ -36,9 +36,10 @@ import com.okq.pestcontrol.util.SortUtil;
 import com.okq.pestcontrol.widget.ScreeningDialog;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeUtils;
 import org.joda.time.Days;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
@@ -52,7 +53,7 @@ import java.util.List;
  * 图表页面 Created by Administrator on 2015/12/12.
  */
 @ContentView(value = R.layout.fragment_chart)
-public class ChartFragment extends BaseFragment implements OnChartValueSelectedListener {
+public class ChartFragment extends BaseFragment {
 
     private static final String DATE_FORMAT = "YYYY-MM-dd";
     @ViewInject(value = R.id.chart_fra_chart)
@@ -64,7 +65,7 @@ public class ChartFragment extends BaseFragment implements OnChartValueSelectedL
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mChart.setOnChartValueSelectedListener(this);
+//        mChart.setOnChartValueSelectedListener(this);
         mChart.setDrawGridBackground(false);
 
         // 没有数据时的文本
@@ -134,8 +135,8 @@ public class ChartFragment extends BaseFragment implements OnChartValueSelectedL
         int i = 0;
         while (time.isEqual(startVal) || time.isEqual(endVal) || (time.isBefore(endVal) && time.isAfter(startVal))) {
             time = time.plusDays(1);
-            xVals.add(time.toString("YYYY/MM/dd"));
-            yVals.add(new Entry(0, i++, time.toString("YYYY/MM/dd")));
+            xVals.add(time.toString("YY/MM/dd"));
+            yVals.add(new Entry(0, i++, time.toString("YY/MM/dd")));
         }
 
         ArrayList<PestInformation> list = new ArrayList<>(informations);
@@ -215,7 +216,7 @@ public class ChartFragment extends BaseFragment implements OnChartValueSelectedL
 
         String start = new DateTime(screeningParam.getStartTime()).toString(DATE_FORMAT);
         String end = new DateTime(screeningParam.getEndTime()).toString(DATE_FORMAT);
-        task = new DataTask(screeningParam.getDevice(), start, end, screeningParam.getDataType());
+        task = new DataTask(getContext(), screeningParam.getDevice(), start, end, screeningParam.getDataType());
         task.setTaskInfo(new TaskInfo<List<PestInformation>>() {
             ProgressDialog pd = new ProgressDialog(getContext());
 
@@ -244,31 +245,6 @@ public class ChartFragment extends BaseFragment implements OnChartValueSelectedL
 
     }
 
-    /**
-     * 加载所有数据
-     */
-    private void loadAll1() {
-        try {
-            if (null == screeningParam)
-                informations = new ArrayList<>(PestInformationDao.findAll());
-            else
-                informations = new ArrayList<>(PestInformationDao.find(screeningParam));
-        } catch (DbException e) {
-            e.printStackTrace();
-        }
-        //按照发送时间对数据进行排序
-        if (null != informations && informations.size() > 1)
-            SortUtil.sortList(informations, "sendTime", false);
-    }
-
-    @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-    }
-
-    @Override
-    public void onNothingSelected() {
-
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

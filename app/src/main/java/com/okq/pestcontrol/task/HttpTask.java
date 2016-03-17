@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.okq.pestcontrol.activity.LoginActivity;
+import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.util.Config;
 import com.okq.pestcontrol.util.NetUtil;
 import com.okq.pestcontrol.util.Sharepreference;
@@ -54,6 +55,8 @@ public abstract class HttpTask<R> {
                     }
                 });
                 dialog.show();
+                if(null != info)
+                    info.onTaskFinish("fail",null);
                 return;
             }
         }
@@ -84,9 +87,10 @@ public abstract class HttpTask<R> {
                         @Override
                         public void onTaskFinish(String b, String result) {
                             reLogin = false;
-                            if (b.equals("success"))
+                            if (b.equals("success")) {
+                                App.saveToken(result);
                                 doInBackground();
-                            else {
+                            } else {
                                 Toast.makeText(mContext, "账户权限已过期,请重新登录", Toast.LENGTH_LONG).show();
                                 mContext.startActivity(new Intent(mContext, LoginActivity.class));
                             }
@@ -94,12 +98,11 @@ public abstract class HttpTask<R> {
                     });
                     task.execute();
                 } else {
-                    if (reLogin)
-                        finish(result);
-                    else {
+                    if (!reLogin && result.contains("权限认证失败")) {
                         Toast.makeText(mContext, "账户权限已过期,请重新登录", Toast.LENGTH_LONG).show();
                         mContext.startActivity(new Intent(mContext, LoginActivity.class));
-                    }
+                    } else
+                        finish(result);
                 }
             }
 

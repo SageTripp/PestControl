@@ -110,7 +110,7 @@ public class EditDeviceActivity extends BaseActivity {
             }
             if (",".equals(tels.charAt(tels.length() - 1)))
                 tels.deleteCharAt(tels.length() - 1);
-            DeviceParamUpdateTask task = new DeviceParamUpdateTask(device.getDeviceNum(),
+            DeviceParamUpdateTask task = new DeviceParamUpdateTask(this, device.getDeviceNum(),
                     collectInterval,
                     uploadInterval,
                     tels.toString(),

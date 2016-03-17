@@ -1,15 +1,13 @@
 package com.okq.pestcontrol.task;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.bean.Device;
 import com.okq.pestcontrol.util.Config;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.ex.DbException;
@@ -33,7 +31,8 @@ public class DeviceTask extends HttpTask<List<Device>> {
      *
      * @param scope 设备状态
      */
-    public DeviceTask(int scope) {
+    public DeviceTask(Context context, int scope) {
+        mContext = context;
         this.scope = scope;
     }
 
@@ -51,7 +50,7 @@ public class DeviceTask extends HttpTask<List<Device>> {
         if (null != info) {
             if (!r.contains("ex:")) {
                 try {
-                    if(scope == 1)
+                    if (scope == 1)
                         try {
                             x.getDb(App.getDaoConfig()).dropTable(Device.class);
                         } catch (DbException e) {
@@ -61,12 +60,12 @@ public class DeviceTask extends HttpTask<List<Device>> {
                     List<Device> list = new ArrayList<>();
                     JSONObject object = new JSONObject(r);
                     String devices = object.getString("devices");
-                    if(TextUtils.isEmpty(devices)){
+                    if (TextUtils.isEmpty(devices)) {
                         info.onTaskFinish("fail", null);
                         return;
-                    }else {
+                    } else {
                         String[] split = devices.split(",");
-                        for (String s :split) {
+                        for (String s : split) {
                             Device device = new Device();
                             device.setDeviceNum(s);
                             list.add(device);

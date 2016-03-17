@@ -18,7 +18,7 @@ import java.io.File;
 import java.util.concurrent.Executor;
 
 /**
- * Created by zst on 2016/3/2.
+ * Created by zst on 2016/3/2. 下载任务
  */
 public class DownloadTask {
 
@@ -83,7 +83,7 @@ public class DownloadTask {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 LogUtil.e("下载失败", ex);
-                Toast.makeText(mContext,"下载失败",Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "下载失败", Toast.LENGTH_LONG).show();
             }
 
             @Override

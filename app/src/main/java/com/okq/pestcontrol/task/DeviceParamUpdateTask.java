@@ -1,5 +1,7 @@
 package com.okq.pestcontrol.task;
 
+import android.content.Context;
+
 import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.util.Config;
 
@@ -27,7 +29,8 @@ public class DeviceParamUpdateTask extends HttpTask<String> {
      * @param tels            报警号码
      * @param pestWarnVal     害虫阈值
      */
-    public DeviceParamUpdateTask(String devices, int collectInterval, int updateInterval, String tels, String pestWarnVal) {
+    public DeviceParamUpdateTask(Context context, String devices, int collectInterval, int updateInterval, String tels, String pestWarnVal) {
+        mContext = context;
         this.devices = devices;
         this.collectInterval = collectInterval;
         this.updateInterval = updateInterval;

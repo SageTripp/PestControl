@@ -38,29 +38,27 @@ public class LoadTask extends BaseTask<Boolean> {
             double[] lons = new double[]{113.601556, 113.584308, 113.478524, 113.565151};
             double[] lats = new double[]{34.918237, 34.826311, 34.682055, 34.814058};
 
-            for (int i = 0; i < 5; i++) {
                 Device device = new Device();
-                device.setStatus(i % 2);
-                device.setDeviceNum("0000000" + i);
-                device.setDeviceModel("Q" + i);
-                device.setCollectInterval(2 * i);
-                device.setUploadInterval(3 * i);
+                device.setStatus(1);
+                device.setDeviceNum("4369");
+//                device.setDeviceModel("Q" + i);
+                device.setCollectInterval(2);
+                device.setUploadInterval(3);
                 device.setTels("15912345678,15887654321");
                 device.setPestThreshold("棉铃虫=12,马陆=13");
-                device.setLat(lats[i % 4]);
-                device.setLon(lons[i % 4]);
+                device.setLat(34.918237);
+                device.setLon(113.601556);
                 DeviceDao.save(device);
-            }
 
             //虫害信息/历史数据
             for (int i = 0; i < 300; i++) {
                 PestInformation pestInformation = new PestInformation();
-                pestInformation.setDeviceid("0000000" + (i % 5));
+                pestInformation.setDeviceid("4369");
                 pestInformation.setPest(kinds[(int) (Math.random() * (kinds.length - 1))]);
                 String send = DateTime.now().plusDays((int) -(Math.random() * 90)).toString("YYYY/MM/dd HH:mm:ss");
                 pestInformation.setTime(send);
                 pestInformation.setValue((int) (Math.random() * 5 + 3));
-                pestInformation.setEnvironments("温度=12.3,湿度=32,露点=1.2");
+                pestInformation.setEnvironments("温度=12.3,湿度=32,露点=1.2,温度=12.3,湿度=32,露点=1.2,温度=12.3,湿度=32,露点=1.2,温度=12.3,湿度=32,露点=1.2,温度=12.3,湿度=32,露点=1.2,温度=12.3,湿度=32,露点=1.2,温度=12.3,湿度=32,露点=1.2,温度=12.3,湿度=32,露点=1.2");
                 dbManager.save(pestInformation);
             }
 

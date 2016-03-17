@@ -1,5 +1,7 @@
 package com.okq.pestcontrol.task;
 
+import android.content.Context;
+
 import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.util.Config;
 
@@ -13,7 +15,8 @@ import org.xutils.http.RequestParams;
 public class UpdateTask extends HttpTask<String> {
     private String oldVer;
 
-    public UpdateTask(String oldVer) {
+    public UpdateTask(Context context, String oldVer) {
+        mContext = context;
         this.oldVer = oldVer;
     }
 
@@ -34,7 +37,7 @@ public class UpdateTask extends HttpTask<String> {
                     String update = jsonObject.getString("update");
                     if ("1".equals(update)) {
                         JSONObject aNew = jsonObject.getJSONObject("new");
-                        String version = aNew.getString("betsion");
+                        String version = aNew.getString("version");
                         String url = aNew.getString("url");
                         info.onTaskFinish("success", url + "##" + version);
                     } else if ("0".equals(update)) {

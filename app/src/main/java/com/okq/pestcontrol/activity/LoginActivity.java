@@ -18,7 +18,6 @@ import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.bean.Device;
 import com.okq.pestcontrol.task.DeviceTask;
-import com.okq.pestcontrol.task.LoadTask;
 import com.okq.pestcontrol.task.LoginTask;
 import com.okq.pestcontrol.task.TaskInfo;
 
@@ -88,8 +87,11 @@ public class LoginActivity extends BaseActivity {
      * @return 是否记住了密码
      */
     private boolean isRemember() {
-        savedUser = (String) getParam(this, Key.USER_NAME, "");
-        savedPass = (String) getParam(this, Key.PASSWORD, "");
+        savedUser = savedPass = "";
+        if ((boolean) getParam(this, Key.REMEMBER_PASSWORD, false)) {
+            savedUser = (String) getParam(this, Key.USER_NAME, "");
+            savedPass = (String) getParam(this, Key.PASSWORD, "");
+        }
         return !"".equals(savedUser) && !"".equals(savedPass);
     }
 
@@ -117,13 +119,13 @@ public class LoginActivity extends BaseActivity {
                             //登录成功之后加载数据并跳转到主页面
                             setParam(LoginActivity.this, Key.REMEMBER_PASSWORD, rememberPassCb.isChecked());
 //                            if (rememberPassCb.isChecked()) {
-                                setParam(LoginActivity.this, Key.USER_NAME, userTv.getText().toString());
-                                setParam(LoginActivity.this, Key.PASSWORD, passTv.getText().toString());
+                            setParam(LoginActivity.this, Key.USER_NAME, userTv.getText().toString());
+                            setParam(LoginActivity.this, Key.PASSWORD, passTv.getText().toString());
 //                            } else {
 //                                setParam(LoginActivity.this, Key.USER_NAME, "");
 //                                setParam(LoginActivity.this, Key.PASSWORD, "");
 //                            }
-                            DeviceTask task = new DeviceTask(1);
+                            DeviceTask task = new DeviceTask(LoginActivity.this, 1);
                             task.execute();
                             task.setTaskInfo(new TaskInfo<List<Device>>() {
                                 @Override

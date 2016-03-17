@@ -1,5 +1,7 @@
 package com.okq.pestcontrol.task;
 
+import android.content.Context;
+
 import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.util.Config;
 
@@ -18,7 +20,8 @@ public class DeleteHistoryDataTask extends HttpTask<String> {
      *
      * @param ids 要删除的数据的id集合
      */
-    public DeleteHistoryDataTask(String ids) {
+    public DeleteHistoryDataTask(Context context,String ids) {
+        mContext =context;
         this.ids = ids;
     }
 

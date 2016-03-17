@@ -1,5 +1,7 @@
 package com.okq.pestcontrol.task;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.okq.pestcontrol.application.App;
@@ -30,7 +32,8 @@ public class DataTask extends HttpTask<List<PestInformation>> {
      * @param begin 开始日期
      * @param end   结束日期
      */
-    public DataTask(String devs, String begin, String end, String dataType) {
+    public DataTask(Context context, String devs, String begin, String end, String dataType) {
+        mContext = context;
         this.devs = devs;
         this.begin = begin;
         this.end = end;
@@ -69,10 +72,10 @@ public class DataTask extends HttpTask<List<PestInformation>> {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    info.onTaskFinish("fail",null);
+                    info.onTaskFinish("fail", null);
                 }
             } else {
-                info.onTaskFinish("fail",null);
+                info.onTaskFinish("fail", null);
             }
         }
 

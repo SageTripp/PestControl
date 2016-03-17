@@ -1,10 +1,14 @@
 package com.okq.pestcontrol.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -26,23 +30,23 @@ import java.util.List;
 public class PestInfoDetailsActivity extends BaseActivity {
     @ViewInject(value = R.id.pest_details_toolbar)
     private Toolbar mToolbar;
-    @ViewInject(value = R.id.pest_info_details_name)
-    private TextView nameTv;
-    @ViewInject(value = R.id.pest_info_details_device)
+    //    @ViewInject(value = R.id.pest_details_name)
+//    private TextView nameTv;
+    @ViewInject(value = R.id.pest_details_device)
     private TextView deviceTv;
-    @ViewInject(value = R.id.pest_info_details_date)
+    @ViewInject(value = R.id.pest_details_date)
     private TextView dateTv;
-    @ViewInject(value = R.id.pest_info_details_environments)
+    @ViewInject(value = R.id.pest_details_environments)
     private RecyclerView environments;
+    @ViewInject(value = R.id.pest_details_collapsing)
+    private CollapsingToolbarLayout collapsingToolbarLayout;
     private PestInformation pestInfo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        mToolbar.setSubtitleTextColor(getResources().getColor(R.color.icons));
-        mToolbar.setTitleTextColor(getResources().getColor(R.color.icons));
-        mToolbar.setSubtitle("虫害信息");
+        pestInfo = (PestInformation) getIntent().getSerializableExtra("pestInfo");
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,13 +58,19 @@ public class PestInfoDetailsActivity extends BaseActivity {
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
         }
-        pestInfo = (PestInformation) getIntent().getSerializableExtra("pestInfo");
-        nameTv.setText(pestInfo.getPest());
+        collapsingToolbarLayout.setTitle(pestInfo.getPest()+"("+pestInfo.getValue()+"只)");
+        collapsingToolbarLayout.setExpandedTitleColor(Color.WHITE);
+        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
+        collapsingToolbarLayout.setStatusBarScrimColor(getResources().getColor(R.color.primary_dark));
+        if (supportActionBar != null) {
+            supportActionBar.setTitle(pestInfo.getPest());
+        }
+//        nameTv.setText(pestInfo.getPest());
         deviceTv.setText(String.format("采集设备:%s", pestInfo.getDeviceid()));
         dateTv.setText(pestInfo.getTime());
 //        environments.setHasFixedSize(true);
+        environments.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
         environments.setAdapter(new Adapter(pestInfo.getEnvironments()));
-        environments.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 
     }
 
@@ -75,7 +85,7 @@ public class PestInfoDetailsActivity extends BaseActivity {
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(View.inflate(PestInfoDetailsActivity.this, R.layout.holder_environment, parent));
+            return new ViewHolder(LayoutInflater.from(PestInfoDetailsActivity.this).inflate(R.layout.holder_environment, parent, false));
         }
 
         @Override

@@ -42,7 +42,7 @@ public class SettingFragment extends BaseFragment {
 
     @Event(value = R.id.setting_check_update)
     private void checkUpdateEvent(View view) {
-        final UpdateTask task = new UpdateTask(getVersion());
+        final UpdateTask task = new UpdateTask(getContext(), getVersion());
         task.setTaskInfo(new TaskInfo<String>() {
             ProgressDialog dialog = new ProgressDialog(getContext());
 

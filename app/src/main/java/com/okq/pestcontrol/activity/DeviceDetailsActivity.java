@@ -181,7 +181,7 @@ public class DeviceDetailsActivity extends BaseActivity {
     protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 2) {//修改成功
-            DeviceParamGetTask task = new DeviceParamGetTask(device.getDeviceNum());
+            DeviceParamGetTask task = new DeviceParamGetTask(this, device.getDeviceNum());
             task.setTaskInfo(new TaskInfo<List<Device>>() {
                 @Override
                 public void onPreTask() {

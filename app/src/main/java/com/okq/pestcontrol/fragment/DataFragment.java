@@ -28,7 +28,6 @@ import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.bean.Device;
 import com.okq.pestcontrol.bean.PestInformation;
 import com.okq.pestcontrol.bean.param.PestScreeningParam;
-import com.okq.pestcontrol.dbDao.PestInformationDao;
 import com.okq.pestcontrol.task.DataTask;
 import com.okq.pestcontrol.task.DeleteHistoryDataTask;
 import com.okq.pestcontrol.task.TaskInfo;
@@ -183,7 +182,7 @@ public class DataFragment extends BaseFragment {
             }
             if (IDs.length() > 0)
                 IDs.deleteCharAt(IDs.length() - 1);
-            final DeleteHistoryDataTask task = new DeleteHistoryDataTask(IDs.toString());
+            final DeleteHistoryDataTask task = new DeleteHistoryDataTask(getContext(), IDs.toString());
             task.setTaskInfo(new TaskInfo<String>() {
                 @Override
                 public void onPreTask() {
@@ -273,7 +272,7 @@ public class DataFragment extends BaseFragment {
 
         String start = new DateTime(screeningParam.getStartTime()).toString(DATE_FORMAT);
         String end = new DateTime(screeningParam.getEndTime()).toString(DATE_FORMAT);
-        task = new DataTask(screeningParam.getDevice(), start, end, screeningParam.getDataType());
+        task = new DataTask(getContext(), screeningParam.getDevice(), start, end, screeningParam.getDataType());
         task.setTaskInfo(new TaskInfo<List<PestInformation>>() {
             ProgressDialog pd = new ProgressDialog(getContext());
 

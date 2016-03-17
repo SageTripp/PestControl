@@ -55,7 +55,7 @@ public class DeviceFragment extends BaseFragment {
                 }
             }
 
-            DeviceParamGetTask task = new DeviceParamGetTask(devs.toString());
+            DeviceParamGetTask task = new DeviceParamGetTask(getContext(), devs.toString());
             task.setTaskInfo(new TaskInfo<List<Device>>() {
                 ProgressDialog pd = new ProgressDialog(getContext());
 
@@ -95,7 +95,7 @@ public class DeviceFragment extends BaseFragment {
                 }
             });
             task.execute();
-        }else {
+        } else {
             Toast.makeText(getContext(), "没有获取到设备!", Toast.LENGTH_LONG).show();
         }
 

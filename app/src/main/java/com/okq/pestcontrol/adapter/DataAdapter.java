@@ -49,6 +49,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         holder.setDevice(pi.getDeviceid());
         holder.setPestKind(pi.getPest());
         holder.setSendTime(pi.getTime());
+        holder.setNum(pi.getValue());
         holder.clrSelected();
         if (isCheckMod && sba.get(position, false))
             holder.setSelected();
@@ -104,6 +105,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         private TextView pestKind;
         private TextView device;
         private TextView sendTime;
+        private TextView num;
         public View divider;
         private View holder;
 
@@ -112,6 +114,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
             pestKind = (TextView) itemView.findViewById(R.id.holder_data_pest_kind);
             device = (TextView) itemView.findViewById(R.id.holder_data_device);
             sendTime = (TextView) itemView.findViewById(R.id.holder_data_send_time);
+            num = (TextView) itemView.findViewById(R.id.holder_data_num);
             divider = itemView.findViewById(R.id.data_fra_item_divider);
             divider.setVisibility(View.VISIBLE);
             holder = itemView;
@@ -138,6 +141,10 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
         public void setSendTime(String sendTime) {
             this.sendTime.setText(sendTime);
+        }
+
+        public void setNum(int num) {
+            this.num.setText(String.format("%d", num));
         }
 
         @Override
