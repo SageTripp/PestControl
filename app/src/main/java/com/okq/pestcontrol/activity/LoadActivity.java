@@ -118,6 +118,7 @@ public class LoadActivity extends BaseActivity {
                                 if (!TextUtils.isEmpty(result)) {
                                     Toast.makeText(LoadActivity.this, result, Toast.LENGTH_LONG).show();
                                 }
+                                finish();
                             }
                         }
                     });
