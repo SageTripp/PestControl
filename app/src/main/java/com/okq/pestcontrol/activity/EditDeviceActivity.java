@@ -3,6 +3,9 @@ package com.okq.pestcontrol.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.okq.pestcontrol.R;
+import com.okq.pestcontrol.adapter.EnvironmentAdapter;
 import com.okq.pestcontrol.bean.Device;
 import com.okq.pestcontrol.task.DeviceParamUpdateTask;
 import com.okq.pestcontrol.task.TaskInfo;
@@ -21,6 +25,8 @@ import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by zst on 2016/3/1.
@@ -32,6 +38,8 @@ public class EditDeviceActivity extends BaseActivity {
     private Toolbar mToolbar;
     @ViewInject(value = R.id.device_edit_pest_threshold)
     private ThresholdCloudEditText pestThresholdEt;
+    @ViewInject(value = R.id.device_edit_environment_threshold)
+    private RecyclerView environmentThresholdRv;
     @ViewInject(value = R.id.device_edit_collect_interval)
     private EditText collectEt;
     @ViewInject(value = R.id.device_edit_upload_interval)
@@ -50,6 +58,8 @@ public class EditDeviceActivity extends BaseActivity {
     private EditText[] ets;
 
     private Device device;
+    private EnvironmentAdapter adapter;
+    private List<String> environments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +87,8 @@ public class EditDeviceActivity extends BaseActivity {
 
     private void init() {
         ets = new EditText[]{tel1Et, tel2Et, tel3Et, tel4Et, tel5Et};
-        collectEt.setText(device.getCollectInterval() + "");
-        uploadEt.setText(device.getUploadInterval() + "");
+        collectEt.setText(String.format(Locale.getDefault(), "%d", device.getCollectInterval()));
+        uploadEt.setText(String.format(Locale.getDefault(), "%d", device.getUploadInterval()));
         if (!TextUtils.isEmpty(device.getTels())) {
             String[] tels = device.getTels().split(",");
             for (int i = 0; i < tels.length; i++) {
@@ -87,6 +97,9 @@ public class EditDeviceActivity extends BaseActivity {
         }
         if (!TextUtils.isEmpty(device.getPestThreshold()))
             pestThresholdEt.addSpan(device.getPestThreshold());
+        adapter = new EnvironmentAdapter(this,environments);
+        environmentThresholdRv.setAdapter(adapter);
+        environmentThresholdRv.setLayoutManager(new GridLayoutManager(this, 2, LinearLayoutManager.HORIZONTAL, false));
     }
 
     @Override
@@ -108,7 +121,7 @@ public class EditDeviceActivity extends BaseActivity {
                     tels.append(",");
                 }
             }
-            if (",".equals(tels.charAt(tels.length() - 1)))
+            if (tels.toString().endsWith(","))
                 tels.deleteCharAt(tels.length() - 1);
             DeviceParamUpdateTask task = new DeviceParamUpdateTask(this, device.getDeviceNum(),
                     collectInterval,

@@ -174,6 +174,17 @@
                     android:minLines="1"
                     android:textColor="@color/primary_text" />
             </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="环境阈值:"
+                android:textColor="@color/BLUE" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/device_edit_environment_threshold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

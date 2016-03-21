@@ -1,6 +1,7 @@
 package com.okq.pestcontrol.adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Vibrator;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
@@ -16,6 +17,7 @@ import com.okq.pestcontrol.bean.PestInformation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * 害虫信息展示adapter Created by Administrator on 2015/12/8.
@@ -34,7 +36,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     public DataAdapter(Context context, ArrayList<PestInformation> pestList) {
         this.mContext = context;
         this.pestList = pestList == null ? new ArrayList<PestInformation>() : pestList;
-        this.sba = new SparseBooleanArray(pestList.size());
+        this.sba = new SparseBooleanArray(this.pestList.size());
     }
 
     @Override
@@ -144,7 +146,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         }
 
         public void setNum(int num) {
-            this.num.setText(String.format("%d", num));
+            this.num.setText(String.format(Locale.getDefault(), "%d", num));
         }
 
         @Override

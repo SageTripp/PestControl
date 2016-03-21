@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="6dp">
+
+    <TextView
+        android:id="@+id/environment_edit_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="温度"
+        android:textColor="@color/accent"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:hintAnimationEnabled="true">
+
+            <com.okq.pestcontrol.widget.ThresholdCloudEditText
+                android:id="@+id/environment_edit_up"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="上限"
+                android:maxLines="10"
+                android:minLines="1"
+                android:textColor="@color/primary_text" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:hintAnimationEnabled="true">
+
+            <com.okq.pestcontrol.widget.ThresholdCloudEditText
+                android:id="@+id/environment_edit_down"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="下限"
+                android:maxLines="10"
+                android:minLines="1"
+                android:textColor="@color/primary_text" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+</LinearLayout>

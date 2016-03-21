@@ -119,6 +119,14 @@
                 android:textColor="@color/toolbar_text"
                 android:textSize="12sp"
                 tools:text="害虫阈值:0010"/>
+            <TextView
+                android:id="@+id/device_details_environment_threshold"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/toolbar_text"
+                android:textSize="12sp"
+                tools:text="害虫阈值:0010"/>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

@@ -68,6 +68,8 @@ public class DeviceDetailsActivity extends BaseActivity {
     private TextView telsTv;
     @ViewInject(value = R.id.device_details_pest_threshold)
     private TextView pestThresholdTv;
+    @ViewInject(value = R.id.device_details_environment_threshold)
+    private TextView environmentThresholdTv;
     @ViewInject(value = R.id.device_details_edit_btn)
     private Button editBtn;
     @ViewInject(value = R.id.device_details_param_card)
@@ -153,6 +155,7 @@ public class DeviceDetailsActivity extends BaseActivity {
         upIntervalTv.setText(String.format("上传间隔:%d", device.getUploadInterval()));
         telsTv.setText(String.format("报警号码:%s", device.getTels()));
         pestThresholdTv.setText(String.format("害虫阈值:%s", device.getPestThreshold()));
+        environmentThresholdTv.setText(String.format("环境阈值:%s", device.getEnvironmentThreshold()));
         if (device.getStatus() == 1) {
             editBtn.setVisibility(View.VISIBLE);
             paramCard.setCardBackgroundColor(getResources().getColor(R.color.TEAL));
@@ -168,6 +171,7 @@ public class DeviceDetailsActivity extends BaseActivity {
         upIntervalTv.setText(String.format("%d", device.getUploadInterval()));
         telsTv.setText(String.format("报警号码:%s", device.getTels()));
         pestThresholdTv.setText(String.format("害虫阈值:%s", device.getPestThreshold()));
+        environmentThresholdTv.setText(String.format("环境阈值:%s", device.getEnvironmentThreshold()));
     }
 
     @Event(value = R.id.device_details_edit_btn)

@@ -64,6 +64,12 @@ public class Device implements Serializable {
     private String pestThreshold;
 
     /**
+     * 害虫阈值 (格式: 害虫1=12,害虫2=3,...)
+     */
+    @Column(name = "environmentThreshold")
+    private String environmentThreshold;
+
+    /**
      * 获取设备编号
      *
      * @return 设备编号
@@ -223,5 +229,24 @@ public class Device implements Serializable {
      */
     public void setPestThreshold(String pestThreshold) {
         this.pestThreshold = pestThreshold;
+    }
+
+
+    /**
+     * 获取环境阈值
+     *
+     * @return 环境阈值
+     */
+    public String getEnvironmentThreshold() {
+        return environmentThreshold;
+    }
+
+    /**
+     * 设置环境阈值
+     *
+     * @param environmentThreshold 环境阈值
+     */
+    public void setEnvironmentThreshold(String environmentThreshold) {
+        this.environmentThreshold = environmentThreshold;
     }
 }
