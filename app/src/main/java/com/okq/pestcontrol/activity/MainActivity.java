@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.platform.comapi.map.C;
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.fragment.BaseFragment;
@@ -23,6 +24,7 @@ import com.okq.pestcontrol.fragment.ChartFragment;
 import com.okq.pestcontrol.fragment.DataFragment;
 import com.okq.pestcontrol.fragment.DeviceFragment;
 import com.okq.pestcontrol.fragment.SettingFragment;
+import com.okq.pestcontrol.util.Sharepreference;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
@@ -70,6 +72,8 @@ public class MainActivity extends BaseActivity {
             }
         });
         final TextView userHeader = (TextView) mNavigationView.getHeaderView(0).findViewById(R.id.slide_header_user);
+        String name = (String) Sharepreference.getParam(this, Sharepreference.Key.USER_NAME, "用户名");
+        userHeader.setText(name);
         userHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

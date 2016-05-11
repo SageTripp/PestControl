@@ -111,7 +111,7 @@ public class DataFragment extends BaseFragment {
         dataRecy.setItemAnimator(new DefaultItemAnimator());
         adapter.setOnLongClickListener(new OnItemLongClickListener() {
             @Override
-            public void onSelect(int position, int id, boolean checked) {
+            public void onSelect(int position, long id, boolean checked) {
 //                deleteBtn.setBackgroundColor(Color.TRANSPARENT);
                 int size = adapter.getSelected().size();
                 if (size > 0) {
@@ -138,8 +138,8 @@ public class DataFragment extends BaseFragment {
             }
 
             @Override
-            public void onLongClick(int position, int id, boolean checked) {
-                ids = new ArrayList<String>();
+            public void onLongClick(int position, long id, boolean checked) {
+                ids = new ArrayList<>();
                 selectBottom.setVisibility(View.VISIBLE);
                 deleteBtn.setBackgroundColor(getResources().getColor(R.color.RED));
                 deleteBtn.setText(String.format("删除(%d)", adapter.getSelected().size()));
@@ -315,13 +315,13 @@ public class DataFragment extends BaseFragment {
                 break;
 
             case R.id.data_menu_sort_device:
-                SortUtil.sortList(informations, "device", isASC.get(item.getItemId()));
+                SortUtil.sortList(informations, "deviceid", isASC.get(item.getItemId()));
                 break;
             case R.id.data_menu_sort_pest_kind:
-                SortUtil.sortList(informations, "pestKind.kindName", isASC.get(item.getItemId()));
+                SortUtil.sortList(informations, "pest", isASC.get(item.getItemId()));
                 break;
             case R.id.data_menu_sort_time:
-                SortUtil.sortList(informations, "sendTime", isASC.get(item.getItemId()));
+                SortUtil.sortList(informations, "cjtime", isASC.get(item.getItemId()));
                 break;
             case R.id.data_menu_screening://筛选
                 final ScreeningDialog screen = new ScreeningDialog(getContext(), getFragmentManager());

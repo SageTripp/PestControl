@@ -22,24 +22,20 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.bean.Device;
 import com.okq.pestcontrol.bean.PestInformation;
 import com.okq.pestcontrol.bean.param.PestScreeningParam;
-import com.okq.pestcontrol.dbDao.PestInformationDao;
 import com.okq.pestcontrol.task.DataTask;
 import com.okq.pestcontrol.task.TaskInfo;
-import com.okq.pestcontrol.util.SortUtil;
 import com.okq.pestcontrol.widget.ScreeningDialog;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeUtils;
 import org.joda.time.Days;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
@@ -114,7 +110,7 @@ public class ChartFragment extends BaseFragment {
 
         loadAll();
 
-        setData();
+//        setData();
         mChart.animateY(3000, Easing.EasingOption.EaseInCubic);
         mChart.invalidate();
     }
@@ -141,11 +137,13 @@ public class ChartFragment extends BaseFragment {
 
         ArrayList<PestInformation> list = new ArrayList<>(informations);
         for (PestInformation information : list) {
-            int y = information.getValue();
-            int x = Days.daysBetween(startVal, DateTime.parse(information.getTime(), DateTimeFormat.forPattern("YYYY/MM/dd HH:mm:ss"))).getDays();
+            DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            DateTime end = DateTime.parse(information.getCjtime(), format);
+            int y = information.getCount();
+            int x = Days.daysBetween(startVal, end).getDays() - 1;
             if (x >= 0 && x < yVals.size()) {
                 Entry entry = yVals.get(x);
-                entry.setVal(entry.getVal() + y);
+                entry.setVal(Math.max(entry.getVal(), y));
             }
         }
 
@@ -238,6 +236,7 @@ public class ChartFragment extends BaseFragment {
                 } else if (b.equals("success")) {
                     informations = new ArrayList<>(result);
 //                    adapter.refreshData(informations);
+                    setData();
                 }
             }
         });
@@ -267,8 +266,6 @@ public class ChartFragment extends BaseFragment {
                         screeningParam = data;
                         screen.dismiss();
                         loadAll();
-//                        loadData();
-                        setData();
                         mChart.invalidate();
                     }
 
@@ -302,7 +299,7 @@ public class ChartFragment extends BaseFragment {
         @Override
         public void refreshContent(Entry e, Highlight highlight) {
             date.setText(e.getData().toString());
-            content.setText("数目:" + e.getVal());
+            content.setText(String.format("数目:%s", Math.round(e.getVal())));
         }
 
         @Override

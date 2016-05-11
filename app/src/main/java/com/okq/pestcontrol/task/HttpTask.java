@@ -55,8 +55,8 @@ public abstract class HttpTask<R> {
                     }
                 });
                 dialog.show();
-                if(null != info)
-                    info.onTaskFinish("fail",null);
+                if (null != info)
+                    info.onTaskFinish("fail", null);
                 return;
             }
         }
@@ -71,6 +71,9 @@ public abstract class HttpTask<R> {
         params.setConnectTimeout(15 * 1000);
         params.setCharset("utf-8");
         x.http().get(params, new Callback.CommonCallback<String>() {
+
+            private boolean isSuccess = false;
+
             @Override
             public void onSuccess(String result) {
                 LogUtil.i("请求结果:" + result);
@@ -101,18 +104,22 @@ public abstract class HttpTask<R> {
                     if (!reLogin && result.contains("权限认证失败")) {
                         Toast.makeText(mContext, "账户权限已过期,请重新登录", Toast.LENGTH_LONG).show();
                         mContext.startActivity(new Intent(mContext, LoginActivity.class));
-                    } else
+                    } else {
+                        isSuccess = true;
                         finish(result);
+                    }
                 }
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                LogUtil.e("fail:" + ex);
-                if (ex instanceof SocketTimeoutException)
-                    finish("ex:请求设备超时");
-                else
-                    finish("ex:" + ex.getMessage());
+                if (!isSuccess) {
+                    LogUtil.e("fail:" + ex);
+                    if (ex instanceof SocketTimeoutException)
+                        finish("ex:请求设备超时");
+                    else
+                        finish("ex:" + ex.getMessage());
+                }
             }
 
             @Override

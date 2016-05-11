@@ -202,7 +202,7 @@ public class CloudEditText extends EditText {
      * 获得所有的returnText列表
      */
     public String getAllReturnString(boolean isReturnAll) {
-        List<String> list = new ArrayList<String>(getAllReturnStringList());
+        List<String> list = new ArrayList<>(getAllReturnStringList());
         StringBuilder sb = new StringBuilder();
         for (String s : list) {
             sb.append(s);

@@ -1,7 +1,6 @@
 package com.okq.pestcontrol.adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Vibrator;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
@@ -50,8 +49,8 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         PestInformation pi = pestList.get(position);
         holder.setDevice(pi.getDeviceid());
         holder.setPestKind(pi.getPest());
-        holder.setSendTime(pi.getTime());
-        holder.setNum(pi.getValue());
+        holder.setSendTime(pi.getCjtime());
+        holder.setNum(pi.getCount());
         holder.clrSelected();
         if (isCheckMod && sba.get(position, false))
             holder.setSelected();
@@ -155,7 +154,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
                 if (null != longClickListener) {
                     sba.put(getAdapterPosition(), !sba.get(getAdapterPosition(), false));
 //                    setSelected();
-                    longClickListener.onSelect(getAdapterPosition(), getAdapterPosition(), sba.get(getAdapterPosition()));
+                    longClickListener.onSelect(getAdapterPosition(), pestList.get(getAdapterPosition()).getId(), sba.get(getAdapterPosition()));
                     notifyDataSetChanged();
                 }
             } else {
@@ -173,7 +172,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
                     Vibrator vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(200);
                     sba.put(getAdapterPosition(), true);
-                    longClickListener.onLongClick(getAdapterPosition(), getAdapterPosition(), true);
+                    longClickListener.onLongClick(getAdapterPosition(), pestList.get(getAdapterPosition()).getId(), true);
                     notifyDataSetChanged();
                 }
                 return true;

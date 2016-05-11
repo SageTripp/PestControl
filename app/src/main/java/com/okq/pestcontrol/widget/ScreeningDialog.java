@@ -180,7 +180,7 @@ public class ScreeningDialog extends AlertDialog implements View.OnClickListener
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dataTypeTv.setText(array[which]);
-                        dataType = which + "";
+                        dataType = which + 1 + "";
                     }
                 });
                 b.create().show();

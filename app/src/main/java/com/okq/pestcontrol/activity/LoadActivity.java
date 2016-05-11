@@ -43,7 +43,7 @@ public class LoadActivity extends BaseActivity {
         setTheme(R.style.FullScreen);
         super.onCreate(savedInstanceState);
         ObjectAnimator animator = ObjectAnimator.ofFloat(img, "alpha", 0.5f, 1.0f);
-        animator.setDuration(1000).start();
+        animator.setDuration(3000).start();
         animator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {

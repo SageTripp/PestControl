@@ -56,8 +56,8 @@ public class LoadTask extends BaseTask<Boolean> {
                 pestInformation.setDeviceid("4369");
                 pestInformation.setPest(kinds[(int) (Math.random() * (kinds.length - 1))]);
                 String send = DateTime.now().plusDays((int) -(Math.random() * 90)).toString("YYYY/MM/dd HH:mm:ss");
-                pestInformation.setTime(send);
-                pestInformation.setValue((int) (Math.random() * 5 + 3));
+                pestInformation.setCjtime(send);
+                pestInformation.setCount((int) (Math.random() * 5 + 3));
                 pestInformation.setEnvironments("温度=12.3,湿度=32,露点=1.2,温度=12.3,湿度=32,露点=1.2,温度=12.3,湿度=32,露点=1.2,温度=12.3,湿度=32,露点=1.2,温度=12.3,湿度=32,露点=1.2,温度=12.3,湿度=32,露点=1.2,温度=12.3,湿度=32,露点=1.2,温度=12.3,湿度=32,露点=1.2");
                 dbManager.save(pestInformation);
             }

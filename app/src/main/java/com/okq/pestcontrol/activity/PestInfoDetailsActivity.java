@@ -4,10 +4,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +58,7 @@ public class PestInfoDetailsActivity extends BaseActivity {
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
         }
-        collapsingToolbarLayout.setTitle(pestInfo.getPest()+"("+pestInfo.getValue()+"只)");
+        collapsingToolbarLayout.setTitle(pestInfo.getPest() + "(" + pestInfo.getCount() + "只)");
         collapsingToolbarLayout.setExpandedTitleColor(Color.WHITE);
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
         collapsingToolbarLayout.setStatusBarScrimColor(getResources().getColor(R.color.primary_dark));
@@ -67,10 +67,11 @@ public class PestInfoDetailsActivity extends BaseActivity {
         }
 //        nameTv.setText(pestInfo.getPest());
         deviceTv.setText(String.format("采集设备:%s", pestInfo.getDeviceid()));
-        dateTv.setText(pestInfo.getTime());
+        dateTv.setText(pestInfo.getCjtime());
 //        environments.setHasFixedSize(true);
-        environments.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
-        environments.setAdapter(new Adapter(pestInfo.getEnvironments()));
+        environments.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        if (!TextUtils.isEmpty(pestInfo.getEnvironments()))
+            environments.setAdapter(new Adapter(pestInfo.getEnvironments()));
 
     }
 
@@ -79,7 +80,6 @@ public class PestInfoDetailsActivity extends BaseActivity {
         private List<String> list;
 
         public Adapter(String envirs) {
-            envirs.split(",");
             list = Arrays.asList(envirs.split(","));
         }
 
