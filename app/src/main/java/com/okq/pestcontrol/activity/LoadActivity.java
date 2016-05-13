@@ -52,7 +52,7 @@ public class LoadActivity extends BaseActivity {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                Intent intent = new Intent();
+                final Intent intent = new Intent();
                 final String name = (String) Sharepreference.getParam(LoadActivity.this, Key.USER_NAME, "");
                 final String pass = (String) Sharepreference.getParam(LoadActivity.this, Key.PASSWORD, "");
                 if ((boolean) getParam(LoadActivity.this, Key.REMEMBER_PASSWORD, false) && !TextUtils.isEmpty(name) && !TextUtils.isEmpty(pass)) {
@@ -107,7 +107,8 @@ public class LoadActivity extends BaseActivity {
                                             } else {
                                                 Toast.makeText(LoadActivity.this, "获取设备列表失败!", Toast.LENGTH_LONG).show();
                                             }
-                                            startActivity(new Intent(LoadActivity.this, MainActivity.class));
+                                            intent.setClass(LoadActivity.this, MainActivity.class);
+                                            startActivity(intent);
                                             finish();
                                         }
                                     });
@@ -118,7 +119,9 @@ public class LoadActivity extends BaseActivity {
                                 if (!TextUtils.isEmpty(result)) {
                                     Toast.makeText(LoadActivity.this, result, Toast.LENGTH_LONG).show();
                                 }
-                                finish();
+                                intent.setClass(LoadActivity.this, LoginActivity.class);
+                                LoadActivity.this.finish();
+                                startActivity(intent);
                             }
                         }
                     });
