@@ -87,8 +87,8 @@ public class EditDeviceActivity extends BaseActivity {
 
     private void init() {
         ets = new EditText[]{tel1Et, tel2Et, tel3Et, tel4Et, tel5Et};
-        collectEt.setText(String.format(Locale.getDefault(), "%d", device.getCollectInterval()));
-        uploadEt.setText(String.format(Locale.getDefault(), "%d", device.getUploadInterval()));
+        collectEt.setText(String.format(Locale.getDefault(), "%d", device.getCjjg()));
+        uploadEt.setText(String.format(Locale.getDefault(), "%d", device.getUpload()));
         if (!TextUtils.isEmpty(device.getTels())) {
             String[] tels = device.getTels().split(",");
             for (int i = 0; i < tels.length; i++) {

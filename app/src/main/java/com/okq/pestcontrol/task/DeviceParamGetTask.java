@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by zst on 2016/2/29. 获取设备参数
  */
-public class DeviceParamGetTask extends HttpTask<List<Device>> {
+public class DeviceParamGetTask extends HttpTask<Device> {
 
     private String devs;
 
@@ -50,12 +50,13 @@ public class DeviceParamGetTask extends HttpTask<List<Device>> {
                 if (r.contains("status")) {
                     String status = jsonObject.getString("status");
                     if ("success".equals(status)) {
-                        JSONArray content = jsonObject.getJSONArray("content");
+//                        JSONArray content = jsonObject.getJSONArray("content");
+                        JSONObject content = jsonObject.getJSONObject("content");
                         Gson gson = new Gson();
-                        List<Device> list = gson.fromJson(content.toString(), new TypeToken<List<Device>>() {
+                        Device dev = gson.fromJson(content.toString(), new TypeToken<Device>() {
                         }.getType());
-                        if (list != null) {
-                            info.onTaskFinish("success", list);
+                        if (dev != null) {
+                            info.onTaskFinish("success", dev);
                             return;
                         } else {
                             info.onTaskFinish("fail", null);

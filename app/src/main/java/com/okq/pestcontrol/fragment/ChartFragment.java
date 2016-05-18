@@ -143,7 +143,8 @@ public class ChartFragment extends BaseFragment {
             int x = Days.daysBetween(startVal, end).getDays() - 1;
             if (x >= 0 && x < yVals.size()) {
                 Entry entry = yVals.get(x);
-                entry.setVal(Math.max(entry.getVal(), y));
+//                entry.setVal(Math.max(entry.getVal(), y));
+                entry.setVal(entry.getVal() + y);
             }
         }
 

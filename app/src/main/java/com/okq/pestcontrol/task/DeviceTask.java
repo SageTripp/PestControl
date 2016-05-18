@@ -57,7 +57,7 @@ public class DeviceTask extends HttpTask<List<Device>> {
                             e.printStackTrace();
                         }
 
-                    List<Device> list = new ArrayList<>();
+                    final List<Device> list = new ArrayList<>();
                     JSONObject object = new JSONObject(r);
                     String devices = object.getString("devices");
                     if (TextUtils.isEmpty(devices)) {
@@ -72,6 +72,7 @@ public class DeviceTask extends HttpTask<List<Device>> {
                         }
                     }
                     info.onTaskFinish("success", list);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(mContext, "解析设备数据失败", Toast.LENGTH_LONG).show();

@@ -25,13 +25,13 @@ public class Device implements Serializable {
     /**
      * 纬度
      */
-    @Column(name = "lat")
-    private double lat;
+    @Column(name = "wd")
+    private double wd;
     /**
      * 经度
      */
-    @Column(name = "lon")
-    private double lon;
+    @Column(name = "jd")
+    private double jd;
 
     /**
      * 状态
@@ -42,14 +42,14 @@ public class Device implements Serializable {
     /**
      * 采集间隔
      */
-    @Column(name = "collectInterval")
-    private int collectInterval;
+    @Column(name = "cjjg")
+    private int cjjg;
 
     /**
      * 上传间隔
      */
-    @Column(name = "uploadInterval")
-    private int uploadInterval;
+    @Column(name = "upload")
+    private int upload;
 
     /**
      * 报警号码 (,间隔)
@@ -64,7 +64,7 @@ public class Device implements Serializable {
     private String pestThreshold;
 
     /**
-     * 害虫阈值 (格式: 害虫1=12,害虫2=3,...)
+     * 环境阈值 (格式: 害虫1=12,害虫2=3,...)
      */
     @Column(name = "environmentThreshold")
     private String environmentThreshold;
@@ -110,17 +110,17 @@ public class Device implements Serializable {
      *
      * @return 纬度
      */
-    public double getLat() {
-        return lat;
+    public double getWd() {
+        return wd;
     }
 
     /**
      * 设置纬度
      *
-     * @param lat 纬度
+     * @param wd 纬度
      */
-    public void setLat(double lat) {
-        this.lat = lat;
+    public void setWd(double wd) {
+        this.wd = wd;
     }
 
     /**
@@ -128,17 +128,17 @@ public class Device implements Serializable {
      *
      * @return 经度
      */
-    public double getLon() {
-        return lon;
+    public double getJd() {
+        return jd;
     }
 
     /**
      * 设置经度
      *
-     * @param lon 经度
+     * @param jd 经度
      */
-    public void setLon(double lon) {
-        this.lon = lon;
+    public void setJd(double jd) {
+        this.jd = jd;
     }
 
     /**
@@ -164,17 +164,17 @@ public class Device implements Serializable {
      *
      * @return 采集间隔
      */
-    public int getCollectInterval() {
-        return collectInterval;
+    public int getCjjg() {
+        return cjjg;
     }
 
     /**
      * 设置采集间隔
      *
-     * @param collectInterval 采集间隔
+     * @param cjjg 采集间隔
      */
-    public void setCollectInterval(int collectInterval) {
-        this.collectInterval = collectInterval;
+    public void setCjjg(int cjjg) {
+        this.cjjg = cjjg;
     }
 
     /**
@@ -182,17 +182,17 @@ public class Device implements Serializable {
      *
      * @return 上传间隔
      */
-    public int getUploadInterval() {
-        return uploadInterval;
+    public int getUpload() {
+        return upload;
     }
 
     /**
      * 设置上传间隔
      *
-     * @param uploadInterval 上传间隔
+     * @param upload 上传间隔
      */
-    public void setUploadInterval(int uploadInterval) {
-        this.uploadInterval = uploadInterval;
+    public void setUpload(int upload) {
+        this.upload = upload;
     }
 
     /**

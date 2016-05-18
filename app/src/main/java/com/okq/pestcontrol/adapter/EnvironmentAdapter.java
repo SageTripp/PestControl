@@ -43,7 +43,7 @@ public class EnvironmentAdapter extends RecyclerView.Adapter<EnvironmentAdapter.
 
     @Override
     public int getItemCount() {
-        return environments.size();
+        return null == environments ? 0 : environments.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -83,10 +83,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
             }
         });
         ReverseGeoCodeOption option = new ReverseGeoCodeOption();
-        option.location(new LatLng(device.getLat(), device.getLon()));
+        option.location(new LatLng(device.getWd(), device.getJd()));
         geoCoder.reverseGeoCode(option);
 //        holder.setLocation(String.format("%s %s", device.getDeviceid(), device.getPlace()));
-        holder.setMap(device.getLat(), device.getLon());
+        holder.setMap(device.getWd(), device.getJd());
         holder.setStatus(String.format("状态:%s", device.getStatus() == 1 ? "在线" : "离线"));
     }
 
