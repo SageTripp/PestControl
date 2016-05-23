@@ -46,13 +46,13 @@ public class EnvironmentAdapter extends RecyclerView.Adapter<EnvironmentAdapter.
         return null == environments ? 0 : environments.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView name;
         private EditText upValue;
         private EditText downValue;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.environment_edit_name);
             upValue = (EditText) itemView.findViewById(R.id.environment_edit_up);
@@ -63,11 +63,11 @@ public class EnvironmentAdapter extends RecyclerView.Adapter<EnvironmentAdapter.
             this.name.setText(null == name ? "" : name);
         }
 
-        public void setUpValue(String upValue) {
+        void setUpValue(String upValue) {
             this.upValue.setText(null == upValue ? "" : upValue);
         }
 
-        public void setDownValue(String downValue) {
+        void setDownValue(String downValue) {
             this.downValue.setText(null == downValue ? "" : downValue);
         }
     }

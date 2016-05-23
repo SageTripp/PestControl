@@ -59,7 +59,7 @@ public class EditDeviceActivity extends BaseActivity {
 
     private Device device;
     private EnvironmentAdapter adapter;
-    private List<String> environments;
+    private List<String> environments = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +97,10 @@ public class EditDeviceActivity extends BaseActivity {
         }
         if (!TextUtils.isEmpty(device.getPestThreshold()))
             pestThresholdEt.addSpan(device.getPestThreshold());
-        adapter = new EnvironmentAdapter(this,environments);
+        if (!TextUtils.isEmpty(device.getEnvironmentThreshold()))
+            for (String envir : device.getEnvironmentThreshold().split(";"))
+                environments.add(envir);
+        adapter = new EnvironmentAdapter(this, environments);
         environmentThresholdRv.setAdapter(adapter);
         environmentThresholdRv.setLayoutManager(new GridLayoutManager(this, 2, LinearLayoutManager.HORIZONTAL, false));
     }

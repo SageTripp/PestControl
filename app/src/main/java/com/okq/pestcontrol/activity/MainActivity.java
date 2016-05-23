@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.platform.comapi.map.C;
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.fragment.BaseFragment;
@@ -41,7 +40,6 @@ public class MainActivity extends BaseActivity {
     @ViewInject(value = R.id.slide_menu)
     private NavigationView mNavigationView;
     private HashMap<Integer, BaseFragment> fragmentHashMap = new HashMap<>();
-    private int currentFragmentId;
     private boolean isExit = false;
     private Toast exitToast;
 
@@ -105,7 +103,6 @@ public class MainActivity extends BaseActivity {
      */
     private void setDefaultPage() {
         mNavigationView.setCheckedItem(R.id.menu_data);
-        currentFragmentId = R.id.menu_data;
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (transaction.isEmpty()) {
             mToolbar.setSubtitle(R.string.menu_data);
@@ -139,7 +136,6 @@ public class MainActivity extends BaseActivity {
                     break;
             }
             if (!isOther) {
-                currentFragmentId = id;
                 fragmentHashMap.put(id, fragment);
             }
             return fragment;

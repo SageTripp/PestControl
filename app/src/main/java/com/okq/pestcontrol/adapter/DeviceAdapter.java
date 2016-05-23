@@ -68,7 +68,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
     @Override
     public void onBindViewHolder(final DeviceAdapter.DeviceHolder holder, int position) {
         Device device = deviceList.get(position);
-        holder.setDeviceNum(String.format("%s(%s)", device.getDeviceNum(), device.getDeviceModel()));
+        holder.setDeviceNum(device.getDeviceNum());
         GeoCoder geoCoder = GeoCoder.newInstance();
         geoCoder.setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener() {
             @Override

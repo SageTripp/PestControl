@@ -68,8 +68,11 @@ public abstract class HttpTask<R> {
 
     void doInBackground() {
         RequestParams params = setParams();
-        params.setConnectTimeout(15 * 1000);
+        params.setConnectTimeout(Config.HTTP_TIME_OUT);//超时时间 10s
         params.setCharset("utf-8");
+        params.setMaxRetryCount(1);
+        params.setCacheDirName(Config.CACHE_DIR);
+        params.setCacheSize(1024*100);
         x.http().get(params, new Callback.CommonCallback<String>() {
 
             private boolean isSuccess = false;

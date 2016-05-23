@@ -18,11 +18,6 @@ public class Device implements Serializable {
     @Column(name = "deviceNum")
     private String deviceNum;
     /**
-     * 设备型号
-     */
-    @Column(name = "deviceModel")
-    private String deviceModel;
-    /**
      * 纬度
      */
     @Column(name = "wd")
@@ -64,7 +59,7 @@ public class Device implements Serializable {
     private String pestThreshold;
 
     /**
-     * 环境阈值 (格式: 害虫1=12,害虫2=3,...)
+     * 环境阈值 (格式: 环境1=12,20;环境2=3,8;...)
      */
     @Column(name = "environmentThreshold")
     private String environmentThreshold;
@@ -85,24 +80,6 @@ public class Device implements Serializable {
      */
     public void setDeviceNum(String deviceNum) {
         this.deviceNum = deviceNum;
-    }
-
-    /**
-     * 获取设备型号
-     *
-     * @return 设备型号
-     */
-    public String getDeviceModel() {
-        return deviceModel;
-    }
-
-    /**
-     * 设置设备型号
-     *
-     * @param deviceModel 设备型号
-     */
-    public void setDeviceModel(String deviceModel) {
-        this.deviceModel = deviceModel;
     }
 
     /**
