@@ -137,41 +137,40 @@ public class LoginActivity extends BaseActivity {
                                     if (pd.isShowing()) {
                                         pd.dismiss();
                                     }
-                                    if (b.equals("success")) {
-                                        if (null != result) {
-                                            DeviceTask deviceTask = new DeviceTask(LoginActivity.this, DeviceTask.SCOPE_ONLINE);
-                                            deviceTask.setTaskInfo(new TaskInfo<List<Device>>() {
-                                                @Override
-                                                public void onPreTask() {
-                                                }
+                                    if (b.equals("success") && null != result) {
+                                        DeviceTask deviceTask = new DeviceTask(LoginActivity.this, DeviceTask.SCOPE_ONLINE);
+                                        deviceTask.setTaskInfo(new TaskInfo<List<Device>>() {
+                                            @Override
+                                            public void onPreTask() {
+                                            }
 
-                                                @Override
-                                                public void onTaskFinish(String b, List<Device> resu) {
-                                                    if (null != resu && resu.size() > 0) {
-                                                        for (Device device : result) {
-                                                            for (Device dev : resu) {
-                                                                if (device.getDeviceNum().equals(dev.getDeviceNum()))
-                                                                    device.setStatus(1);
-                                                            }
-                                                        }
-                                                    }
+                                            @Override
+                                            public void onTaskFinish(String b, List<Device> resu) {
+                                                if (null != resu && resu.size() > 0) {
                                                     for (Device device : result) {
-                                                        try {
-                                                            x.getDb(App.getDaoConfig()).saveOrUpdate(device);
-                                                        } catch (DbException e) {
-                                                            e.printStackTrace();
+                                                        for (Device dev : resu) {
+                                                            if (device.getDeviceNum().equals(dev.getDeviceNum()))
+                                                                device.setStatus(1);
                                                         }
                                                     }
                                                 }
-                                            });
-                                            deviceTask.execute();
-
-                                        }
+                                                for (Device device : result) {
+                                                    try {
+                                                        x.getDb(App.getDaoConfig()).saveOrUpdate(device);
+                                                    } catch (DbException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                                finish();
+                                            }
+                                        });
+                                        deviceTask.execute();
                                     } else {
                                         Toast.makeText(LoginActivity.this, "获取设备列表失败!", Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                        finish();
                                     }
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                    finish();
                                 }
                             });
                         }
