@@ -1,0 +1,20 @@
+<!-- [ Mirror metadata ] generatedAt: 1455754849997 -->
+<!-- Generated screen file. Fill the id tags below with content with
+which to populate your previewed layout. For a complete specification
+of sample data, please see http://jimulabs.com/sample-data-specifications/ 
+
+Valid attributes on <screen> tag: theme="@style/someTheme" inEditMode="false" overlay="@drawable/mockup" -->
+<screen>
+    <_content layout="@layout/content_device_details">
+        <!-- TextView Examples:
+        <device_details_area text="@string/string_resource" />
+        <device_details_area text="Text literal" textSize="14sp" /> -->
+        <device_details_area />
+        <device_details_address />
+        <device_details_position />
+        <device_details_status />
+        <device_details_buy_time />
+        <device_details_install_time />
+        <device_details_remove_time />
+    </_content>
+</screen>

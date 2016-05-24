@@ -1,0 +1,20 @@
+<!-- [ Mirror metadata ] generatedAt: 1455754850009 -->
+<!-- Generated screen file. Fill the id tags below with content with
+which to populate your previewed layout. For a complete specification
+of sample data, please see http://jimulabs.com/sample-data-specifications/ 
+
+Valid attributes on <screen> tag: theme="@style/someTheme" inEditMode="false" overlay="@drawable/mockup" -->
+<screen>
+    <_content layout="@layout/holder_device">
+        <!-- ImageView Examples:
+        <holder_device_map_image src="@drawable/image_resource" />
+        <holder_device_map_image src="relative_path/image.jpg" /> -->
+        <holder_device_map_image />
+        <!-- TextView Examples:
+        <holder_device_location text="@string/string_resource" />
+        <holder_device_location text="Text literal" textSize="14sp" /> -->
+        <holder_device_location />
+        <holder_device_status />
+        <holder_device_num />
+    </_content>
+</screen>

@@ -1,0 +1,15 @@
+<!-- [ Mirror metadata ] generatedAt: 1455754850011 -->
+<!-- Generated screen file. Fill the id tags below with content with
+which to populate your previewed layout. For a complete specification
+of sample data, please see http://jimulabs.com/sample-data-specifications/ 
+
+Valid attributes on <screen> tag: theme="@style/someTheme" inEditMode="false" overlay="@drawable/mockup" -->
+<screen>
+    <_content layout="@layout/marker">
+        <!-- TextView Examples:
+        <marker_date text="@string/string_resource" />
+        <marker_date text="Text literal" textSize="14sp" /> -->
+        <marker_date />
+        <marker_content />
+    </_content>
+</screen>

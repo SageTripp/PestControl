@@ -117,7 +117,7 @@ public abstract class HttpTask<R> {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 if (!isSuccess) {
-                    LogUtil.e("fail:" + ex);
+//                    LogUtil.e("fail:" + ex);
                     if (ex instanceof SocketTimeoutException)
                         finish("ex:请求设备超时");
                     else

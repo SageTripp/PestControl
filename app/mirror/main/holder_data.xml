@@ -1,0 +1,18 @@
+<!-- [ Mirror metadata ] generatedAt: 1455754850008 -->
+<!-- Generated screen file. Fill the id tags below with content with
+which to populate your previewed layout. For a complete specification
+of sample data, please see http://jimulabs.com/sample-data-specifications/ 
+
+Valid attributes on <screen> tag: theme="@style/someTheme" inEditMode="false" overlay="@drawable/mockup" -->
+<screen>
+    <_content layout="@layout/holder_data">
+        <!-- TextView Examples:
+        <holder_data_pest_kind text="@string/string_resource" />
+        <holder_data_pest_kind text="Text literal" textSize="14sp" /> -->
+        <holder_data_pest_kind />
+        <holder_data_temperature />
+        <holder_data_humidity />
+        <holder_data_area />
+        <holder_data_send_time />
+    </_content>
+</screen>
