@@ -36,7 +36,6 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -152,11 +151,11 @@ public class DeviceDetailsActivity extends BaseActivity {
         positionTv.setText(String.format("%s,%s", device.getWd(), device.getJd()));
 
         statusTv.setText(device.getStatus() == 1 ? "在线" : "离线");
-        collectIntervalTv.setText(String.format(Locale.getDefault(),"采集间隔:%d", device.getCjjg()));
+        collectIntervalTv.setText(String.format(Locale.getDefault(), "采集间隔:%d", device.getCjjg()));
         upIntervalTv.setText(String.format(Locale.getDefault(), "上传间隔:%d", device.getUpload()));
         telsTv.setText(String.format("报警号码:%s", device.getTels()));
-        pestThresholdTv.setText(String.format("害虫阈值:%s", device.getPestThreshold()));
-        environmentThresholdTv.setText(String.format("环境阈值:%s", device.getEnvironmentThreshold()));
+        pestThresholdTv.setText(String.format("害虫阈值:%s", device.getUpvalue()));
+        environmentThresholdTv.setText(String.format("环境阈值:%s", device.getBounds()));
         if (device.getStatus() == 1) {
             editBtn.setVisibility(View.VISIBLE);
             paramCard.setCardBackgroundColor(getResources().getColor(R.color.TEAL));
@@ -171,8 +170,8 @@ public class DeviceDetailsActivity extends BaseActivity {
         collectIntervalTv.setText(String.format(Locale.getDefault(), "采集间隔:%d小时", device.getCjjg()));
         upIntervalTv.setText(String.format(Locale.getDefault(), "上传间隔:%d小时", device.getUpload()));
         telsTv.setText(String.format("报警号码:%s", device.getTels()));
-        pestThresholdTv.setText(String.format("害虫阈值:%s", device.getPestThreshold()));
-        environmentThresholdTv.setText(String.format("环境阈值:%s", device.getEnvironmentThreshold()));
+        pestThresholdTv.setText(String.format("害虫阈值:%s", device.getUpvalue()));
+        environmentThresholdTv.setText(String.format("环境阈值:%s", device.getBounds()));
     }
 
     @Event(value = R.id.device_details_edit_btn)
@@ -185,7 +184,7 @@ public class DeviceDetailsActivity extends BaseActivity {
     @Override
     protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 2) {//修改成功
+        if (requestCode == 123 && resultCode == 2) {//修改成功
             DeviceParamGetTask task = new DeviceParamGetTask(this, device.getDeviceNum());
             task.setTaskInfo(new TaskInfo<Device>() {
                 @Override

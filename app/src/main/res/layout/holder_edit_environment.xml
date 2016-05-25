@@ -25,11 +25,12 @@
             android:layout_weight="1"
             app:hintAnimationEnabled="true">
 
-            <com.okq.pestcontrol.widget.ThresholdCloudEditText
+            <EditText
                 android:id="@+id/environment_edit_up"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="上限"
+                android:inputType="number|numberDecimal|numberSigned|text"
                 android:maxLines="10"
                 android:minLines="1"
                 android:textColor="@color/primary_text" />
@@ -41,11 +42,12 @@
             android:layout_weight="1"
             app:hintAnimationEnabled="true">
 
-            <com.okq.pestcontrol.widget.ThresholdCloudEditText
+            <EditText
                 android:id="@+id/environment_edit_down"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="下限"
+                android:inputType="number|numberDecimal|numberSigned|text"
                 android:maxLines="10"
                 android:minLines="1"
                 android:textColor="@color/primary_text" />

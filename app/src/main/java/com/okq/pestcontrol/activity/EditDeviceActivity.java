@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.adapter.EnvironmentAdapter;
@@ -95,10 +96,10 @@ public class EditDeviceActivity extends BaseActivity {
                 ets[i].setText(tels[i]);
             }
         }
-        if (!TextUtils.isEmpty(device.getPestThreshold()))
-            pestThresholdEt.addSpan(device.getPestThreshold());
-        if (!TextUtils.isEmpty(device.getEnvironmentThreshold()))
-            for (String envir : device.getEnvironmentThreshold().split(";"))
+        if (!TextUtils.isEmpty(device.getUpvalue()))
+            pestThresholdEt.addSpan(device.getUpvalue());
+        if (!TextUtils.isEmpty(device.getBounds()))
+            for (String envir : device.getBounds().split(","))
                 environments.add(envir);
         adapter = new EnvironmentAdapter(this, environments);
         environmentThresholdRv.setAdapter(adapter);
@@ -130,7 +131,8 @@ public class EditDeviceActivity extends BaseActivity {
                     collectInterval,
                     uploadInterval,
                     tels.toString(),
-                    pestThresholdEt.getAllReturnString());
+                    pestThresholdEt.getAllReturnString()
+                    , adapter.getLimit());
             task.setTaskInfo(new TaskInfo<String>() {
                 @Override
                 public void onPreTask() {
@@ -140,9 +142,11 @@ public class EditDeviceActivity extends BaseActivity {
                 @Override
                 public void onTaskFinish(String b, String result) {
                     if (b.equals("success")) {//修改成功
+                        Toast.makeText(EditDeviceActivity.this, "修改成功", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent();
                         intent.putExtra("result", b);
                         setResult(2, intent);
+                        finish();
                     }
 
                 }

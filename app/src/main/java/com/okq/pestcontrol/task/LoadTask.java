@@ -45,7 +45,7 @@ public class LoadTask extends BaseTask<Boolean> {
                 device.setCjjg(2);
                 device.setUpload(3);
                 device.setTels("15912345678,15887654321");
-                device.setPestThreshold("棉铃虫=12,马陆=13");
+                device.setUpvalue("棉铃虫=12,马陆=13");
                 device.setWd(34.918237);
                 device.setJd(113.601556);
                 DeviceDao.save(device);

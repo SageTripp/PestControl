@@ -19,6 +19,7 @@ public class DeviceParamUpdateTask extends HttpTask<String> {
     private int updateInterval;
     private String tels;
     private String pestWarnVal;
+    private String envirWarnVal;
 
     /**
      * 更新/设置设备参数
@@ -28,14 +29,16 @@ public class DeviceParamUpdateTask extends HttpTask<String> {
      * @param updateInterval  上传间隔
      * @param tels            报警号码
      * @param pestWarnVal     害虫阈值
+     * @param envirWarnVal    环境阈值
      */
-    public DeviceParamUpdateTask(Context context, String devices, int collectInterval, int updateInterval, String tels, String pestWarnVal) {
+    public DeviceParamUpdateTask(Context context, String devices, int collectInterval, int updateInterval, String tels, String pestWarnVal, String envirWarnVal) {
         mContext = context;
         this.devices = devices;
         this.collectInterval = collectInterval;
         this.updateInterval = updateInterval;
         this.tels = tels;
         this.pestWarnVal = pestWarnVal;
+        this.envirWarnVal = envirWarnVal;
     }
 
     @Override
@@ -48,6 +51,7 @@ public class DeviceParamUpdateTask extends HttpTask<String> {
         params.addQueryStringParameter("upload", updateInterval + "");//结束日期 2016-10-10
         params.addQueryStringParameter("tels", tels);
         params.addQueryStringParameter("upvalue", pestWarnVal);
+        params.addQueryStringParameter("bounds", envirWarnVal);
         return params;
     }
 

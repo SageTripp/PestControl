@@ -230,13 +230,13 @@ public class ThresholdCloudEditText extends EditText {
      * 获得所有的returnText列表
      */
     public String getAllReturnString() {
-        List<String> list = new ArrayList<String>(getAllReturnStringList());
+        List<String> list = new ArrayList<>(getAllReturnStringList());
         StringBuilder sb = new StringBuilder();
         for (String s : list) {
             sb.append(s);
             sb.append(",");
         }
-        if (",".equals(sb.charAt(sb.length() - 1))) {
+        if (sb.length() > 0) {
             sb.deleteCharAt(sb.length() - 1);
         }
         return sb.toString();
