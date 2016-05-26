@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.adapter.EnvironmentAdapter;
 import com.okq.pestcontrol.bean.Device;
+import com.okq.pestcontrol.kotlin.Data;
 import com.okq.pestcontrol.task.DeviceParamUpdateTask;
 import com.okq.pestcontrol.task.TaskInfo;
 import com.okq.pestcontrol.widget.ThresholdCloudEditText;
@@ -79,9 +80,10 @@ public class EditDeviceActivity extends BaseActivity {
                 onBackPressed();
             }
         });
-        String[] stringArray = getResources().getStringArray(R.array.pest_kind);
         ArrayList<String> pests = new ArrayList<>();
-        Collections.addAll(pests, stringArray);
+        for (Data.Pest pest : Data.INSTANCE.getPestList()) {
+            pests.add(pest.getName());
+        }
         pestThresholdEt.setItems(pests);
         init();
     }
@@ -142,7 +144,7 @@ public class EditDeviceActivity extends BaseActivity {
                 @Override
                 public void onTaskFinish(String b, String result) {
                     if (b.equals("success")) {//修改成功
-                        Toast.makeText(EditDeviceActivity.this, "修改成功", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(EditDeviceActivity.this, "修改成功", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent();
                         intent.putExtra("result", b);
                         setResult(2, intent);

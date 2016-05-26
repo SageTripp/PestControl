@@ -3,6 +3,7 @@ package com.okq.pestcontrol.task;
 import android.content.Context;
 
 import com.okq.pestcontrol.application.App;
+import com.okq.pestcontrol.kotlin.Trans;
 import com.okq.pestcontrol.util.Config;
 
 import org.json.JSONException;
@@ -37,8 +38,8 @@ public class DeviceParamUpdateTask extends HttpTask<String> {
         this.collectInterval = collectInterval;
         this.updateInterval = updateInterval;
         this.tels = tels;
-        this.pestWarnVal = pestWarnVal;
-        this.envirWarnVal = envirWarnVal;
+        this.pestWarnVal = Trans.Companion.transPest(pestWarnVal, Trans.TransDirection.NAME2INDEX);
+        this.envirWarnVal = Trans.Companion.transEnvir(envirWarnVal, Trans.TransDirection.NAME2INDEX);
     }
 
     @Override

@@ -1,12 +1,14 @@
 package com.okq.pestcontrol.task;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.bean.Device;
+import com.okq.pestcontrol.kotlin.Trans;
 import com.okq.pestcontrol.util.Config;
 
 import org.json.JSONArray;
@@ -56,6 +58,9 @@ public class DeviceParamGetTask extends HttpTask<Device> {
                         Device dev = gson.fromJson(content.toString(), new TypeToken<Device>() {
                         }.getType());
                         if (dev != null) {
+                            dev.setDeviceNum(devs);
+                            dev.setBounds(Trans.Companion.transEnvir(dev.getBounds(), Trans.TransDirection.INDEX2NAME));
+                            dev.setUpvalue(Trans.Companion.transPest(dev.getUpvalue(), Trans.TransDirection.INDEX2NAME));
                             info.onTaskFinish("success", dev);
                             return;
                         } else {

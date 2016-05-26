@@ -31,5 +31,7 @@
     <color name="BLUE_GREY">#607D8B</color>
     <color name="WHITE">#FFFFFFFF</color>
     <color name="primary_dark_material_light_1">#61b7df</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>
 

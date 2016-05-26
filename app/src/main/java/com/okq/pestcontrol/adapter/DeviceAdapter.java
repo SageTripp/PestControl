@@ -48,7 +48,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
 
     private Context context;
     private ArrayList<Device> deviceList;
-    private OnItemClickListener itemClickListener;
+    private OnDeviceClick itemClickListener;
     private HashMap<Integer, Boolean> mapFlags;
 
     public DeviceAdapter(Context context, List<Device> devices) {
@@ -69,25 +69,27 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
     public void onBindViewHolder(final DeviceAdapter.DeviceHolder holder, int position) {
         Device device = deviceList.get(position);
         holder.setDeviceNum(device.getDeviceNum());
-        GeoCoder geoCoder = GeoCoder.newInstance();
-        geoCoder.setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener() {
-            @Override
-            public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
-            }
-
-            @Override
-            public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
-                if (reverseGeoCodeResult != null && reverseGeoCodeResult.error == SearchResult.ERRORNO.NO_ERROR) {
-                    holder.setLocation(reverseGeoCodeResult.getAddress());
-                }
-            }
-        });
-        ReverseGeoCodeOption option = new ReverseGeoCodeOption();
-        option.location(new LatLng(device.getWd(), device.getJd()));
-        geoCoder.reverseGeoCode(option);
-//        holder.setLocation(String.format("%s %s", device.getDeviceid(), device.getPlace()));
-        holder.setMap(device.getWd(), device.getJd());
         holder.setStatus(String.format("状态:%s", device.getStatus() == 1 ? "在线" : "离线"));
+        if (device.getStatus() == 1) {
+            GeoCoder geoCoder = GeoCoder.newInstance();
+            geoCoder.setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener() {
+                @Override
+                public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+                }
+
+                @Override
+                public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
+                    if (reverseGeoCodeResult != null && reverseGeoCodeResult.error == SearchResult.ERRORNO.NO_ERROR) {
+                        holder.setLocation(reverseGeoCodeResult.getAddress());
+                    }
+                }
+            });
+            ReverseGeoCodeOption option = new ReverseGeoCodeOption();
+            option.location(new LatLng(device.getWd(), device.getJd()));
+            geoCoder.reverseGeoCode(option);
+//        holder.setLocation(String.format("%s %s", device.getDeviceid(), device.getPlace()));
+            holder.setMap(device.getWd(), device.getJd());
+        }
     }
 
     @Override
@@ -95,12 +97,22 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
         return deviceList.size();
     }
 
+    public void notify(Device device) {
+        for (int i = 0; i < deviceList.size(); i++) {
+            if (deviceList.get(i).getDeviceNum().equals(device.getDeviceNum())) {
+                deviceList.set(i, device);
+                notifyItemChanged(i);
+                return;
+            }
+        }
+    }
+
     /**
      * 设置项目点击事件监听器
      *
      * @param listener 项目点击事件监听器
      */
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    public void setOnItemClickListener(OnDeviceClick listener) {
         this.itemClickListener = listener;
     }
 
@@ -110,7 +122,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
         super.onViewRecycled(holder);
     }
 
-    public class DeviceHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class DeviceHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextureMapView map;
         private TextView deviceNum;
@@ -121,7 +133,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
         private ImageView iv;
         private View touchView;
 
-        public DeviceHolder(View itemView) {
+        DeviceHolder(View itemView) {
             super(itemView);
             map = (TextureMapView) itemView.findViewById(R.id.holder_device_map);
             deviceNum = (TextView) itemView.findViewById(R.id.holder_device_num);
@@ -129,6 +141,9 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
             location = (TextView) itemView.findViewById(R.id.holder_device_location);
             iv = (ImageView) itemView.findViewById(R.id.holder_device_map_image);
             touchView = itemView.findViewById(R.id.holder_device_touch);
+            map.setVisibility(View.GONE);
+            location.setVisibility(View.GONE);
+            iv.setVisibility(View.GONE);
             map.showScaleControl(false);
             map.showZoomControls(false);
             baiduMap = map.getMap();
@@ -138,7 +153,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
             touchView.setOnClickListener(this);
         }
 
-        public void setMap(final double lat, final double lon) {
+        void setMap(final double lat, final double lon) {
+            map.setVisibility(View.VISIBLE);
+            location.setVisibility(View.VISIBLE);
+            iv.setVisibility(View.VISIBLE);
             //定义Maker坐标点
             LogUtil.i(String.format("进入第%d个", getAdapterPosition() + 1));
             Bitmap pic = getMyBitMap(lat, lon);
@@ -207,7 +225,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
         @Override
         public void onClick(View v) {
             if (null != itemClickListener) {
-                itemClickListener.onItemClick(getAdapterPosition());
+                itemClickListener.onItemClick(getAdapterPosition(), deviceList.get(getAdapterPosition()));
             }
         }
 
@@ -299,5 +317,9 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceHold
             }
         }
 
+    }
+
+    public interface OnDeviceClick extends OnItemClickListener {
+        void onItemClick(int position, Device device);
     }
 }

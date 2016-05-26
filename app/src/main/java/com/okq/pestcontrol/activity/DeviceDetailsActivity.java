@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
@@ -185,10 +187,22 @@ public class DeviceDetailsActivity extends BaseActivity {
     protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 123 && resultCode == 2) {//修改成功
-            DeviceParamGetTask task = new DeviceParamGetTask(this, device.getDeviceNum());
+            final Snackbar snackbar = Snackbar.make(mToolbar, "修改成功,因网络原因可能会有延迟,一分钟后更新界面", Snackbar.LENGTH_INDEFINITE);
+            snackbar.setAction("我知道了", null)
+                    .setActionTextColor(this.getResources().getColor(R.color.blue))
+                    .show();
+            final DeviceParamGetTask task = new DeviceParamGetTask(this, device.getDeviceNum());
             task.setTaskInfo(new TaskInfo<Device>() {
                 @Override
                 public void onPreTask() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (snackbar.isShown())
+                                snackbar.dismiss();
+                            Toast.makeText(DeviceDetailsActivity.this, "正在更新设备参数", Toast.LENGTH_LONG).show();
+                        }
+                    });
 
                 }
 
@@ -200,7 +214,17 @@ public class DeviceDetailsActivity extends BaseActivity {
                     }
                 }
             });
-            task.execute();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(60 * 1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    task.execute();
+                }
+            }).start();
         }
     }
 }

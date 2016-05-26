@@ -14,8 +14,10 @@
         <!-- SearchView -->
         <item name="searchViewStyle">@style/MySearchViewStyle</item>
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
-        <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge</item>
-        <item name="android:textAppearanceSmallPopupMenu">@style/myPopupMenuTextAppearanceSmall</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge
+        </item>
+        <item name="android:textAppearanceSmallPopupMenu">@style/myPopupMenuTextAppearanceSmall
+        </item>
 
     </style>
 
@@ -30,7 +32,7 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <style name="DialogStyle" parent="Base.Widget.AppCompat.PopupWindow"/>
+    <style name="DialogStyle" parent="Base.Widget.AppCompat.PopupWindow" />
 
     <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
         <!--Background for the search query section (e.g. EditText)-->
@@ -87,9 +89,22 @@
         <item name="android:textColor">@color/primary_text</item>
         <item name="android:textSize">16sp</item>
     </style>
+
     <style name="myPopupMenuTextAppearanceLarge" parent="@android:style/TextAppearance.DeviceDefault.Widget.PopupMenu.Large">
         <item name="android:textColor">@color/primary_text</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="android:Widget.Holo.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
     </style>
 
 </resources>

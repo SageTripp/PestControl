@@ -59,7 +59,7 @@ public class LoginTask extends HttpTask<String> {
                 }
             } else {
 //                Toast.makeText(mContext, r, Toast.LENGTH_LONG).show();
-                String failReason = "登录失败";
+                String failReason = "连接服务器异常";
                 if (r.contains("after"))
                     failReason = "连接超时";
                 info.onTaskFinish("fail", failReason);

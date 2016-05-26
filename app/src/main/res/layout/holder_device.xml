@@ -21,7 +21,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="144dp">
+            android:layout_height="wrap_content"
+            android:minHeight="22dp">
 
             <com.baidu.mapapi.map.TextureMapView
                 android:id="@+id/holder_device_map"
