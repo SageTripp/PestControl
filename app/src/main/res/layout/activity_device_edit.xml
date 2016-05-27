@@ -181,6 +181,15 @@
                 android:text="环境阈值:"
                 android:textColor="@color/BLUE" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="<点击添加环境因子>"
+                android:textColor="@color/AMBER"
+                android:textStyle="bold" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/device_edit_environment_threshold"
                 android:layout_width="match_parent"

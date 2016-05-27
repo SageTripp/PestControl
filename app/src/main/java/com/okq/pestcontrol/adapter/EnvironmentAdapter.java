@@ -2,6 +2,7 @@ package com.okq.pestcontrol.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.okq.pestcontrol.R;
+import com.okq.pestcontrol.adapter.listener.ItemTouchAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +22,7 @@ import java.util.Map;
 /**
  * Created by zst on 2016/3/21 0021.
  */
-public class EnvironmentAdapter extends RecyclerView.Adapter<EnvironmentAdapter.ViewHolder> {
+public class EnvironmentAdapter extends RecyclerView.Adapter<EnvironmentAdapter.ViewHolder> implements ItemTouchAdapter {
 
     private Context mContext;
     private List<String> environments = new ArrayList<>();
@@ -67,6 +69,18 @@ public class EnvironmentAdapter extends RecyclerView.Adapter<EnvironmentAdapter.
             sb.deleteCharAt(sb.length() - 1);
         }
         return sb.toString();
+    }
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        return false;
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        outEnvirs.remove(environments.get(position).split("=")[0]);
+        environments.remove(position);
+        notifyItemRemoved(position);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

@@ -3,19 +3,19 @@ package com.okq.pestcontrol.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.adapter.EnvironmentAdapter;
+import com.okq.pestcontrol.adapter.listener.ItemTouchAdapter;
 import com.okq.pestcontrol.bean.Device;
 import com.okq.pestcontrol.kotlin.Data;
 import com.okq.pestcontrol.task.DeviceParamUpdateTask;
@@ -101,11 +101,13 @@ public class EditDeviceActivity extends BaseActivity {
         if (!TextUtils.isEmpty(device.getUpvalue()))
             pestThresholdEt.addSpan(device.getUpvalue());
         if (!TextUtils.isEmpty(device.getBounds()))
-            for (String envir : device.getBounds().split(","))
-                environments.add(envir);
+            Collections.addAll(environments, device.getBounds().split(","));
         adapter = new EnvironmentAdapter(this, environments);
         environmentThresholdRv.setAdapter(adapter);
-        environmentThresholdRv.setLayoutManager(new GridLayoutManager(this, 2, LinearLayoutManager.HORIZONTAL, false));
+        environmentThresholdRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        //滑动删除
+        ItemTouchHelper helper = new ItemTouchHelper(new SimpleItemTouchCallback(adapter));
+        helper.attachToRecyclerView(environmentThresholdRv);
     }
 
     @Override
@@ -144,7 +146,6 @@ public class EditDeviceActivity extends BaseActivity {
                 @Override
                 public void onTaskFinish(String b, String result) {
                     if (b.equals("success")) {//修改成功
-//                        Toast.makeText(EditDeviceActivity.this, "修改成功", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent();
                         intent.putExtra("result", b);
                         setResult(2, intent);
@@ -156,5 +157,38 @@ public class EditDeviceActivity extends BaseActivity {
             task.execute();
         }
         return true;
+    }
+
+    /**
+     * 滑动删除回调
+     */
+    private class SimpleItemTouchCallback extends ItemTouchHelper.SimpleCallback {
+
+        private ItemTouchAdapter adapter;
+
+        SimpleItemTouchCallback(ItemTouchAdapter adapter) {
+            super(0, ItemTouchHelper.LEFT);
+            this.adapter = adapter;
+        }
+
+        @Override
+        public boolean isLongPressDragEnabled() {
+            return false;//不支持长按拖拽
+        }
+
+        @Override
+        public boolean isItemViewSwipeEnabled() {
+            return true;
+        }
+
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return adapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            adapter.onItemDismiss(viewHolder.getAdapterPosition());
+        }
     }
 }
