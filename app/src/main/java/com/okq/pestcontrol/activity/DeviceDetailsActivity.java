@@ -79,7 +79,6 @@ public class DeviceDetailsActivity extends BaseActivity {
     private BaiduMap baiduMap;
     private Device device;
 
-    private static final String DATE_FORMAT = "YYYY/MM/dd";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -153,8 +152,8 @@ public class DeviceDetailsActivity extends BaseActivity {
         positionTv.setText(String.format("%s,%s", device.getWd(), device.getJd()));
 
         statusTv.setText(device.getStatus() == 1 ? "在线" : "离线");
-        collectIntervalTv.setText(String.format(Locale.getDefault(), "采集间隔:%d", device.getCjjg()));
-        upIntervalTv.setText(String.format(Locale.getDefault(), "上传间隔:%d", device.getUpload()));
+        collectIntervalTv.setText(String.format(Locale.getDefault(), "采集间隔:%d小时", device.getCjjg()));
+        upIntervalTv.setText(String.format(Locale.getDefault(), "上传间隔:%d小时", device.getUpload()));
         telsTv.setText(String.format("报警号码:%s", device.getTels()));
         pestThresholdTv.setText(String.format("害虫阈值:%s", device.getUpvalue()));
         environmentThresholdTv.setText(String.format("环境阈值:%s", device.getBounds()));
@@ -210,6 +209,7 @@ public class DeviceDetailsActivity extends BaseActivity {
                 public void onTaskFinish(String b, Device result) {
                     if (b.equals("success")) {
                         device = result;
+                        device.setStatus(1);
                         refresh();
                     }
                 }

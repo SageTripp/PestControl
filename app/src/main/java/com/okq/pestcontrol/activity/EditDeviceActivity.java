@@ -3,6 +3,7 @@ package com.okq.pestcontrol.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,14 +16,15 @@ import android.widget.EditText;
 
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.adapter.EnvironmentAdapter;
+import com.okq.pestcontrol.adapter.PestAdapter;
 import com.okq.pestcontrol.adapter.listener.ItemTouchAdapter;
 import com.okq.pestcontrol.bean.Device;
 import com.okq.pestcontrol.kotlin.Data;
 import com.okq.pestcontrol.task.DeviceParamUpdateTask;
 import com.okq.pestcontrol.task.TaskInfo;
-import com.okq.pestcontrol.widget.ThresholdCloudEditText;
 
 import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
@@ -38,10 +40,12 @@ public class EditDeviceActivity extends BaseActivity {
 
     @ViewInject(value = R.id.toolbar)
     private Toolbar mToolbar;
-    @ViewInject(value = R.id.device_edit_pest_threshold)
-    private ThresholdCloudEditText pestThresholdEt;
+    //    @ViewInject(value = R.id.device_edit_pest_threshold)
+//    private ThresholdCloudEditText pestThresholdEt;
     @ViewInject(value = R.id.device_edit_environment_threshold)
     private RecyclerView environmentThresholdRv;
+    @ViewInject(value = R.id.device_edit_pest_threshold)
+    private RecyclerView pestThresholdRv;
     @ViewInject(value = R.id.device_edit_collect_interval)
     private EditText collectEt;
     @ViewInject(value = R.id.device_edit_upload_interval)
@@ -60,8 +64,10 @@ public class EditDeviceActivity extends BaseActivity {
     private EditText[] ets;
 
     private Device device;
-    private EnvironmentAdapter adapter;
+    private EnvironmentAdapter adapterEnv;
+    private PestAdapter adapterPest;
     private List<String> environments = new ArrayList<>();
+    private List<String> pests = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +90,7 @@ public class EditDeviceActivity extends BaseActivity {
         for (Data.Pest pest : Data.INSTANCE.getPestList()) {
             pests.add(pest.getName());
         }
-        pestThresholdEt.setItems(pests);
+//        pestThresholdEt.setItems(pests);
         init();
     }
 
@@ -99,14 +105,20 @@ public class EditDeviceActivity extends BaseActivity {
             }
         }
         if (!TextUtils.isEmpty(device.getUpvalue()))
-            pestThresholdEt.addSpan(device.getUpvalue());
+            Collections.addAll(pests, device.getUpvalue().split(","));
+        adapterPest = new PestAdapter(this, pests);
+        pestThresholdRv.setAdapter(adapterPest);
+        pestThresholdRv.setLayoutManager(new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false));
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new SimpleItemTouchCallback(adapterPest));
+        touchHelper.attachToRecyclerView(pestThresholdRv);
+
         if (!TextUtils.isEmpty(device.getBounds()))
             Collections.addAll(environments, device.getBounds().split(","));
-        adapter = new EnvironmentAdapter(this, environments);
-        environmentThresholdRv.setAdapter(adapter);
+        adapterEnv = new EnvironmentAdapter(this, environments);
+        environmentThresholdRv.setAdapter(adapterEnv);
         environmentThresholdRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         //滑动删除
-        ItemTouchHelper helper = new ItemTouchHelper(new SimpleItemTouchCallback(adapter));
+        ItemTouchHelper helper = new ItemTouchHelper(new SimpleItemTouchCallback(adapterEnv));
         helper.attachToRecyclerView(environmentThresholdRv);
     }
 
@@ -135,8 +147,8 @@ public class EditDeviceActivity extends BaseActivity {
                     collectInterval,
                     uploadInterval,
                     tels.toString(),
-                    pestThresholdEt.getAllReturnString()
-                    , adapter.getLimit());
+                    adapterPest.getLimit()
+                    , adapterEnv.getLimit());
             task.setTaskInfo(new TaskInfo<String>() {
                 @Override
                 public void onPreTask() {
@@ -157,6 +169,16 @@ public class EditDeviceActivity extends BaseActivity {
             task.execute();
         }
         return true;
+    }
+
+    @Event(value = R.id.device_edit_envir_add_btn)
+    private void onEnvirAdd(View v) {
+        adapterEnv.onItemAdd(0);
+    }
+
+    @Event(value = R.id.device_edit_pest_add_btn)
+    private void onPestAdd(View v) {
+        adapterPest.onItemAdd(0);
     }
 
     /**

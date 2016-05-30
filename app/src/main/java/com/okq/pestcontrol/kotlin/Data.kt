@@ -1,10 +1,25 @@
 package com.okq.pestcontrol.kotlin
 
+import java.util.*
+
 /**
  * Created by zst on 2016/5/26 0026.
  * 描述:
  */
 object Data {
+
+    fun getEnvirsName(environments: MutableList<String>): Array<String> {
+        val envirNames = ArrayList<String>()
+        envirList.forEach { envirNames.add(it.name) }
+        environments.forEach { envirNames.remove(it.split("=")[0]) }
+        return envirNames.toTypedArray();
+    }
+    fun getPestsName(pests: MutableList<String>): Array<String> {
+        val pestNames = ArrayList<String>()
+        pestList.forEach { pestNames.add(it.name) }
+        pests.forEach { pestNames.remove(it.split("=")[0]) }
+        return pestNames.toTypedArray();
+    }
 
     val envirList = arrayListOf(
             Envir("硬度", "环境0"),
@@ -22,7 +37,7 @@ object Data {
             Envir("大气压", "环境13"),
             Envir("二氧化碳", "环境14"),
             Envir("土壤盐分", "环境15"),
-            Envir("PH　", "环境49"),
+            Envir("PH", "环境49"),
             Envir("PM2.5", "环境9"),
             Envir("总辐射", "环境21"),
             Envir("PH(土壤)", "环境20"),

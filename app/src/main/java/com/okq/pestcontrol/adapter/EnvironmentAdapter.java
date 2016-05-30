@@ -1,6 +1,8 @@
 package com.okq.pestcontrol.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import com.okq.pestcontrol.R;
 import com.okq.pestcontrol.adapter.listener.ItemTouchAdapter;
+import com.okq.pestcontrol.kotlin.Data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,6 +84,23 @@ public class EnvironmentAdapter extends RecyclerView.Adapter<EnvironmentAdapter.
         outEnvirs.remove(environments.get(position).split("=")[0]);
         environments.remove(position);
         notifyItemRemoved(position);
+    }
+
+    public void onItemAdd(final int position) {
+        final String[] envirsName = Data.INSTANCE.getEnvirsName(environments);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("添加环境因子")
+                .setItems(envirsName, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String envir = envirsName[which];
+                        environments.add(position, envir + "=0/0");
+                        outEnvirs.put(envir, "0/0");
+                        notifyItemInserted(position);
+                    }
+                })
+                .create()
+                .show();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

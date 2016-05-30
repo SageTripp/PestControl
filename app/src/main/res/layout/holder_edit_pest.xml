@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="6dp">
+
+    <TextView
+        android:id="@+id/pest_edit_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="大螟"
+        android:textColor="@color/accent"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/pest_edit_limit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="输入害虫限值"
+        android:textColor="@color/primary_text" />
+</LinearLayout>

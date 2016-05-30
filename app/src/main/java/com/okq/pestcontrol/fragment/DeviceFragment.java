@@ -131,6 +131,13 @@ public class DeviceFragment extends BaseFragment {
                         }
                     } else {
                         Toast.makeText(getContext(), "当前没有设备在线", Toast.LENGTH_LONG).show();
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (null != pd && pd.isShowing())
+                                    pd.dismiss();
+                            }
+                        });
                     }
 
                 }

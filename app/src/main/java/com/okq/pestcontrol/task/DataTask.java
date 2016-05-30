@@ -1,6 +1,7 @@
 package com.okq.pestcontrol.task;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -55,10 +56,10 @@ public class DataTask extends HttpTask<List<PestInformation>> {
     @Override
     void finish(String r) {
         if (null != info) {
-            if (!r.contains("ex:")) {
+            if (!r.contains("ex:") || TextUtils.isEmpty(r)) {
                 try {
                     JSONObject object = new JSONObject(r);
-                    String total = object.getString("total");
+//                    String total = object.getString("total");
                     JSONArray rows = object.getJSONArray("rows");
                     Gson gson = new Gson();
                     List<PestInformation> list = gson.fromJson(rows.toString(), new TypeToken<List<PestInformation>>() {

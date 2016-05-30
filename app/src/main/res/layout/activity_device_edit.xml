@@ -160,20 +160,20 @@
                 android:text="害虫阈值:"
                 android:textColor="@color/BLUE" />
 
-            <android.support.design.widget.TextInputLayout
+            <Button
+                android:id="@+id/device_edit_pest_add_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hintAnimationEnabled="true">
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="点击添加害虫因子"
+                android:textColor="@color/AMBER"
+                android:textStyle="bold" />
 
-                <com.okq.pestcontrol.widget.ThresholdCloudEditText
-                    android:id="@+id/device_edit_pest_threshold"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="设置害虫阈值"
-                    android:maxLines="10"
-                    android:minLines="1"
-                    android:textColor="@color/primary_text" />
-            </android.support.design.widget.TextInputLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/device_edit_pest_threshold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -182,11 +182,12 @@
                 android:textColor="@color/BLUE" />
 
             <Button
+                android:id="@+id/device_edit_envir_add_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:gravity="center"
-                android:text="<点击添加环境因子>"
+                android:text="点击添加环境因子"
                 android:textColor="@color/AMBER"
                 android:textStyle="bold" />
 
