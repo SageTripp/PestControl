@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.bean.PestInformation;
 import com.okq.pestcontrol.util.Config;
+import com.tencent.bugly.crashreport.BuglyLog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,6 +51,7 @@ public class DataTask extends HttpTask<List<PestInformation>> {
         params.addQueryStringParameter("begin", begin);//开始日期 2016-10-10
         params.addQueryStringParameter("end", end);//结束日期 2016-10-10
         params.addQueryStringParameter("datatype", dataType);
+        BuglyLog.d("task", params.getUri());
         return params;
     }
 

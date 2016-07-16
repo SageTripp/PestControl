@@ -77,6 +77,7 @@ public class DeviceParamGetTask extends HttpTask<Device> {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                info.onTaskFinish("fail", null);
             }
             info.onTaskFinish("fail", null);
         }

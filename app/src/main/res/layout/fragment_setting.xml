@@ -64,18 +64,18 @@
                     android:textSize="12sp" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/setting_about_us"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_setting_about_us"
-                android:drawablePadding="32dp"
-                android:gravity="center_vertical"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
-                android:text="关于我们"
-                android:textColor="@color/primary_text"
-                android:textSize="18sp" />
+            <!--<TextView-->
+                <!--android:id="@+id/setting_about_us"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:drawableLeft="@drawable/ic_setting_about_us"-->
+                <!--android:drawablePadding="32dp"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:paddingBottom="8dp"-->
+                <!--android:paddingTop="8dp"-->
+                <!--android:text="关于我们"-->
+                <!--android:textColor="@color/primary_text"-->
+                <!--android:textSize="18sp" />-->
 
         </LinearLayout>
 

@@ -13,11 +13,12 @@ import com.okq.pestcontrol.application.App;
 import com.okq.pestcontrol.util.Config;
 import com.okq.pestcontrol.util.NetUtil;
 import com.okq.pestcontrol.util.Sharepreference;
+import com.tencent.bugly.crashreport.BuglyLog;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.xutils.common.Callback;
 import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
-import org.xutils.http.app.HttpRetryHandler;
 import org.xutils.x;
 
 import java.net.SocketTimeoutException;
@@ -81,6 +82,7 @@ public abstract class HttpTask<R> {
             public void onSuccess(String result) {
                 LogUtil.i("请求结果:" + result);
                 if (result.contains("权限认证失败") && reLogin) {
+                    BuglyLog.w("task","权限认证失败");
                     LoginTask task = new LoginTask(mContext,
                             (String) Sharepreference.getParam(mContext, Sharepreference.Key.USER_NAME, ""),
                             (String) Sharepreference.getParam(mContext, Sharepreference.Key.PASSWORD, ""));
@@ -116,13 +118,15 @@ public abstract class HttpTask<R> {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                if (!isSuccess) {
 //                    LogUtil.e("fail:" + ex);
-                    if (ex instanceof SocketTimeoutException)
+                    if (ex instanceof SocketTimeoutException) {
                         finish("ex:请求设备超时");
-                    else
+                        BuglyLog.e("task","请求超时");
+                    }
+                    else {
                         finish("ex:" + ex.getMessage());
-                }
+                        CrashReport.postCatchedException(ex);
+                    }
             }
 
             @Override

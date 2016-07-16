@@ -95,11 +95,11 @@ public class SettingFragment extends BaseFragment {
         task.execute();
     }
 
-    @Event(value = R.id.setting_about_us)
-    private void aboutUs(View view) {
-        //TODO 关于我们页面
-        startActivity(new Intent(getContext(), AboutUsActivity.class));
-    }
+//    @Event(value = R.id.setting_about_us)
+//    private void aboutUs(View view) {
+//        //TODO 关于我们页面
+//        startActivity(new Intent(getContext(), AboutUsActivity.class));
+//    }
 
     /**
      * 获取版本号

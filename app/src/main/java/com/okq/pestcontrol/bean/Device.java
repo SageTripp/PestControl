@@ -196,7 +196,7 @@ public class Device implements Serializable {
      * @return 害虫阈值
      */
     public String getUpvalue() {
-        return upvalue;
+        return null == upvalue ? "" : upvalue;
     }
 
     /**
@@ -205,7 +205,7 @@ public class Device implements Serializable {
      * @param upvalue 害虫阈值
      */
     public void setUpvalue(String upvalue) {
-        this.upvalue = upvalue;
+        this.upvalue = null == upvalue ? "" : upvalue;
     }
 
 
@@ -215,7 +215,7 @@ public class Device implements Serializable {
      * @return 环境阈值
      */
     public String getBounds() {
-        return bounds;
+        return null == bounds ? "" : bounds;
     }
 
     /**
@@ -224,6 +224,6 @@ public class Device implements Serializable {
      * @param bounds 环境阈值
      */
     public void setBounds(String bounds) {
-        this.bounds = bounds;
+        this.bounds = null == bounds ? "" : bounds;
     }
 }
