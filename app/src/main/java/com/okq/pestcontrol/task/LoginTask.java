@@ -1,9 +1,9 @@
 package com.okq.pestcontrol.task;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.okq.pestcontrol.util.Config;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +44,7 @@ public class LoginTask extends HttpTask<String> {
                     String status = jsonObject.getString("status");
                     if ("success".equals(status)) {
                         String token = jsonObject.getString("accesstoken");
+                        CrashReport.setUserId(userName);
                         info.onTaskFinish("success", token);
                         return;
                     } else if ("fail".equals(status)) {
